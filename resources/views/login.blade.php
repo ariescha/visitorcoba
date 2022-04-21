@@ -27,7 +27,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Login Basic - Pages | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
+    <title>Login | JMDC Visitor</title>
 
     <meta name="description" content="" />
 
@@ -80,15 +80,25 @@
               <!-- /Logo -->
               <h4 class="mb-2">Selamat Datang di Data Center Jasa Marga 👋</h4>
               <p class="mb-4">Silahkan sign-in ke akun anda!</p>
-
-              <form id="formAuthentication" class="mb-3" action="index.html" method="POST">
+              @if(\Session::has('alert'))
+                				<div class="alert alert-danger">
+                    			<div>{{Session::get('alert')}}</div>
+                				</div>
+            				@endif
+            				<!-- @if(\Session::has('alert-success'))
+                				<div class="alert alert-success">
+                    			<div>{{Session::get('alert-success')}}</div>
+                				</div>
+            				@endif -->
+              <form id="formAuthentication" class="mb-3" action="{{route('login-post')}}" method="POST" enctype="multipart/form-data">
+                {{csrf_field()}}
                 <div class="mb-3">
                   <label for="email" class="form-label">Email</label>
                   <input
                     type="text"
                     class="form-control"
                     id="email"
-                    name="email-username"
+                    name="email"
                     placeholder="Masukkan email anda"
                     autofocus
                   />

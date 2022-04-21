@@ -19,7 +19,11 @@ Route::get('/', function () {
 Route::get('approval-check-in','ManageCheckInController@index')->name('approval-check-in');
 Route::get('approval-registrasi','ManageRegisterController@index')->name('approval-registrasi');
 Route::get('login','LoginController@index')->name('login');
+Route::post('login-post','LoginController@store')->name('login-post');
 Route::get('register','RegisterController@index')->name('register');
+Route::post('register-post','RegisterController@store')->name('register-post');
+Route::get('profil-petugas-dc','ProfilPetugasDCController@index')->name('profil-petugas-dc');
+
 
 Route::get('/dashboard-visitor', function () {
     return view('visitor.dashboard-visitor');

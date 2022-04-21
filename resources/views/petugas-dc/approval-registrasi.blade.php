@@ -1,4 +1,7 @@
 @extends('master')
+@section('title')
+Approval Registrasi | JMDC Visitor
+@endsection
 @section('content')
 <body>
     <!-- Layout wrapper -->
@@ -25,6 +28,12 @@
               <a href="{{route('approval-registrasi')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-edit"></i>
                 <div data-i18n="Analytics">Approval Registrasi</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="{{route('profil-petugas-dc')}}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div data-i18n="Analytics">Profil</div>
               </a>
             </li>
 
@@ -69,7 +78,7 @@
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end">
                     <li>
-                      <a class="dropdown-item" href="#">
+                      <a class="dropdown-item" href="{{route('profil-petugas-dc')}}">
                         <div class="d-flex">
                           <div class="flex-shrink-0 me-3">
                             <div class="avatar avatar-online">
@@ -78,7 +87,7 @@
                           </div>
                           <div class="flex-grow-1">
                             <span class="fw-semibold d-block">John Doe</span>
-                            <small class="text-muted">Admin</small>
+                            <small class="text-muted">Petugas DC</small>
                           </div>
                         </div>
                       </a>

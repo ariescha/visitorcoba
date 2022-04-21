@@ -1,6 +1,8 @@
 @extends('master')
 @section('content')
-
+<?php 
+$user = Session::get('user');
+?>
 <body>
 <div class="layout-wrapper layout-content-navbar layout-without-menu">
       <div class="layout-container">
@@ -33,7 +35,7 @@
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end">
                     <li>
-                      <a class="dropdown-item" href="#">
+                      <a class="dropdown-item" href="">
                         <div class="d-flex">
                           <div class="flex-shrink-0 me-3">
                             <div class="avatar avatar-online">
@@ -41,7 +43,8 @@
                             </div>
                           </div>
                           <div class="flex-grow-1">
-                            <span class="fw-semibold d-block">John Doe</span>
+                            <span class="fw-semibold d-block"><?php $user ?></span>
+                
                             <small class="text-muted">Visitor</small>
                           </div>
                         </div>
@@ -51,7 +54,7 @@
                       <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="auth-login-basic.html">
+                      <a class="dropdown-item" href="">
                         <i class="bx bx-power-off me-2"></i>
                         <span class="align-middle">Log Out</span>
                       </a>
@@ -67,7 +70,6 @@
           <!-- Content wrapper -->
           <div class="content-wrapper">
             <!-- Content -->
-
             <div class="container-xxl flex-grow-1 container-p-y">
               <div class="row">
                 <div class="col-lg-12 mb-4 order-0">
@@ -76,11 +78,10 @@
                       <div class="col-sm-8">
                         <div class="card-body">
                           <h5 class="card-title text-primary">Anda sedang berada di Data Center! 🎉</h5>
-                          <p class="mb-4">
-                            Anda telah check in pada <span class="fw-bold">19 April 2022, 07:54:12 WIB</span>. Perhatikan barang bawaan Anda
-                            dan patuhi aturan di Data Center
-                          </p>
-
+                            <p class="mb-4">
+                              Anda telah check in pada <span class="fw-bold">19 April 2022, 07:54:12 WIB</span>. Perhatikan barang bawaan Anda
+                              dan patuhi aturan di Data Center
+                            </p>
                           <a href="javascript:;" class="btn btn-sm btn-primary" onclick="checkout()">Check Out</a>
                         </div>
                       </div>
@@ -95,7 +96,6 @@
                           />
                         </div>
                       </div>
-                      
                     </div>
                   </div>
                   <div class="card" id="waiting-approval" style="display:none">
@@ -107,21 +107,15 @@
                             Anda telah mengajukan permohonan Check In di Jasa Marga Data Center. <br>
                             Silahkan hubungi  <span class="fw-bold">PIC Data Center</span> untuk meminta approval.
                           </p>
-
                         </div>
                       </div>
                       <div class="col-sm-2 text-center text-sm-left">
                         <div class="card-body pb-0 px-0 px-md-4">
-                          <img
-                            src="assets/img/illustrations/Time-management-rafiki.png"
-                            height="200"
-                            alt="View Badge User"
-                            data-app-dark-img="illustrations/Time-management-rafiki.png"
-                            data-app-light-img="illustrations/Time-management-rafiki.png"
+                          <img src="assets/img/illustrations/Time-management-rafiki.png" height="200" alt="View Badge User"
+                            data-app-dark-img="illustrations/Time-management-rafiki.png" data-app-light-img="illustrations/Time-management-rafiki.png"
                           />
                         </div>
                       </div>
-                      
                     </div>
                   </div>
                   <div class="card" id="form-check-in" style="display:show">
@@ -238,7 +232,6 @@
                       <td>Laptop, Tas, Ipad</td>
                       <td><span class="badge bg-label-primary me-1">13:00 WIB</span></td>
                       <td><span class="badge bg-label-danger me-1">17:00 WIB</span></td>
-                      
                     </tr>
                     <tr style="text-align:center">
                       <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>3</strong></td>
@@ -266,7 +259,6 @@
             </div>
             <!--/ Hoverable Table rows -->
                 </div>
-                  
               </div>
             </div>
             <script type="text/javascript">
@@ -275,7 +267,6 @@
                 m = n.getMonth() + 1;
                 d = n.getDate();
                 document.getElementById("date").value = d + "-" + m + "-" + y;
-
                 function checkin(){
                     $("#waiting-approval").show();
                     $("#form-check-in").hide();

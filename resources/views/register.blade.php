@@ -27,7 +27,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Register Basic - Pages | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
+    <title>Register | JMDC Visitor</title>
 
     <meta name="description" content="" />
 
@@ -82,7 +82,8 @@
               <h4 class="mb-2">Selamat Datang di Data Center Jasa Marga</h4>
               <p class="mb-4">Silahkan registrasi diri anda!</p>
 
-              <form id="formAuthentication" class="mb-3" action="index.html" method="POST">
+              <form id="formAuthentication" class="mb-3" action="{{route('register-post')}}" method="POST" enctype="multipart/form-data">
+                {{csrf_field()}}
                 <div class="mb-3">
                   <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
                   <input
@@ -132,7 +133,7 @@
                 </div>
 
                 
-                <button class="btn btn-primary d-grid w-100">Daftar</button>
+                <button class="btn btn-primary d-grid w-100" type="submit">Daftar</button>
               </form>
 
               <p class="text-center">
