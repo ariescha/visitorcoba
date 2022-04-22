@@ -114,7 +114,7 @@ Profil Petugas DC | JMDC Visitor
 
               <div class="row">
                 <div class="col-md-12">
-                  
+                  @foreach($PetugasDC as $p)
                   <div class="card mb-4">
                     <h5 class="card-header">Profile Details</h5>
                     <!-- Account -->
@@ -160,7 +160,7 @@ Profil Petugas DC | JMDC Visitor
                               type="text"
                               id="nama-lengkap"
                               name="nama-lengkap"
-                              value="John"
+                              value="{{$p->nama_lengkap_petugas}}"
                               autofocus
                             />
                           </div>
@@ -175,7 +175,7 @@ Profil Petugas DC | JMDC Visitor
                               type="text"
                               id="email"
                               name="email"
-                              value="john.doe@example.com"
+                              value="{{$p->email_petugas}}"
                               placeholder="john.doe@example.com"
                             />
                           </div>
@@ -189,7 +189,7 @@ Profil Petugas DC | JMDC Visitor
                                 id="phoneNumber"
                                 name="phoneNumber"
                                 class="form-control"
-                                placeholder="202 555 0111"
+                                value="{{$p->nomor_hp_petugas}}"
                               />
                             </div>
                           </div>
@@ -206,7 +206,7 @@ Profil Petugas DC | JMDC Visitor
                             <img src="assets/img/logo-landscape.png" height="200" alt="View Badge User" data-app-dark-img="logo-landscape.png" data-app-light-img="logo-landscape.png"/>
 
                           </div>
-                          
+                          @endforeach
                         </div>
                         <div class="mt-2">
                           <button type="submit" class="btn btn-primary me-2">Save changes</button>

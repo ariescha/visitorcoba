@@ -3,7 +3,9 @@
 Approval Check In | JMDC Visitor
 @endsection
 @section('content')
-
+<?php 
+$user = Session::get('user');
+?>
 @include('petugas-dc.sidebar')
 
         <!-- Layout container -->
@@ -50,7 +52,7 @@ Approval Check In | JMDC Visitor
                             </div>
                           </div>
                           <div class="flex-grow-1">
-                            <span class="fw-semibold d-block">{{$PetugasDC->nama_lengkap_petugas}}</span>
+                            <span class="fw-semibold d-block">{{$user}}</span>
                             <small class="text-muted">Petugas DC</small>
                           </div>
                         </div>
@@ -60,7 +62,7 @@ Approval Check In | JMDC Visitor
                       <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="auth-login-basic.html">
+                      <a class="dropdown-item" href="{{route('logout')}}">
                         <i class="bx bx-power-off me-2"></i>
                         <span class="align-middle">Log Out</span>
                       </a>

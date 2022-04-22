@@ -43,7 +43,7 @@ $user = Session::get('user');
                             </div>
                           </div>
                           <div class="flex-grow-1">
-                            <span class="fw-semibold d-block"><?php $user ?></span>
+                            <span class="fw-semibold d-block">{{$user}}</span>
                 
                             <small class="text-muted">Visitor</small>
                           </div>
@@ -54,7 +54,7 @@ $user = Session::get('user');
                       <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="">
+                      <a class="dropdown-item" href="{{route('logout')}}">
                         <i class="bx bx-power-off me-2"></i>
                         <span class="align-middle">Log Out</span>
                       </a>

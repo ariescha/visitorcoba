@@ -16,20 +16,21 @@ class LoginController extends Controller
     public function store(Request $request){
         $Email = $request->email;
         $Password = $request->password;
-        $CekVisitor = DB::table('Visitor')->where('email_visitor','=',$Email)->get();
-        $CekPetugasDC = DB::table('Petugas_DC')->where('email_petugas','=',$Email)->get();
-        // dd($request,$Email,$CekPetugasDC,$CekVisitor[0]);
-        if(isset($CekVisitor[0]) && empty($CekPetugasDC[0])){
-            if($Password ==  decrypt($CekVisitor[0]->password_visitor)){
-                //dd($Password,)
-                Session::put('User',$CekVisitor[0]->nama_lengkap_visitor);
+        $CekVisitor = Visitor::whereRaw('email_visitor = ?', [$Email])->first();
+        $CekPetugasDC = Petugas_DC::whereRaw('email_petugas = ?', [$Email])->first();
+        //dd($request,$Email,$CekPetugasDC,$CekVisitor);
+        if(isset($CekVisitor) && empty($CekPetugasDC)){
+            if($Password ==  decrypt($CekVisitor->password_visitor)){
+                Session::put('user',$CekVisitor->nama_lengkap_visitor);
+                Session::put('id_visitor',$CekVisitor->id_visitor);
                 return view('visitor.dashboard-visitor');
             }else{
                 return back()->with('alert','Gagal Masuk! Password Salah');
             }
-        }else if(empty($CekVisitor[0]) && isset($CekPetugasDC[0])){
-            if($Password ==  $CekPetugasDC[0]->password_petugas){
-                Session::put('User',$CekPetugasDC[0]->nama_lengkap_petugas);
+        }else if(empty($CekVisitor) && isset($CekPetugasDC)){
+            if($Password ==  $CekPetugasDC->password_petugas){
+                Session::put('user',$CekPetugasDC->nama_lengkap_petugas);
+                Session::put('id_petugas',$CekPetugasDC->id_petugas);
                 return view('petugas-dc.approval-check-in');
             }else{
                 return back()->with('alert','Gagal Masuk! Password Salah');
@@ -39,6 +40,11 @@ class LoginController extends Controller
         }
         
  
+    }
+
+    public function logout(){
+        Session::flush();
+        return redirect('login')->with('alert','Anda berhasil logout');
     }
     
 }
