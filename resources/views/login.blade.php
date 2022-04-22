@@ -32,7 +32,7 @@
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="assets/img/logo.png" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -80,7 +80,7 @@
               <!-- /Logo -->
               <h4 class="mb-2">Selamat Datang di Data Center Jasa Marga 👋</h4>
               <p class="mb-4">Silahkan sign-in ke akun anda!</p>
-              @if(\Session::has('alert'))
+              @if(Session::has('alert'))
                 				<div class="alert alert-danger">
                     			<div>{{Session::get('alert')}}</div>
                 				</div>
@@ -135,7 +135,7 @@
 
               <p class="text-center">
                 <span>Pengguna baru? Silahkan</span>
-                <a href="auth-register-basic.html">
+                <a href="{{route('register')}}">
                   <span>buat akun baru</span>
                 </a>
               </p>

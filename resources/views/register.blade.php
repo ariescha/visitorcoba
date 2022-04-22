@@ -32,7 +32,7 @@
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="assets/img/logo.png" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -138,7 +138,7 @@
 
               <p class="text-center">
                 <span>Sudah punya akun? Silahkan</span>
-                <a href="auth-login-basic.html">
+                <a href="{{route('login')}}">
                   <span>masuk</span>
                 </a>
               </p>
