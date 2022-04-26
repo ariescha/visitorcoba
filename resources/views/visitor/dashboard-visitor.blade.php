@@ -135,7 +135,67 @@ $user = Session::get('user');
                     </div>
                   </div>
                   </div>
+                </div>
+              <div class="row">
+                <div class="col-lg-12 mb-4 order-0">
+                  <div class="card" id="waiting-approval" style="display:show">
+                    <div class="d-flex align-items-end row">
+                      <div class="col-sm-8">
+                        <div class="card-body">
+                        <form id="formAuthentication" class="mb-3" action="{{route('register-post')}}" method="POST" enctype="multipart/form-data">
+                          {{csrf_field()}}
+                          <div class="mb-3">
+                            <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="nama_lengkap"
+                              name="nama_lengkap"
+                              placeholder="Masukkan nama lengkap anda"
+                              autofocus
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <label for="nik" class="form-label">NIK</label>
+                            <input type="text" class="form-control" id="nik" name="nik" placeholder="Masukkan NIK anda" />
+                          </div>
+                          <div class="mb-3">
+                            <label for="no_hp" class="form-label">No HP</label>
+                            <input type="text" class="form-control" id="no_hp" name="no_hp" placeholder="Masukkan no HP anda" />
+                          </div>
+                          <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="text" class="form-control" id="email" name="email" placeholder="Masukkan email anda" />
+                          </div>
+                          <div class="mb-3">
+                            <label for="asal_instansi" class="form-label">Asal Instansi</label>
+                            <input type="text" class="form-control" id="asal_instansi" name="asal_instansi" placeholder="Masukkan asal instansi anda" />
+                          </div>
+                          <div class="mb-3 form-password-toggle">
+                            <label class="form-label" for="password">Password</label>
+                            <div class="input-group input-group-merge">
+                              <input
+                                type="password"
+                                id="password"
+                                class="form-control"
+                                name="password"
+                                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                                aria-describedby="password"
+                              />
+                              <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                            </div>
+                          </div>
+                          <div class="mb-3">
+                              <label for="foto_ktp" class="form-label">Foto KTP</label>
+                              <input class="form-control" type="file" id="foto_ktp" name="foto_ktp" accept="image/*" /> 
+                          </div>
+                          <button class="btn btn-primary d-grid w-100" type="submit">Daftar</button>
+                        </form>
+                      </div>
+                    </div>
                   </div>
+                </div>
+              </div></div>
               <div class="row">
                 <div class="col-lg-12 mb-4 order-0">
                   <div class="card" id="waiting-approval" style="display:none">

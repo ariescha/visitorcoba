@@ -22,7 +22,7 @@ class LoginController extends Controller
         if(isset($CekVisitor) && empty($CekPetugasDC)){
             if($Password ==  decrypt($CekVisitor->password_visitor)){
                 Session::put('user',$CekVisitor->nama_lengkap_visitor);
-                Session::put('id_visitor',$CekVisitor->id_visitor);
+                Session::put('nik_visitor',$CekVisitor->nik_visitor);
                 return view('visitor.dashboard-visitor');
             }else{
                 return back()->with('alert','Gagal Masuk! Password Salah');
@@ -38,6 +38,7 @@ class LoginController extends Controller
         }else{
             return back()->with('alert','Gagal masuk! Pengguna tidak ditemukan');
         }
+        
         
  
     }
