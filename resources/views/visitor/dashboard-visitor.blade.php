@@ -73,6 +73,91 @@ $user = Session::get('user');
             <div class="container-xxl flex-grow-1 container-p-y">
               <div class="row">
                 <div class="col-lg-12 mb-4 order-0">
+                <div class="card" id="checked-in" style="display:show">
+                    <div class="d-flex align-items-end row">
+                      <div class="col-sm-8">
+                        <div class="card-body">
+                          <h5 class="card-title text-primary">Menunggu Approval Data ⌛</h5>
+                            <p class="mb-4">
+                              Data anda sedang diperiksa oleh petugas data center.
+                            </p>
+                            <p class="mb-4">
+                              Mohon hubungi petugas data center 
+                              jika data anda belum diapprove setelah 2x24jam sejak registrasi.
+                            </p>
+                          <!-- <a href="javascript:;" class="btn btn-sm btn-primary" onclick="checkout()">Check Out</a> -->
+                        </div>
+                      </div>
+                      
+                      <div class="col-sm-2 text-center text-sm-left">
+                        <div class="card-body pb-0 px-0 px-md-4">
+                          <img
+                            src="assets/img/illustrations/Server-status-pana.png"
+                            height="200"
+                            alt="View Badge User"
+                            data-app-dark-img="illustrations/Server-status-pana.png"
+                            data-app-light-img="illustrations/Server-status-pana.png"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                  </div>
+              <div class="row">
+                <div class="col-lg-12 mb-4 order-0">
+                  <div class="card" id="checked-in" style="display:show">
+                    <div class="d-flex align-items-end row">
+                      <div class="col-sm-8">
+                        <div class="card-body">
+                          <h5 class="card-title text-primary">Data Registrasi Anda Ditolak ⛔</h5>
+                            <p class="mb-4">
+                            Data anda ditolak oleh petugas data center dengan alasan nama tidak sesuai dengan KTP.
+                            </p>
+                            <p class="mb-4">
+                            Mohon perbaiki data anda sesuai dengan alasan penolakan melalui form di bawah ini!
+                            </p>
+                          <!-- <a href="javascript:;" class="btn btn-sm btn-primary" onclick="checkout()">Check Out</a> -->
+                        </div>
+                      </div>
+                      
+                      <div class="col-sm-2 text-center text-sm-left">
+                        <div class="card-body pb-0 px-0 px-md-4">
+                          <img
+                            src="assets/img/illustrations/sorry.png"
+                            height="200"
+                            alt="View Badge User"
+                            data-app-dark-img="illustrations/sorry.png"
+                            data-app-light-img="illustrations/sorry.png"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                  </div>
+              <div class="row">
+                <div class="col-lg-12 mb-4 order-0">
+                  <div class="card" id="waiting-approval" style="display:none">
+                    <div class="d-flex align-items-end row">
+                      <div class="col-sm-8">
+                        <div class="card-body">
+                          <h5 class="card-title text-primary">Menunggu Approval Check In</h5>
+                          <p class="mb-4">
+                            Anda telah mengajukan permohonan Check In di Jasa Marga Data Center. <br>
+                            Silahkan hubungi  <span class="fw-bold">PIC Data Center</span> untuk meminta approval.
+                          </p>
+                        </div>
+                      </div>
+                      <div class="col-sm-2 text-center text-sm-left">
+                        <div class="card-body pb-0 px-0 px-md-4">
+                          <img src="assets/img/illustrations/Time-management-rafiki.png" height="200" alt="View Badge User"
+                            data-app-dark-img="illustrations/Time-management-rafiki.png" data-app-light-img="illustrations/Time-management-rafiki.png"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <div class="card" id="checked-in" style="display:none">
                     <div class="d-flex align-items-end row">
                       <div class="col-sm-8">
@@ -98,6 +183,10 @@ $user = Session::get('user');
                       </div>
                     </div>
                   </div>
+                  </div>
+                  </div>
+              <div class="row">
+                <div class="col-lg-12 mb-4 order-0">
                   <div class="card" id="waiting-approval" style="display:none">
                     <div class="d-flex align-items-end row">
                       <div class="col-sm-8">
@@ -118,6 +207,10 @@ $user = Session::get('user');
                       </div>
                     </div>
                   </div>
+                  </div>
+                  </div>
+              <div class="row">
+                <div class="col-lg-12 mb-4 order-0">
                   <div class="card" id="form-check-in" style="display:show">
                     <div class="d-flex align-items-end row">
                       <div class="col-sm-8">

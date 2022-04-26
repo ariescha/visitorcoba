@@ -183,7 +183,7 @@ Profil Petugas DC | JMDC Visitor
                           <div class="mb-3 col-md-6">
                             <label class="form-label" for="phoneNumber">Nomor HP</label>
                             <div class="input-group input-group-merge">
-                              <span class="input-group-text">ID (+62)</span>
+                              <!-- <span class="input-group-text">ID (+62)</span> -->
                               <input
                                 type="text"
                                 id="phoneNumber"
@@ -203,8 +203,9 @@ Profil Petugas DC | JMDC Visitor
                               accept="image/*"
                             />
                             Allowed JPG, GIF or PNG. Max size of 800K
+                            @if(isset($p->file_nda))
                             <img src="assets/img/logo-landscape.png" height="200" alt="View Badge User" data-app-dark-img="logo-landscape.png" data-app-light-img="logo-landscape.png"/>
-
+                            @endif
                           </div>
                           @endforeach
                         </div>

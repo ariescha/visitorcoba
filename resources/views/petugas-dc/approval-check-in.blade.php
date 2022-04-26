@@ -462,5 +462,7 @@ $user = Session::get('user');
             </div>
             
             <!-- / Content -->
-
+<script type="text/javascript">
+  document.getElementById('nama_visitor').value = "aaa";
+</script>
 @endsection

@@ -15,12 +15,31 @@ class RegisterController extends Controller
     public function store(Request $request){
         $Current = date('His-dmY');
         $Email = $request->email;
-        $CekEmail = Visitor::find($Email);
+        $CekEmailVisitor = Visitor::whereRaw('email_visitor = ?', [$Email])->first();
+        $CekEmailPetugas = Petugas_DC::whereRaw('email_petugas = ?', [$Email])->first();
         $FotoKtpVisitor = $request->file('foto_ktp');
         $FotoKtpVisitors = $Current.'-'.$FotoKtpVisitor->getClientOriginalName();
         $FotoKtpVisitor->move('dokumen',$FotoKtpVisitors);
     
-        if($CekEmail == null){
+        if(isset($CekEmailVisitor)){
+            if($CekEmailVisitor->status_visitor == 2)
+                Visitor::create([
+                    'nama_lengkap_visitor' => $request->nama_lengkap,
+                    'nik_visitor'          => $request->nik,
+                    'nomor_hp_visitor'     => $request->no_hp,
+                    'asal_instansi_visitor'=> $request->asal_instansi,
+                    'email_visitor'        => $Email,
+                    'password_visitor'     => encrypt($request->password),
+                    'foto_ktp_visitor'     => $FotoKtpVisitors,
+                    'status_visitor'       => 0,
+                ]);
+            else{
+                return back()->with('alert','Gagal Masuk! Password Salah');
+            }
+        }else if(isset($CekEmailPetugas)){
+            
+        }
+        else{
             Visitor::create([
                 'nama_lengkap_visitor' => $request->nama_lengkap,
                 'nik_visitor'          => $request->nik,

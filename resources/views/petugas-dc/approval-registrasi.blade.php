@@ -3,6 +3,7 @@
 Approval Registrasi | JMDC Visitor
 @endsection
 @section('content')
+
 <body>
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
@@ -180,7 +181,7 @@ Approval Registrasi | JMDC Visitor
                 <h6 class="card-subtitle" style="color:rgb(52, 51, 51)">Lakukan validasi data visitor sebelum menerima atau menolak registrasi.</h6>
                   <div class="table-responsive text-nowrap">
                     <br>
-                    <table class="table table-hover" style="background-color:white" >
+                    <table class="table table-hover" id="myTable" style="background-color:white" >
                       <thead>
                         <tr>
                           <th>No</th>
@@ -388,15 +389,12 @@ Approval Registrasi | JMDC Visitor
             </div>
             
             <!-- / Content -->
-    
-@endsection
-<script type="text/javascript">
-      n =  new Date();
-      y = n.getFullYear();
-      m = n.getMonth() + 1;
-      d = n.getDate();
-      document.getElementById("date").value = d + "-" + m + "-" + y;
+            <!-- <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script> -->
+<!-- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script> -->
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
 
+<script type="text/javascript">
+     
       function checkin(){
         $("#waiting-approval").show();
         $("#form-check-in").hide();
@@ -405,4 +403,10 @@ Approval Registrasi | JMDC Visitor
         $("#checked-in").hide();
         $("#form-check-in").show();
       }
+      $(document).ready( function () {
+        $('#myTable').DataTable();
+      } );
+      
+      
     </script>
+@endsection
