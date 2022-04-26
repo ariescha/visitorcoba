@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Http\Request;
 use App\Models\Visitor;
@@ -29,7 +30,7 @@ class RegisterController extends Controller
                     'nomor_hp_visitor'     => $request->no_hp,
                     'asal_instansi_visitor'=> $request->asal_instansi,
                     'email_visitor'        => $Email,
-                    'password_visitor'     => encrypt($request->password),
+                    'password_visitor'     => Hash::make($request->password),
                     'foto_ktp_visitor'     => $FotoKtpVisitors,
                     'status_visitor'       => 0,
                 ]);
@@ -46,7 +47,7 @@ class RegisterController extends Controller
                 'nomor_hp_visitor'     => $request->no_hp,
                 'asal_instansi_visitor'=> $request->asal_instansi,
                 'email_visitor'        => $Email,
-                'password_visitor'     => encrypt($request->password),
+                'password_visitor'     => Hash::make($request->password),
                 'foto_ktp_visitor'     => $FotoKtpVisitors,
                 'status_visitor'       => 0,
             ]);

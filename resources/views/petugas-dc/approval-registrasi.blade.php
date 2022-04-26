@@ -181,7 +181,7 @@ Approval Registrasi | JMDC Visitor
                 <h6 class="card-subtitle" style="color:rgb(52, 51, 51)">Lakukan validasi data visitor sebelum menerima atau menolak registrasi.</h6>
                   <div class="table-responsive text-nowrap">
                     <br>
-                    <table class="table table-hover" id="myTable" style="background-color:white" >
+                    <table class="table table-hover" id="myTable" style="background-color:white;width:100%" >
                       <thead>
                         <tr>
                           <th>No</th>
@@ -303,7 +303,7 @@ Approval Registrasi | JMDC Visitor
                         </div>
                             <div class="modal-footer">
                                 
-                                <button class="btn btn-danger"  data-bs-dismiss="modal">
+                                <button type="button" class="btn btn-danger"  data-bs-dismiss="modal">
                                     Cancel
                                 </button>
                                 <button class="btn btn-success"  data-bs-dismiss="modal">
@@ -321,7 +321,7 @@ Approval Registrasi | JMDC Visitor
                 <h6 class="card-subtitle" style="color:rgb(52, 51, 51)">Tabel di bawah memuat data visitor yang telah tersimpan.</h6>
                   <div class="table-responsive text-nowrap">
                     <br>
-                    <table class="table table-hover" style="background-color:white" >
+                    <table class="table table-hover" id="myTable1" style="background-color:white;width:100%" >
                       <thead>
                         <tr>
                           <th>No</th>
@@ -404,7 +404,12 @@ Approval Registrasi | JMDC Visitor
         $("#form-check-in").show();
       }
       $(document).ready( function () {
-        $('#myTable').DataTable();
+        $('#myTable').DataTable({
+          "scrollX": true,
+        });
+        $('#myTable1').DataTable({
+          "scrollX": true,
+        });
       } );
       
       

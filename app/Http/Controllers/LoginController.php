@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Http\Request;
 use App\Models\Visitor;
@@ -18,15 +20,16 @@ class LoginController extends Controller
         $Password = $request->password;
         $CekVisitor = Visitor::whereRaw('email_visitor = ?', [$Email])->first();
         $CekPetugasDC = Petugas_DC::whereRaw('email_petugas = ?', [$Email])->first();
-        //dd($request,$Email,$CekPetugasDC,$CekVisitor);
         if(isset($CekVisitor) && empty($CekPetugasDC)){
-            if($Password ==  decrypt($CekVisitor->password_visitor)){
-                Session::put('user',$CekVisitor->nama_lengkap_visitor);
-                Session::put('nik_visitor',$CekVisitor->nik_visitor);
-                return view('visitor.dashboard-visitor');
-            }else{
-                return back()->with('alert','Gagal Masuk! Password Salah');
-            }
+                if(Hash::check($Password,$CekVisitor->password_visitor)){
+                    Session::put('user',$CekVisitor->nama_lengkap_visitor);
+                    Session::put('nik_visitor',$CekVisitor->nik_visitor);
+                    return view('visitor.dashboard-visitor');
+                }else{
+                    return back()->with('alert','Gagal Masuk! Password Salah');
+                }
+          
+            
         }else if(empty($CekVisitor) && isset($CekPetugasDC)){
             if($Password ==  $CekPetugasDC->password_petugas){
                 Session::put('user',$CekPetugasDC->nama_lengkap_petugas);

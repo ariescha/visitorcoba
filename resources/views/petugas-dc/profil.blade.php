@@ -114,7 +114,6 @@ Profil Petugas DC | JMDC Visitor
 
               <div class="row">
                 <div class="col-md-12">
-                  @foreach($PetugasDC as $p)
                   <div class="card mb-4">
                     <h5 class="card-header">Profile Details</h5>
                     <!-- Account -->
@@ -160,7 +159,7 @@ Profil Petugas DC | JMDC Visitor
                               type="text"
                               id="nama-lengkap"
                               name="nama-lengkap"
-                              value="{{$p->nama_lengkap_petugas}}"
+                              value="{{$PetugasDC['nama_lengkap_petugas']}}"
                               autofocus
                             />
                           </div>
@@ -175,7 +174,7 @@ Profil Petugas DC | JMDC Visitor
                               type="text"
                               id="email"
                               name="email"
-                              value="{{$p->email_petugas}}"
+                              value="{{$PetugasDC['email_petugas']}}"
                               placeholder="john.doe@example.com"
                             />
                           </div>
@@ -189,7 +188,7 @@ Profil Petugas DC | JMDC Visitor
                                 id="phoneNumber"
                                 name="phoneNumber"
                                 class="form-control"
-                                value="{{$p->nomor_hp_petugas}}"
+                                value="{{$PetugasDC['nomor_hp_petugas']}}"
                               />
                             </div>
                           </div>
@@ -203,11 +202,11 @@ Profil Petugas DC | JMDC Visitor
                               accept="image/*"
                             />
                             Allowed JPG, GIF or PNG. Max size of 800K
-                            @if(isset($p->file_nda))
+                            @if(isset($PetugasDC['file_nda']))
                             <img src="assets/img/logo-landscape.png" height="200" alt="View Badge User" data-app-dark-img="logo-landscape.png" data-app-light-img="logo-landscape.png"/>
                             @endif
                           </div>
-                          @endforeach
+                          
                         </div>
                         <div class="mt-2">
                           <button type="submit" class="btn btn-primary me-2">Save changes</button>
