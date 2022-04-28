@@ -19,14 +19,12 @@ class RegisterController extends Controller
         $Nik = $request->nik;
         $CekEmailVisitor = Visitor::whereRaw('email_visitor = ?', [$Email])->first();
         $CekNikVisitor = Visitor::whereRaw('nik_visitor = ?', [$Nik])->first();
-        $CekEmailPetugas = Petugas_DC::whereRaw('email_petugas = ?', [$Email])->first();
-        
+        $CekEmailPetugas = Petugas_DC::whereRaw('email_petugas = ?',[$Email])->first();
         $FotoKtpVisitor = $request->file('foto_ktp');
         $FotoKtpVisitors = $Current.'-'.$FotoKtpVisitor->getClientOriginalName();
         $FotoKtpVisitor->move('dokumen',$FotoKtpVisitors);
-    
-        if(isset($CekEmailVisitor)){
-            if($CekEmailVisitor->status_visitor == 2)
+        if(!isset($CekEmailVisitor) && !isset($CekNikVisitor) && !isset($CekEmailPetugas)){
+        
                 Visitor::create([
                     'nama_lengkap_visitor' => $request->nama_lengkap,
                     'nik_visitor'          => $request->nik,
@@ -37,26 +35,15 @@ class RegisterController extends Controller
                     'foto_ktp_visitor'     => $FotoKtpVisitors,
                     'status_visitor'       => 0,
                 ]);
-            else{
-                return back()->with('alert','Gagal Masuk! Password Salah');
-            }
-        }else if(isset($CekEmailPetugas)){
             
+                return redirect('/login');
+        
         }
         else{
-            Visitor::create([
-                'nama_lengkap_visitor' => $request->nama_lengkap,
-                'nik_visitor'          => $request->nik,
-                'nomor_hp_visitor'     => $request->no_hp,
-                'asal_instansi_visitor'=> $request->asal_instansi,
-                'email_visitor'        => $Email,
-                'password_visitor'     => Hash::make($request->password),
-                'foto_ktp_visitor'     => $FotoKtpVisitors,
-                'status_visitor'       => 0,
-            ]);
+            return back()->with('alert','Akun anda telah terdaftar, Silahkan log in!');
+            
         }
         
  
-        return redirect('/login');
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\Visitor;
 use App\Models\Petugas_DC;
+use App\Models\list_checkin;
 use DB;
 class LoginController extends Controller
 {
@@ -24,7 +25,8 @@ class LoginController extends Controller
                 if(Hash::check($Password,$CekVisitor->password_visitor)){
                     Session::put('user',$CekVisitor->nama_lengkap_visitor);
                     Session::put('nik_visitor',$CekVisitor->nik_visitor);
-                    return view('visitor.dashboard-visitor');
+                    $VisitorCheckIn = list_checkin::whereRaw('nik_visitor = ?',[$CekVisitor->nik_visitor])->first();
+                    return view('visitor.dashboard-visitor',['DataVisitor'=>$CekVisitor,'DataCheckIn'=>$VisitorCheckIn]);
                 }else{
                     return back()->with('alert','Gagal Masuk! Password Salah');
                 }

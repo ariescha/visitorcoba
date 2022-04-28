@@ -104,9 +104,9 @@ $user = Session::get('user');
           <div class="content-wrapper">
             <!-- Content -->
             <div class="container-xxl flex-grow-1 container-p-y">
-              <div class="row">
+              <div class="row" id="waiting-approval-data">
                 <div class="col-lg-12 mb-4 order-0">
-                <div class="card" id="checked-in" style="display:show">
+                <div class="card"  style="display:show">
                     <div class="d-flex align-items-end row">
                       <div class="col-sm-8">
                         <div class="card-body">
@@ -137,9 +137,9 @@ $user = Session::get('user');
                     </div>
                   </div>
                   </div>
-              <div class="row">
+              <div class="row"  id="rejected-notif">
                 <div class="col-lg-12 mb-4 order-0">
-                  <div class="card" id="checked-in" style="display:show">
+                  <div class="card" style="display:show">
                     <div class="d-flex align-items-end row">
                       <div class="col-sm-8">
                         <div class="card-body">
@@ -169,9 +169,9 @@ $user = Session::get('user');
                   </div>
                   </div>
                 </div>
-              <div class="row">
+              <div class="row" id="rejected-form" >
                 <div class="col-lg-12 mb-4 order-0">
-                  <div class="card" id="waiting-approval" style="display:show">
+                  <div class="card" style="display:show">
                     <div class="d-flex align-items-end row">
                       <div class="col-sm-8">
                         
@@ -218,38 +218,20 @@ $user = Session::get('user');
                   </div>
                 </div>
               </div></div>
-              <div class="row">
+              <div class="row"  id="checked-in">
                 <div class="col-lg-12 mb-4 order-0">
-                  <div class="card" id="waiting-approval" style="display:none">
-                    <div class="d-flex align-items-end row">
-                      <div class="col-sm-8">
-                        <div class="card-body">
-                          <h5 class="card-title text-primary">Menunggu Approval Check In</h5>
-                          <p class="mb-4">
-                            Anda telah mengajukan permohonan Check In di Jasa Marga Data Center. <br>
-                            Silahkan hubungi  <span class="fw-bold">PIC Data Center</span> untuk meminta approval.
-                          </p>
-                        </div>
-                      </div>
-                      <div class="col-sm-2 text-center text-sm-left">
-                        <div class="card-body pb-0 px-0 px-md-4">
-                          <img src="assets/img/illustrations/Time-management-rafiki.png" height="200" alt="View Badge User"
-                            data-app-dark-img="illustrations/Time-management-rafiki.png" data-app-light-img="illustrations/Time-management-rafiki.png"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card" id="checked-in" style="display:none">
+                  
+                  <div class="card">
                     <div class="d-flex align-items-end row">
                       <div class="col-sm-8">
                         <div class="card-body">
                           <h5 class="card-title text-primary">Anda sedang berada di Data Center! 🎉</h5>
                             <p class="mb-4">
-                              Anda telah check in pada <span class="fw-bold">19 April 2022, 07:54:12 WIB</span>. Perhatikan barang bawaan Anda
+                              Anda telah check in pada <span class="fw-bold" id="checkin_time">19 April 2022, 07:54:12 WIB</span>. Perhatikan barang bawaan Anda
                               dan patuhi aturan di Data Center
                             </p>
-                          <a href="javascript:;" class="btn btn-sm btn-primary" onclick="checkout()">Check Out</a>
+                            <span id="notif-status-nda"></span><br>
+                          <a href="javascript:;" id="button-check-out" class="btn btn-sm btn-primary">Check Out</a>
                         </div>
                       </div>
                       <div class="col-sm-2 text-center text-sm-left">
@@ -267,9 +249,9 @@ $user = Session::get('user');
                   </div>
                   </div>
                   </div>
-              <div class="row">
+              <div class="row" id="waiting-approval-check-in" >
                 <div class="col-lg-12 mb-4 order-0">
-                  <div class="card" id="waiting-approval" style="display:none">
+                  <div class="card" style="display:none">
                     <div class="d-flex align-items-end row">
                       <div class="col-sm-8">
                         <div class="card-body">
@@ -291,9 +273,41 @@ $user = Session::get('user');
                   </div>
                   </div>
                   </div>
-              <div class="row">
+                  <div class="row"  id="rejected-check-in">
                 <div class="col-lg-12 mb-4 order-0">
-                  <div class="card" id="form-check-in" style="display:show">
+                  <div class="card" style="display:show">
+                    <div class="d-flex align-items-end row">
+                      <div class="col-sm-8">
+                        <div class="card-body">
+                          <h5 class="card-title text-primary">Pengajuan Check In Anda Ditolak ⛔</h5>
+                            <p class="mb-4">
+                            Pengajuan check in ditolak oleh petugas data center dengan alasan keperluan tidak penting.
+                            </p>
+                            <p class="mb-4">
+                            Mohon perbaiki data anda sesuai dengan alasan penolakan melalui form di bawah ini!
+                            </p>
+                          <!-- <a href="javascript:;" class="btn btn-sm btn-primary" onclick="checkout()">Check Out</a> -->
+                        </div>
+                      </div>
+                      
+                      <div class="col-sm-2 text-center text-sm-left">
+                        <div class="card-body pb-0 px-0 px-md-4">
+                          <img
+                            src="assets/img/illustrations/sorry.png"
+                            height="200"
+                            alt="View Badge User"
+                            data-app-dark-img="illustrations/sorry.png"
+                            data-app-light-img="illustrations/sorry.png"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+              <div class="row"  id="form-check-in">
+                <div class="col-lg-12 mb-4 order-0">
+                  <div class="card" style="display:show">
                     <div class="d-flex align-items-end row">
                       <div class="col-sm-8">
                         <div class="card-body">
@@ -367,11 +381,13 @@ $user = Session::get('user');
                           />
                         </div>
                       </div>
-                      
+                      </div>
+                  </div>
                     </div>
                   </div>
               <hr class="my-5" />
-
+          <div class="row"  id="table">
+            <div class="col-lg-12 mb-4 order-0">
                   <!-- Hoverable Table rows -->
             <div class="card">
               <h5 class="card-header">Check In History</h5>
@@ -437,6 +453,80 @@ $user = Session::get('user');
               </div>
             </div>
             <script type="text/javascript">
+                $(document).ready(function() {
+                  var status_visitor = "<?php echo $DataVisitor->status_visitor; ?>";
+                  var status_checkin = "<?php echo $DataCheckIn->status_checkin; ?>";
+                  var date_checkin = "<?php echo $DataCheckIn->approval_timestamp; ?>"
+                  var status_nda = "<?php echo $DataVisitor->status_nda_visitor; ?>"
+                  console.log(status_visitor);
+                  console.log(status_checkin);
+
+                  if(status_visitor == 0){
+                    document.getElementById("waiting-approval-check-in").style.display = "none";
+                    document.getElementById("form-check-in").style.display = "none";
+                    document.getElementById("checked-in").style.display = "none";
+                    document.getElementById("rejected-form").style.display = "none";
+                    document.getElementById("rejected-check-in").style.display = "none";
+                    document.getElementById("rejected-notif").style.display = "none";
+                    document.getElementById("waiting-approval-data").style.display = "show";
+                  }
+                  else if(status_visitor == 1){
+                    if(status_checkin == 0){
+                      document.getElementById("waiting-approval-check-in").style.display = "none";
+                      document.getElementById("form-check-in").style.display = "show";
+                      document.getElementById("checked-in").style.display = "none";
+                      document.getElementById("rejected-form").style.display = "none";
+                      document.getElementById("rejected-check-in").style.display = "none";
+                      document.getElementById("rejected-notif").style.display = "none";
+                      document.getElementById("waiting-approval-data").style.display = "none";
+                    }
+                    else if(status_checkin == 1){
+                      document.getElementById("waiting-approval-check-in").style.display = "none";
+                      document.getElementById("form-check-in").style.display = "none";
+                      document.getElementById("checked-in").style.display = "show";
+                      document.getElementById("checkin_time").innerHTML = date_checkin;
+                      document.getElementById("rejected-form").style.display = "none";
+                      document.getElementById("rejected-check-in").style.display = "none";
+                      document.getElementById("rejected-notif").style.display = "none";
+                      document.getElementById("waiting-approval-data").style.display = "none";
+                      console.log(status_nda);
+                      if(status_nda == 0){
+                        document.getElementById("notif-status-nda").innerHTML = "Anda belum bisa check out karena file NDA belum diupload. Segera hubungi Petugas Data Center!";
+                        document.getElementById("button-check-out").classList.add('disabled');
+                      }
+                      else{
+                        document.getElementById("button-check-out").classList.remove('disabled');
+                      }
+                    }
+                    else if(status_checkin == 2){ //reject
+                      document.getElementById("waiting-approval-check-in").style.display = "none";
+                      document.getElementById("form-check-in").style.display = "show";
+                      document.getElementById("checked-in").style.display = "none";
+                      document.getElementById("rejected-form").style.display = "none";
+                      document.getElementById("rejected-check-in").style.display = "show";
+                      document.getElementById("rejected-notif").style.display = "none";
+                      document.getElementById("waiting-approval-data").style.display = "none";
+                    }
+                    else if(status_checkin == 3){ //checkout
+                      document.getElementById("waiting-approval-check-in").style.display = "none";
+                      document.getElementById("form-check-in").style.display = "show";
+                      document.getElementById("checked-in").style.display = "none";
+                      document.getElementById("rejected-form").style.display = "none";
+                      document.getElementById("rejected-check-in").style.display = "none";
+                      document.getElementById("rejected-notif").style.display = "none";
+                      document.getElementById("waiting-approval-data").style.display = "none";
+                    }
+
+                  }else if(status_visitor == 2){ //registrasi direject
+                    document.getElementById("waiting-approval-check-in").style.display = "none";
+                      document.getElementById("form-check-in").style.display = "none";
+                      document.getElementById("checked-in").style.display = "none";
+                      document.getElementById("rejected-form").style.display = "show";
+                      document.getElementById("rejected-check-in").style.display = "none";
+                      document.getElementById("rejected-notif").style.display = "show";
+                      document.getElementById("waiting-approval-data").style.display = "none";
+                  }
+                });
                 n =  new Date();
                 y = n.getFullYear();
                 m = n.getMonth() + 1;

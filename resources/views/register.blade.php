@@ -81,7 +81,11 @@
               <!-- /Logo -->
               <h4 class="mb-2">Selamat Datang di Data Center Jasa Marga</h4>
               <p class="mb-4">Silahkan registrasi diri anda!</p>
-
+              @if(Session::has('alert'))
+                				<div class="alert alert-danger">
+                    			<div>{{Session::get('alert')}}</div>
+                				</div>
+            				@endif
               <form id="formAuthentication" class="mb-3" action="{{route('register-post')}}" method="POST" enctype="multipart/form-data">
                 {{csrf_field()}}
                 <div class="mb-3">
