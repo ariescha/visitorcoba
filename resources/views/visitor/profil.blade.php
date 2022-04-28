@@ -1,53 +1,41 @@
 @extends('master')
 @section('title')
-Profil Petugas DC | JMDC Visitor
+Profil Visitor | JMDC Visitor
 @endsection
+@section('content')
 <?php 
 $user = Session::get('user');
 ?>
-@section('content')
 <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
-        <!-- Menu -->
+         <!-- Menu -->
 
-        <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+         <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
           <div class="app-brand demo">
-          <img src="assets/img/logo-landscape.png" height="70" alt="View Badge User" data-app-dark-img="logo.png" data-app-light-img="logo.png"/>
+            <img src="assets/img/logo-landscape.png" height="70" alt="View Badge User" data-app-dark-img="logo.png" data-app-light-img="logo.png"/>
+           
           </div>
 
           <div class="menu-inner-shadow"></div>
+
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
             <li class="menu-item">
-              <a href="{{route('approval-check-in')}}" class="menu-link">
+              <a href="{{route('dashboard-visitor')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-fingerprint"></i>
-                <div data-i18n="Analytics">Approval Check In</div>
-              </a>
-            </li>
-            <li class="menu-item">
-              <a href="{{route('approval-registrasi')}}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-edit"></i>
-                <div data-i18n="Analytics">Approval Registrasi</div>
-              </a>
-            </li>
-            <li class="menu-item">
-              <a href="{{route('manajemen-petugas')}}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-user-pin"></i>
-                <div data-i18n="Analytics">Manajemen Petugas DC</div>
+                <div data-i18n="Analytics">Dashboard Check In</div>
               </a>
             </li>
             <li class="menu-item active">
-              <a href="{{route('profil-petugas-dc')}}" class="menu-link">
+              <a href="{{route('profil-visitor')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user"></i>
                 <div data-i18n="Analytics">Profil</div>
               </a>
             </li>
             
           </ul>
-          
         </aside>
         <!-- / Menu -->
-
         <!-- Layout container -->
         <div class="layout-page">
           <!-- Navbar -->
@@ -82,7 +70,7 @@ $user = Session::get('user');
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end">
                     <li>
-                      <a class="dropdown-item" href="{{route('profil-petugas-dc')}}">
+                      <a class="dropdown-item" href="{{route('profil-visitor')}}">
                         <div class="d-flex">
                           <div class="flex-shrink-0 me-3">
                             <div class="avatar avatar-online">
@@ -91,7 +79,7 @@ $user = Session::get('user');
                           </div>
                           <div class="flex-grow-1">
                             <span class="fw-semibold d-block">{{$user}}</span>
-                            <small class="text-muted">Petugas Data Center</small>
+                            <small class="text-muted">Admin</small>
                           </div>
                         </div>
                       </a>
@@ -100,7 +88,7 @@ $user = Session::get('user');
                       <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="auth-login-basic.html">
+                      <a class="dropdown-item" href="{{route('logout')}}">
                         <i class="bx bx-power-off me-2"></i>
                         <span class="align-middle">Log Out</span>
                       </a>
@@ -122,7 +110,7 @@ $user = Session::get('user');
               <!-- <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Account Settings /</span> Account</h4> -->
 
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-lg-12 mb-4 order-0">
                   <div class="card mb-4">
                     <h5 class="card-header">Profile Details</h5>
                     <!-- Account -->
@@ -159,54 +147,67 @@ $user = Session::get('user');
                     </div>
                     <hr class="my-0" />
                     <div class="card-body">
-                      <form id="form-edit-profil-petugas" action="{{route('edit-profil-petugas-dc')}}" method="POST" enctype="multipart/form-data">
-                      {{csrf_field()}}
-                      <div class="row">
-                          <input type="hidden" id="edit_id_petugas" name="edit_id_petugas" value="{{$PetugasDC['id_petugas']}}">
+                      <form id="formAccountSettings" method="POST" onsubmit="return false">
+                        <div class="row">
                           <div class="mb-3 col-md-6">
-                            <label for="nama_lengkap_petugas" class="form-label">Nama Lengkap</label>
+                            <label for="nama-lengkap" class="form-label">Nama Lengkap</label>
                             <input
                               class="form-control"
                               type="text"
-                              id="edit_nama_lengkap_petugas"
-                              name="edit_nama_lengkap_petugas"
-                              value="{{$PetugasDC['nama_lengkap_petugas']}}"
+                              id="nama-lengkap"
+                              name="nama-lengkap"
+                              value="{{$Visitor['nama_lengkap_visitor']}}"
                               autofocus
                             />
                           </div>
                           <div class="mb-3 col-md-6">
-                            <label for="edit_npp_petugas" class="form-label">NPP</label>
-                            <input class="form-control" type="text" name="edit_npp_petugas" id="edit_npp_petugas" value="{{$PetugasDC['npp_petugas']}}"/>
+                            <label for="lastName" class="form-label">NPP</label>
+                            <input class="form-control" type="text" name="lastName" id="lastName" value="1213242" />
                           </div>
                           <div class="mb-3 col-md-6">
-                            <label for="email_petugas" class="form-label">E-mail</label>
+                            <label for="email" class="form-label">E-mail</label>
                             <input
                               class="form-control"
                               type="text"
-                              id="edit_email_petugas"
-                              name="edit_email_petugas"
-                              value="{{$PetugasDC['email_petugas']}}" readonly
+                              id="email"
+                              name="email"
+                              value="{{$Visitor['email_visitor']}}"
+                              placeholder="john.doe@example.com"
                             />
                           </div>
                           
                           <div class="mb-3 col-md-6">
-                            <label class="form-label" for="nomor_hp_petugas">Nomor HP</label>
+                            <label class="form-label" for="phoneNumber">Nomor HP</label>
                             <div class="input-group input-group-merge">
                               <!-- <span class="input-group-text">ID (+62)</span> -->
                               <input
                                 type="text"
-                                id="edit_nomor_hp_petugas"
-                                name="edit_nomor_hp_petugas"
+                                id="phoneNumber"
+                                name="phoneNumber"
                                 class="form-control"
-                                value="{{$PetugasDC['nomor_hp_petugas']}}"
+                                value="{{$Visitor['nomor_hp_visitor']}}"
                               />
                             </div>
                           </div>
-                          
+                          <div class="mb-3 col-md-6">
+                            <label for="file-nda" class="form-label">NDA</label>
+                            <input
+                              type="file"
+                              class="form-control"
+                              id="file-nda"
+                              name="file-nda"
+                              accept="image/*"
+                            />
+                            Allowed JPG, GIF or PNG. Max size of 800K
+                            @if(isset($Visitor['file_nda']))
+                            <img src="assets/img/logo-landscape.png" height="200" alt="View Badge User" data-app-dark-img="logo-landscape.png" data-app-light-img="logo-landscape.png"/>
+                            @endif
+                          </div>
                           
                         </div>
                         <div class="mt-2">
-                          <button type="submit" class="btn btn-primary me-2">Simpan Perubahan</button>
+                          <button type="submit" class="btn btn-primary me-2">Save changes</button>
+                          <button type="reset" class="btn btn-outline-secondary">Cancel</button>
                         </div>
                       </form>
                     </div>

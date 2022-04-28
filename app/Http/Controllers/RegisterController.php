@@ -16,8 +16,11 @@ class RegisterController extends Controller
     public function store(Request $request){
         $Current = date('His-dmY');
         $Email = $request->email;
+        $Nik = $request->nik;
         $CekEmailVisitor = Visitor::whereRaw('email_visitor = ?', [$Email])->first();
+        $CekNikVisitor = Visitor::whereRaw('nik_visitor = ?', [$Nik])->first();
         $CekEmailPetugas = Petugas_DC::whereRaw('email_petugas = ?', [$Email])->first();
+        
         $FotoKtpVisitor = $request->file('foto_ktp');
         $FotoKtpVisitors = $Current.'-'.$FotoKtpVisitor->getClientOriginalName();
         $FotoKtpVisitor->move('dokumen',$FotoKtpVisitors);

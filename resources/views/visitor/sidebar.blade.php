@@ -16,25 +16,13 @@
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
             <li class="menu-item active">
-              <a href="{{route('approval-check-in')}}" class="menu-link">
+              <a href="{{route('dashboard-visitor')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-fingerprint"></i>
-                <div data-i18n="Analytics">Approval Check In</div>
+                <div data-i18n="Analytics">Dashboard Check In</div>
               </a>
             </li>
             <li class="menu-item">
-              <a href="{{route('approval-registrasi')}}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-edit"></i>
-                <div data-i18n="Analytics">Approval Registrasi</div>
-              </a>
-            </li>
-            <li class="menu-item">
-              <a href="{{route('manajemen-petugas')}}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-user-pin"></i>
-                <div data-i18n="Analytics">Manajemen Petugas DC</div>
-              </a>
-            </li>
-            <li class="menu-item">
-              <a href="{{route('profil-petugas-dc')}}" class="menu-link">
+              <a href="{{route('profil-visitor')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user"></i>
                 <div data-i18n="Analytics">Profil</div>
               </a>

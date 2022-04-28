@@ -13,4 +13,13 @@ class ProfilPetugasDCController extends Controller
        
         return view('petugas-dc.profil')->with('PetugasDC',$PetugasDC);
     }
+    public function update(Request $request){
+        //dd($request);
+        $PetugasDC = Petugas_DC::find($request->edit_id_petugas);
+        $PetugasDC -> nama_lengkap_petugas = $request->edit_nama_lengkap_petugas;
+        $PetugasDC -> npp_petugas = $request->edit_npp_petugas;        
+        $PetugasDC -> nomor_hp_petugas = $request->edit_nomor_hp_petugas;
+        $PetugasDC -> save();
+        return redirect('profil-petugas-dc');
+    }
 }
