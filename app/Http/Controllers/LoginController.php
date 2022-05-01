@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Visitor;
 use App\Models\Petugas_DC;
 use App\Models\list_checkin;
+use App\Models\log_activity;
 use DB;
 class LoginController extends Controller
 {
@@ -26,6 +27,12 @@ class LoginController extends Controller
                     Session::put('user',$CekVisitor->nama_lengkap_visitor);
                     Session::put('nik_visitor',$CekVisitor->nik_visitor);
                     $VisitorCheckIn = list_checkin::whereRaw('nik_visitor = ?',[$CekVisitor->nik_visitor])->first();
+                    
+                    log_activity::create([
+                        'activity' => 'login',
+                        'id_actor' => $CekVisitor->nik_visitor,
+                        'id_object' => null,
+                    ]);
                     return view('visitor.dashboard-visitor',['DataVisitor'=>$CekVisitor,'DataCheckIn'=>$VisitorCheckIn]);
                 }else{
                     return back()->with('alert','Gagal Masuk! Password Salah');
@@ -52,5 +59,6 @@ class LoginController extends Controller
         Session::flush();
         return redirect('login')->with('alert','Anda berhasil logout');
     }
+    
     
 }

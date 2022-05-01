@@ -31,6 +31,13 @@ Route::get('manajemen-petugas','ManagePetugasController@index')->name('manajemen
 Route::post('add-petugas','ManagePetugasController@store')->name('add-petugas');
 Route::post('edit-petugas','ManagePetugasController@update')->name('edit-petugas');
 
+Route::get('lupa-password','LupaPasswordController@index')->name('lupa-password');
+Route::post('lupa-password-send','LupaPasswordController@send')->name('lupa-password-send');
+Route::get('reset-password-form/{token}','LupaPasswordController@resetform')->name('reset-password-form');
+Route::post('reset-password-send','LupaPasswordController@reset')->name('reset-password-send');
+
+
+
 
 Route::get('/dashboard-visitor', function () {
     return view('visitor.dashboard-visitor');

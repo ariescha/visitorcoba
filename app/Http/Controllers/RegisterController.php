@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\Visitor;
 use App\Models\Petugas_DC;
-
+use App\Models\log_activity;
 class RegisterController extends Controller
 {
     public function index(){
@@ -35,7 +35,12 @@ class RegisterController extends Controller
                     'foto_ktp_visitor'     => $FotoKtpVisitors,
                     'status_visitor'       => 0,
                 ]);
-            
+
+                log_activity::create([
+                    'activity' => 'register',
+                    'id_actor' => $request->nik,
+                    'id_object' => null,
+                ]);
                 return redirect('/login');
         
         }

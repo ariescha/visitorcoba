@@ -27,7 +27,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Register | JMDC Visitor</title>
+    <title>Lupa Password | JMDC Visitor</title>
 
     <meta name="description" content="" />
 
@@ -70,102 +70,61 @@
     <div class="container-xxl">
       <div class="authentication-wrapper authentication-basic container-p-y">
         <div class="authentication-inner">
-          <!-- Register Card -->
+          <!-- Register -->
           <div class="card">
             <div class="card-body">
               <!-- Logo -->
               <div class="app-brand justify-content-center">
-                <img src="assets/img/logo-landscape.png" height="100" alt="View Badge User" data-app-dark-img="logo.png" data-app-light-img="logo.png"/>
-
+                <img src="assets/img/logo.png" height="200" alt="View Badge User" data-app-dark-img="logo.png" data-app-light-img="logo.png"/>
               </div>
               <!-- /Logo -->
-              <h4 class="mb-2">Selamat Datang di Data Center Jasa Marga</h4>
-              <p class="mb-4">Silahkan registrasi diri anda!</p>
+              <h4 class="mb-2">RESET PASSWORD</h4>
               @if(Session::has('alert'))
                 				<div class="alert alert-danger">
                     			<div>{{Session::get('alert')}}</div>
                 				</div>
             				@endif
-              <form id="formAuthentication" class="mb-3" action="{{route('register-post')}}" method="POST" enctype="multipart/form-data">
+            				<!-- @if(\Session::has('alert-success'))
+                				<div class="alert alert-success">
+                    			<div>{{Session::get('alert-success')}}</div>
+                				</div>
+            				@endif -->
+              <form id="formAuthentication" class="mb-3" action="{{route('lupa-password-send')}}" method="POST" enctype="multipart/form-data">
                 {{csrf_field()}}
                 <div class="mb-3">
-                  <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
+                  <label for="email" class="form-label">Email</label>
                   <input
                     type="text"
                     class="form-control"
-                    id="nama_lengkap"
-                    name="nama_lengkap"
-                    placeholder="Masukkan nama lengkap anda"
+                    id="email"
+                    name="email"
+                    placeholder="Masukkan email anda"
                     autofocus
                   />
                 </div>
-                <div class="mb-3">
-                  <label for="nik" class="form-label">NIK</label>
-                  <input type="text" class="form-control" id="nik" name="nik" placeholder="Masukkan NIK anda" />
-                </div>
-                <div class="mb-3">
-                  <label for="no_hp" class="form-label">No HP</label>
-                  <input type="text" class="form-control" id="no_hp" name="no_hp" placeholder="Masukkan no HP anda" />
-                </div>
-                <div class="mb-3">
-                  <label for="email" class="form-label">Email</label>
-                  <input type="email" class="form-control" id="email" name="email" placeholder="Masukkan email anda" />
-                </div>
-                <div class="mb-3">
-                  <label for="asal_instansi" class="form-label">Asal Instansi</label>
-                  <input type="text" class="form-control" id="asal_instansi" name="asal_instansi" placeholder="Masukkan asal instansi anda" />
-                </div>
-                <div class="mb-3 form-password-toggle">
-                  <label class="form-label" for="password">Password</label>
-                  <div class="input-group input-group-merge">
-                    <input
-                      type="password"
-                      id="password"
-                      class="form-control"
-                      name="password"
-                      placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                      aria-describedby="password"
-                    />
-                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-                  </div>
-                </div>
-                <div class="mb-3">
-                    <label for="foto_ktp" class="form-label">Foto KTP</label>
-                    
-                        <input class="form-control" type="file" id="foto_ktp" name="foto_ktp" accept="image/*" />
-                    
-                </div>
-
                 
-                <button class="btn btn-primary d-grid w-100" type="submit">Daftar</button>
+                <div class="mb-3">
+                  <button class="btn btn-primary d-grid w-100" type="submit">Kirim</button>
+                </div>
               </form>
 
-              <p class="text-center">
-                <span>Sudah punya akun? Silahkan</span>
-                <a href="{{route('login')}}">
-                  <span>masuk</span>
-                </a>
+              <p>
+                <span>Masukkan email anda yang terdaftar. Kami akan mengirimkan link untuk reset password.</span>
+                
               </p>
             </div>
           </div>
-          <!-- Register Card -->
+          <!-- /Register -->
         </div>
       </div>
     </div>
 
     <!-- / Content -->
 
-    <!-- <div class="buy-now">
-      <a
-        href="https://themeselection.com/products/sneat-bootstrap-html-admin-template/"
-        target="_blank"
-        class="btn btn-danger btn-buy-now"
-        >Upgrade to Pro</a
-      >
-    </div> -->
+    
 
     <!-- Core JS -->
-    <!-- build:js assets/vendor/js/core.js -->
+    <!-- build:assets/vendor/js/core.js -->
     <script src="assets/vendor/libs/jquery/jquery.js"></script>
     <script src="assets/vendor/libs/popper/popper.js"></script>
     <script src="assets/vendor/js/bootstrap.js"></script>
