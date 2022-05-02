@@ -2,6 +2,7 @@
 @section('content')
 <?php 
 $user = Session::get('user');
+$niksession = Session::get('nik_visitor');
 ?>
 <body>
 
@@ -145,7 +146,7 @@ $user = Session::get('user');
                         <div class="card-body">
                           <h5 class="card-title text-primary">Data Registrasi Anda Ditolak ⛔</h5>
                             <p class="mb-4">
-                            Data anda ditolak oleh petugas data center dengan alasan nama tidak sesuai dengan KTP.
+                            Data anda ditolak oleh petugas data center dengan alasan {{$DataVisitor->rejected_alasan}}.
                             </p>
                             <p class="mb-4">
                             Mohon perbaiki data anda sesuai dengan alasan penolakan melalui form di bawah ini!
@@ -177,39 +178,70 @@ $user = Session::get('user');
                         
                         <div class="card-body">
                         <h5>FORM PERBAIKAN DATA</h5>
-                        <form id="formAuthentication" class="mb-4" action="{{route('register-post')}}" method="POST" enctype="multipart/form-data">
+                        <form id="formAuthentication" class="mb-4" action="{{route('revisi-register')}}" method="POST" enctype="multipart/form-data">
                           {{csrf_field()}}
                           <div class="mb-4">
-                            <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
+                            <label for="namaLengkapVisitor" class="form-label">Nama Lengkap</label>
                             <input
                               type="text"
                               class="form-control"
-                              id="nama_lengkap"
-                              name="nama_lengkap"
+                              id="namaLengkapVisitor"
+                              name="namaLengkapVisitor"
                               placeholder="Masukkan nama lengkap anda"
+                              value='{{$DataVisitor->nama_lengkap_visitor}}'
                               autofocus
                             />
                           </div>
                           <div class="mb-4">
-                            <label for="nik" class="form-label">NIK</label>
-                            <input type="text" class="form-control" id="nik" name="nik" placeholder="Masukkan NIK anda" />
+                            <label for="nikVisitor" class="form-label">NIK</label>
+                            <input 
+                              type="text" 
+                              class="form-control" 
+                              id="nikVisitor" 
+                              name="nikVisitor" 
+                              placeholder="Masukkan NIK anda" 
+                              value='{{$DataVisitor->nik_visitor}}'
+                            />
                           </div>
                           <div class="mb-4">
-                            <label for="no_hp" class="form-label">No HP</label>
-                            <input type="text" class="form-control" id="no_hp" name="no_hp" placeholder="Masukkan no HP anda" />
+                            <label for="nomorHpVisitor" class="form-label">No HP</label>
+                            <input 
+                              type="text" 
+                              class="form-control" 
+                              id="nomorHpVisitor" 
+                              name="nomorHpVisitor" 
+                              placeholder="Masukkan no HP anda" 
+                              value='{{$DataVisitor->nomor_hp_visitor}}'
+                              />
                           </div>
                           <div class="mb-4">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="text" class="form-control" id="email" name="email" placeholder="Masukkan email anda" />
+                            <label for="emailVisitor" class="form-label">Email</label>
+                            <input 
+                              type="text" 
+                              class="form-control" 
+                              id="emailVisitor" 
+                              name="emailVisitor" 
+                              placeholder="Masukkan email anda" 
+                              value='{{$DataVisitor->email_visitor}}'
+                              readonly
+                              />
                           </div>
                           <div class="mb-4">
-                            <label for="asal_instansi" class="form-label">Asal Instansi</label>
-                            <input type="text" class="form-control" id="asal_instansi" name="asal_instansi" placeholder="Masukkan asal instansi anda" />
+                            <label for="asalInstansiVisitor" class="form-label">Asal Instansi</label>
+                            <input 
+                              type="text" 
+                              class="form-control" 
+                              id="asalInstansiVisitor" 
+                              name="asalInstansiVisitor" 
+                              placeholder="Masukkan asal instansi anda" 
+                              value= '{{$DataVisitor->asal_instansi_visitor}}'
+                              />
                           </div>
                           
-                          <div class="mb-4">
-                              <label for="foto_ktp" class="form-label">Foto KTP</label>
-                              <input class="form-control" type="file" id="foto_ktp" name="foto_ktp" accept="image/*" /> 
+                          <div class="mb-3">
+                                <label for="foto_ktp" class="form-label">Foto KTP</label>
+                    
+                                  <input class="form-control" type="file" id="foto_ktp" name="foto_ktp" accept="image/*" />
                           </div>
                           <button class="btn btn-primary d-grid w-100" type="submit">Kirim</button>
                         </form>
@@ -227,11 +259,12 @@ $user = Session::get('user');
                         <div class="card-body">
                           <h5 class="card-title text-primary">Anda sedang berada di Data Center! 🎉</h5>
                             <p class="mb-4">
-                              Anda telah check in pada <span class="fw-bold" id="checkin_time">19 April 2022, 07:54:12 WIB</span>. Perhatikan barang bawaan Anda
+                              Anda telah check in pada <span class="fw-bold" id="checkin_time">{{$DataCheckIn->checkin_time}}</span>{{$DataCheckIn->checkin_time}}. Perhatikan barang bawaan Anda
                               dan patuhi aturan di Data Center
+                              <br>
                             </p>
                             <span id="notif-status-nda"></span><br>
-                          <a href="javascript:;" id="button-check-out" class="btn btn-sm btn-primary">Check Out</a>
+                          <a href="{{route('checkout-visitor')}}" id="button-check-out" class="btn btn-sm btn-primary">Check Out</a>
                         </div>
                       </div>
                       <div class="col-sm-2 text-center text-sm-left">
@@ -311,49 +344,50 @@ $user = Session::get('user');
                     <div class="d-flex align-items-end row">
                       <div class="col-sm-8">
                         <div class="card-body">
-                          <h5 class="card-title text-primary">Check In Data Center</h5>
-                          <form>
+                        <h5 class="card-title text-primary">Check In Data Center</h5>
+                          <form id="formCheckin" class="mb-3" action="{{route('checkin-post')}}" method="POST" enctype="multipart/form-data">
+                            {{csrf_field()}}
                             <div class="row mb-3">
                               <label class="col-sm-4 col-form-label" for="basic-default-name">PIC Data Center</label>
                               <div class="col-sm-8">
-                                <select class="form-control">
+                                <select class="form-control" name="daftarPic" id="daftarPic">
                                   <option value="" selected>Pilih PIC</option>
-                                  <option value="Dekaton">Dekaton</option>
-                                  <option value="Dennis">Dennis</option>
-                                  <option value="Yusron">Yusron</option>
-                                  <option value="Dekaton">Dekaton</option>
-                                  <option value="Dekaton">Dekaton</option>
+                                  @foreach($dataPetugas as $p)
+                                  <option value="{{ $p->id_petugas }}">{{ $p->nama_lengkap_petugas }}</option>
+		                              @endforeach
                                 </select>
                               </div>
                             </div>
                             <div class="row mb-3">
-                              <label class="col-sm-4 col-form-label" for="basic-default-company">Barang Yang Dibawa</label>
+                              <label class="col-sm-4 col-form-label" for="barangBawaan">Barang Yang Dibawa</label>
                               <div class="col-sm-8">
                                 <textarea
                                   class="form-control"
-                                  id="basic-default-company"
+                                  id="barangBawaan"
+                                  name="barangBawaan"
                                   placeholder="Contoh : Tas, Tumblr"
                                 ></textarea>
                               </div>
                             </div>
                             <div class="row mb-3">
-                              <label class="col-sm-4 col-form-label" for="basic-default-email">Keperluan Visit</label>
+                              <label class="col-sm-4 col-form-label" for="keperluanVisit">Keperluan Visit</label>
                               <div class="col-sm-8">
                                   <textarea
-                                    id="basic-default-email"
+                                    id="keperluanVisit"
+                                    name="keperluanVisit"
                                     class="form-control"
                                     placeholder="Jelaskan keperluan anda disini.."
                                   ></textarea>
                               </div>
                             </div>
                             <div class="row mb-3">
-                              <label class="col-sm-4 col-form-label" for="basic-default-email">Tanggal Visit</label>
+                              <label class="col-sm-4 col-form-label" for="dateCheckin">Tanggal Visit</label>
                               <div class="col-sm-8">
                                   <input type="text" 
-                                    id="date"
-                                    name="date"
+                                    id="dateCheckin"
+                                    name="dateCheckin"
                                     class="form-control"
-                                    disabled
+                                    readonly
                                   >
                               </div>
                             </div>
@@ -362,7 +396,7 @@ $user = Session::get('user');
                               <div class="col-sm-10">
                               </div>
                               <div class="col-sm-3">
-                                <button type="button" class="btn btn-primary" onclick="checkin()">Check In</button>
+                                <button type="submit" class="btn btn-primary" >Check In</button>
                               </div>
                             </div>
                           </form>
@@ -405,45 +439,20 @@ $user = Session::get('user');
                     </tr>
                   </thead>
                   <tbody class="table-border-bottom-0">
+                  <?php $tempHistory=1;?>
+                    @foreach($tableHistory as $p)
                     <tr style="text-align:center"> 
-                      <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>1</strong></td>
-                      <td>19-04-2022</td>
-                      <td>Yusron</td>
-                      <td>Maintenance Data</td>
-                      <td>Laptop, Tas, Ipad</td>
-                      <td><span class="badge bg-label-primary me-1">13:00 WIB</span></td>
-                      <td><span class="badge bg-label-danger me-1">17:00 WIB</span></td>
+                      <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{$tempHistory}}</strong></td>
+                      <td>{{ $p->created_at }}</td>
+                      <td>{{ $p->nama_lengkap_petugas }}</td>
+                      <td>{{ $p->keperluan_visit }}</td>
+                      <td>{{ $p->barang_bawaan }}</td>
+                      <td><span class="badge bg-label-primary me-1">{{ $p->checkin_time }}</span></td>
+                      <td><span class="badge bg-label-danger me-1">{{ $p->checkout_time }}</span></td>
                       
                     </tr>
-                    <tr style="text-align:center">
-                      <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>2</strong></td>
-                      <td>19-04-2022</td>
-                      <td>Yusron</td>
-                      <td>Maintenance Data</td>
-                      <td>Laptop, Tas, Ipad</td>
-                      <td><span class="badge bg-label-primary me-1">13:00 WIB</span></td>
-                      <td><span class="badge bg-label-danger me-1">17:00 WIB</span></td>
-                    </tr>
-                    <tr style="text-align:center">
-                      <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>3</strong></td>
-                      <td>19-04-2022</td>
-                      <td>Yusron</td>
-                      <td>Maintenance Data</td>
-                      <td>Laptop, Tas, Ipad</td>
-                      <td><span class="badge bg-label-primary me-1">13:00 WIB</span></td>
-                      <td><span class="badge bg-label-danger me-1">17:00 WIB</span></td>
-                      
-                    </tr>
-                    <tr style="text-align:center">
-                      <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>4</strong></td>
-                      <td>19-04-2022</td>
-                      <td>Yusron</td>
-                      <td>Maintenance Data</td>
-                      <td>Laptop, Tas, Ipad</td>
-                      <td><span class="badge bg-label-primary me-1">13:00 WIB</span></td>
-                      <td><span class="badge bg-label-danger me-1">17:00 WIB</span></td>
-                      
-                    </tr>
+                    <?php $tempHistory++;?>
+                    @endforeach
                   </tbody>
                 </table>
               </div>
@@ -460,7 +469,6 @@ $user = Session::get('user');
                   var status_nda = "<?php echo $DataVisitor->status_nda_visitor; ?>"
                   console.log(status_visitor);
                   console.log(status_checkin);
-
                   if(status_visitor == 0){
                     document.getElementById("waiting-approval-check-in").style.display = "none";
                     document.getElementById("form-check-in").style.display = "none";
@@ -516,7 +524,6 @@ $user = Session::get('user');
                       document.getElementById("rejected-notif").style.display = "none";
                       document.getElementById("waiting-approval-data").style.display = "none";
                     }
-
                   }else if(status_visitor == 2){ //registrasi direject
                     document.getElementById("waiting-approval-check-in").style.display = "none";
                       document.getElementById("form-check-in").style.display = "none";
@@ -531,7 +538,7 @@ $user = Session::get('user');
                 y = n.getFullYear();
                 m = n.getMonth() + 1;
                 d = n.getDate();
-                document.getElementById("date").value = d + "-" + m + "-" + y;
+                document.getElementById("dateCheckin").value = d + "-" + m + "-" + y;
                 function checkin(){
                     $("#waiting-approval").show();
                     $("#form-check-in").hide();

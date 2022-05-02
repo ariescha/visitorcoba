@@ -16,17 +16,33 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('approval-check-in','ManageCheckInController@index')->name('approval-check-in');
+
+//Approval Registrasi Visitor
 Route::get('approval-registrasi','ManageRegisterController@index')->name('approval-registrasi');
+Route::post('approve-registrasi','ManageRegisterController@ApproveRegister')->name('approve-registrasi');
+Route::post('reject-registrasi','ManageRegisterController@RejectRegister')->name('reject-registrasi');
+Route::post('upload-nda','ManageRegisterController@UploadNDA')->name('upload-nda');
+Route::post('get-nda','ManageRegisterController@GetNDA')->name('get-nda');
+Route::get('/downloadNda/{filename}', 'ManageRegisterController@DownloadNda')->name('DownloadNda');
+Route::get('/downloadktp/{filename}', 'ManageRegisterController@DownloadKtp')->name('DownloadKtp');
+
+//Approval Checkin
+Route::get('approval-check-in','ManageCheckInController@index')->name('approval-check-in');
+Route::post('approve-check-in','ManageCheckInController@approve')->name('approve-check-in');
+Route::post('reject-check-in','ManageCheckInController@reject')->name('reject-check-in');
+Route::post('check-out','ManageCheckInController@checkout')->name('check-out');
+
 Route::get('login','LoginController@index')->name('login');
 Route::post('login-post','LoginController@store')->name('login-post');
 Route::get('logout','LoginController@logout')->name('logout');
 Route::get('register','RegisterController@index')->name('register');
 Route::post('register-post','RegisterController@store')->name('register-post');
+
+//Admin Profil
 Route::get('profil-petugas-dc','ProfilPetugasDCController@index')->name('profil-petugas-dc');
 Route::post('edit-profil-petugas-dc','ProfilPetugasDCController@update')->name('edit-profil-petugas-dc');
 
-Route::get('profil-visitor','ProfilVisitorController@index')->name('profil-visitor');
+//Managemen petugas
 Route::get('manajemen-petugas','ManagePetugasController@index')->name('manajemen-petugas');
 Route::post('add-petugas','ManagePetugasController@store')->name('add-petugas');
 Route::post('edit-petugas','ManagePetugasController@update')->name('edit-petugas');
@@ -36,10 +52,13 @@ Route::post('lupa-password-send','LupaPasswordController@send')->name('lupa-pass
 Route::get('reset-password-form/{token}','LupaPasswordController@resetform')->name('reset-password-form');
 Route::post('reset-password-send','LupaPasswordController@reset')->name('reset-password-send');
 
+//Visitor Checkin
+Route::get('/dashboard-visitor','DashboardVisitorController@index')->name('dashboard-visitor');
+Route::post('checkin-post','DashboardVisitorController@store')->name('checkin-post');
+Route::post('revisi-register','DashboardVisitorController@revisiRegister')->name('revisi-register');
+Route::get('checkout-visitor','DashboardVisitorController@checkoutVisitor')->name('checkout-visitor');
 
-
-
-Route::get('/dashboard-visitor', function () {
-    return view('visitor.dashboard-visitor');
-})->name('dashboard-visitor');
+//Profil Visitor
+Route::get('profil-visitor','ProfilVisitorController@index')->name('profil-visitor');
+Route::post('update-profil-visitor','ProfilVisitorController@updateProfil')->name('update-profil-visitor');
 

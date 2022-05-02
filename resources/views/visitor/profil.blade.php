@@ -147,62 +147,67 @@ $user = Session::get('user');
                     </div>
                     <hr class="my-0" />
                     <div class="card-body">
-                      <form id="formAccountSettings" method="POST" onsubmit="return false">
+                    <form id="formAuthentication" class="mb-4" action="{{route('update-profil-visitor')}}" method="POST" enctype="multipart/form-data">
+                        {{csrf_field()}}
                         <div class="row">
                           <div class="mb-3 col-md-6">
-                            <label for="nama-lengkap" class="form-label">Nama Lengkap</label>
+                            <label for="namaLengkapVisitor" class="form-label">Nama Lengkap</label>
                             <input
                               class="form-control"
                               type="text"
-                              id="nama-lengkap"
-                              name="nama-lengkap"
-                              value="{{$Visitor['nama_lengkap_visitor']}}"
+                              id="namaLengkapVisitor"
+                              name="namaLengkapVisitor"
+                              value='{{$DataVisitor->nama_lengkap_visitor}}'
                               autofocus
                             />
                           </div>
                           <div class="mb-3 col-md-6">
-                            <label for="lastName" class="form-label">NPP</label>
-                            <input class="form-control" type="text" name="lastName" id="lastName" value="1213242" />
+                            <label for="nikVisitor" class="form-label">NIK</label>
+                            <input 
+                              class="form-control" 
+                              type="text" 
+                              name="nikVisitor" 
+                              id="nikVisitor" 
+                              value='{{$DataVisitor->nik_visitor}}'
+                              />
                           </div>
                           <div class="mb-3 col-md-6">
-                            <label for="email" class="form-label">E-mail</label>
+                            <label for="asalInstansiVisitor" class="form-label">Asal Instansi</label>
                             <input
                               class="form-control"
                               type="text"
-                              id="email"
-                              name="email"
-                              value="{{$Visitor['email_visitor']}}"
-                              placeholder="john.doe@example.com"
+                              id="asalInstansiVisitor"
+                              name="asalInstansiVisitor"
+                              value='{{$DataVisitor->asal_instansi_visitor}}'
                             />
                           </div>
                           
                           <div class="mb-3 col-md-6">
-                            <label class="form-label" for="phoneNumber">Nomor HP</label>
+                            <label for="emailVisitor" class="form-label">Email</label>
+                            <input
+                              class="form-control"
+                              type="text"
+                              id="emailVisitor"
+                              name="emailVisitor"
+                              value='{{$DataVisitor->email_visitor}}'
+                              readonly
+                            />
+                          </div>
+
+                          <div class="mb-3 col-md-6">
+                            <label class="form-label" for="nomorHpVisitor">Nomor HP</label>
                             <div class="input-group input-group-merge">
                               <!-- <span class="input-group-text">ID (+62)</span> -->
                               <input
                                 type="text"
-                                id="phoneNumber"
-                                name="phoneNumber"
+                                id="nomorHpVisitor"
+                                name="nomorHpVisitor"
                                 class="form-control"
-                                value="{{$Visitor['nomor_hp_visitor']}}"
+                                value='{{$DataVisitor->nomor_hp_visitor}}'
                               />
                             </div>
                           </div>
-                          <div class="mb-3 col-md-6">
-                            <label for="file-nda" class="form-label">NDA</label>
-                            <input
-                              type="file"
-                              class="form-control"
-                              id="file-nda"
-                              name="file-nda"
-                              accept="image/*"
-                            />
-                            Allowed JPG, GIF or PNG. Max size of 800K
-                            @if(isset($Visitor['file_nda']))
-                            <img src="assets/img/logo-landscape.png" height="200" alt="View Badge User" data-app-dark-img="logo-landscape.png" data-app-light-img="logo-landscape.png"/>
-                            @endif
-                          </div>
+                          
                           
                         </div>
                         <div class="mt-2">

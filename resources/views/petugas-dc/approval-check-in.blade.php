@@ -158,56 +158,24 @@ $user = Session::get('user');
                         </tr>
                       </thead>
                       <tbody class="table-border-bottom-0">
+                      <?php $i = 1; ?>
+                      @foreach($approval_checkin as $approval_checkin)  
                         <tr style="text-align:center">
-                          <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>1</strong></td>
-                          <td>Zhody</td>
-                          <td>Maintenance Data</td>
-                          <td>Laptop, Tas, Ipad</td>
-                          <td>08129128313</td>
-                          <td><span class="badge bg-label-info me-1">17:00 WIB</span></td>
+                          <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{$i}}</strong></td>
+                          <td>{{ $approval_checkin-> nama_lengkap_visitor }}</td>
+                          <td>{{ $approval_checkin-> keperluan_visit }}</td>
+                          <td>{{ $approval_checkin-> barang_bawaan }}</td>
+                          <td>{{ $approval_checkin-> nomor_hp_visitor }}</td>
+                          <td>{{ $approval_checkin-> created_at}}</td>
                           <td>
-                            <button class="btn rounded-pill btn-sm btn-success">Approve</button>
-                            <button class="btn rounded-pill btn-sm btn-danger">Reject</button>
-                          </td>
-                        </tr>
-                        <tr style="text-align:center">
-                          <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>1</strong></td>
-                          <td>Zhody</td>
-                          <td>Maintenance Data</td>
-                          <td>Laptop, Tas, Ipad</td>
-                          <td>08129128313</td>
-                          <td><span class="badge bg-label-info me-1">17:00 WIB</span></td>
-                          <td>
-                            <button class="btn rounded-pill btn-sm btn-success">Approve</button>
-                            <button class="btn rounded-pill btn-sm btn-danger">Reject</button>
-                          </td>
-                        </tr>
-                        <tr style="text-align:center">
-                          <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>1</strong></td>
-                          <td>Zhody</td>
-                          <td>Maintenance Data</td>
-                          <td>Laptop, Tas, Ipad</td>
-                          <td>08129128313</td>
-                          <td><span class="badge bg-label-info me-1">17:00 WIB</span></td>
-                          <td>
-                            <button class="btn rounded-pill btn-sm btn-success">Approve</button>
-                            <button class="btn rounded-pill btn-sm btn-danger">Reject</button>
-                          </td>
-                        </tr>
-                        <tr style="text-align:center">
-                          <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>1</strong></td>
-                          <td>Zhody</td>
-                          <td>Maintenance Data</td>
-                          <td>Laptop, Tas, Ipad</td>
-                          <td>08129128313</td>
-                          <td><span class="badge bg-label-info me-1">17:00 WIB</span></td>
-                          <td>
-                            <button class="btn rounded-pill btn-sm btn-success" data-bs-toggle="modal"
+                            <button id="click-approve" class="btn rounded-pill btn-sm btn-success" onclick="approve('{{$approval_checkin->id_checkin}}','{{$approval_checkin->nama_lengkap_visitor}}')" data-bs-toggle="modal"
                           data-bs-target="#modal-approve-check-in">Approve</button>
-                            <button class="btn rounded-pill btn-sm btn-danger" data-bs-toggle="modal"
+                            <button id="click-reject" class="btn rounded-pill btn-sm btn-danger" onclick="reject('{{$approval_checkin->id_checkin}}')" data-bs-toggle="modal"
                           data-bs-target="#modal-reject-check-in">Reject</button>
                           </td>
                         </tr>
+                        <?php $i++; ?>
+                        @endforeach
                       </tbody>
                     </table>
               </div>
@@ -224,7 +192,9 @@ $user = Session::get('user');
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                        <form>
+                        <form id="approval-checkin" action="{{route('approve-check-in')}}" method="post" enctype="multipart/form-data">
+                            {{csrf_field()}}
+                            <input type="hidden" id="id_approval_checkin" type = "number" name="id_approval_checkin"><br/>
                             <div class="row mb-3">
                               <label class="col-sm-4 col-form-label" for="basic-default-company">Nomor Visitor Tag</label>
                               <div class="col-sm-8">
@@ -249,7 +219,7 @@ $user = Session::get('user');
                             <div class="row mb-3">
                               <label class="col-sm-4 col-form-label" for="basic-default-email">Foto Bukti Visitor</label>
                               <div class="col-sm-8">
-                                <input class="form-control" type="file" id="formFile" accept="image/*" />
+                                <input class="form-control" type="file" id="formFile" name="foto_visitor" accept="image/*" />
                               </div>
                             </div>
                         </div>
@@ -258,7 +228,7 @@ $user = Session::get('user');
                                 <button class="btn btn-danger"  data-bs-dismiss="modal">
                                     Cancel
                                 </button>
-                                <button class="btn btn-success"  data-bs-dismiss="modal">
+                                <button type="submit" class="btn btn-success">
                                     Submit
                                 </button>
                             </div>
@@ -272,17 +242,18 @@ $user = Session::get('user');
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modalToggleLabel">Apakah anda yakin ingin menreject?</h5>
+                            <h5 class="modal-title" id="modalToggleLabel">Apakah anda yakin ingin reject?</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form>
+                        <form id="rejection-checkin" action="{{route('reject-check-in')}}" method="post" enctype="multipart/form-data">
+                        {{csrf_field()}}
                         <div class="modal-body">
-                            
+                            <input type="hidden" id="id_rejection_checkin" type = "number" name="id_rejection_checkin"><br/>
                             <label>Jelaskan alasan anda menolak check in!</label>
-                            <textarea class="form-control"></textarea>
+                            <textarea class="form-control" id="alasan_reject" name="alasan_reject"></textarea>
                         </div>
                             <div class="modal-footer">
-                                <button class="btn btn-success"  data-bs-dismiss="modal">
+                                <button type="submit" class="btn btn-success">
                                     Submit
                                 </button>
                                 <button class="btn btn-danger"  data-bs-dismiss="modal">
@@ -314,50 +285,21 @@ $user = Session::get('user');
                         </tr>
                       </thead>
                       <tbody class="table-border-bottom-0">
+                      <?php $i=1; ?>
+                      @foreach($data_checkin as $data_checkin) 
                         <tr style="text-align:center">
-                          <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>1</strong></td>
-                          <td>Zhody</td>
-                          <td>19 April 2021</td>
-                          <td>Maintenance</td>
-                          <td>Laptop, Tas, Ipad</td>
-                          <td><span class="badge bg-label-primary me-1">17:00 WIB</span></td>
-                          <td>Approved by PIC 1</td>
-                          <td><button class="btn rounded-pill btn-sm btn-warning" data-bs-toggle="modal"
+                          <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{$i}}</strong></td>
+                          <td>{{$data_checkin->nama_lengkap_visitor}}</td>
+                          <td>{{$data_checkin->tanggal_checkin}}</td>
+                          <td>{{$data_checkin->keperluan_visit}}</td>
+                          <td>{{$data_checkin->barang_bawaan}}</td>
+                          <td>{{$data_checkin->approval_timestamp}}</td>
+                          <td>{{$data_checkin->nama_lengkap_petugas}}</td>
+                          <td><button id="click-checkout" class="btn rounded-pill btn-sm btn-warning" data-bs-toggle="modal" onclick="checkout('{{$data_checkin->id_checkin}}','{{$data_checkin->nama_lengkap_visitor}}')"
                           data-bs-target="#modal-check-out">Check Out</button></td>
                         </tr>
-                        <tr style="text-align:center">
-                          <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>1</strong></td>
-                          <td>Zhody</td>
-                          <td>19 April 2021</td>
-                          <td>Maintenance</td>
-                          <td>Laptop, Tas, Ipad</td>
-                          <td><span class="badge bg-label-primary me-1">17:00 WIB</span></td>
-                          <td>Approved by PIC 1</td>
-                          <td><button class="btn rounded-pill btn-sm btn-warning" data-bs-toggle="modal"
-                          data-bs-target="#modal-check-out">Check Out</button></td>
-                        </tr>
-                        <tr style="text-align:center">
-                          <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>1</strong></td>
-                          <td>Zhody</td>
-                          <td>19 April 2021</td>
-                          <td>Maintenance</td>
-                          <td>Laptop, Tas, Ipad</td>
-                          <td><span class="badge bg-label-primary me-1">17:00 WIB</span></td>
-                          <td>Approved by PIC 1</td>
-                          <td><button class="btn rounded-pill btn-sm btn-warning" data-bs-toggle="modal"
-                          data-bs-target="#modal-check-out">Check Out</button></td>
-                        </tr>
-                        <tr style="text-align:center">
-                          <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>1</strong></td>
-                          <td>Zhody</td>
-                          <td>19 April 2021</td>
-                          <td>Maintenance</td>
-                          <td>Laptop, Tas, Ipad</td>
-                          <td><span class="badge bg-label-primary me-1">17:00 WIB</span></td>
-                          <td>Approved by PIC 1</td>
-                          <td><button class="btn rounded-pill btn-sm btn-warning" data-bs-toggle="modal"
-                          data-bs-target="#modal-check-out">Check Out</button></td>
-                        </tr>
+                      <?php $i++; ?>
+                      @endforeach
                       </tbody>
                     </table>
                     </div>
@@ -368,19 +310,25 @@ $user = Session::get('user');
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modalToggleLabel">Apakah anda yakin ingin men check out si blabla?</h5>
+                            <h5 class="modal-title" id="modalToggleLabel">Apakah Anda Ingin Check Out <b id="variable_nama"></b></h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
+                         
                         </div>
                             <div class="modal-footer">
-                                
-                                <button class="btn btn-danger"  data-bs-dismiss="modal">
+                              
+                              <button class="btn btn-danger"  data-bs-dismiss="modal">
                                     Batal
                                 </button>
-                                <button class="btn btn-success"  data-bs-dismiss="modal">
+                              <form id="check-out"  action="{{route('check-out')}}" method="post" enctype="multipart/form-data">
+                                {{csrf_field()}}
+                                <input type="hidden" id="id_data_checkin" name="id_data_checkin" type="number">
+                                
+                                <button type="submit" class="btn btn-success">
                                     Ya, Saya Yakin
-                                </button>
+                                </button>                                
+                              </form> 
                             </div>
                         </div>
                     </div>
@@ -408,46 +356,20 @@ $user = Session::get('user');
                         </tr>
                       </thead>
                       <tbody class="table-border-bottom-0">
+                        <?php $i=1; ?>
+                        @foreach($history_checkin as $history_checkin)
                         <tr style="text-align:center">
-                          <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>1</strong></td>
-                          <td>Zhody</td>
-                          <td>19 April 2021</td>
-                          <td>Maintenance</td>
-                          <td>Laptop, Tas, Ipad</td>
-                          <td><span class="badge bg-label-primary me-1">17:00 WIB</span></td>
-                          <td><span class="badge bg-label-warning me-1">20:00 WIB</span></td>
-                          <td>Approved by PIC 1</td>
+                          <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{$i}}</strong></td>
+                          <td>{{$history_checkin->nama_lengkap_visitor}}</td>
+                          <td>{{$history_checkin->tanggal_checkin}}</td>
+                          <td>{{$history_checkin->keperluan_visit}}</td>
+                          <td>{{$history_checkin->barang_bawaan}}</td>
+                          <td>{{$history_checkin->checkin_time}}</td>
+                          <td>{{$history_checkin->checkout_time}}</td>
+                          <td>{{$history_checkin->keterangan}}</td>
                         </tr>
-                        <tr style="text-align:center">
-                          <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>1</strong></td>
-                          <td>Zhody</td>
-                          <td>19 April 2021</td>
-                          <td>Maintenance</td>
-                          <td>Laptop, Tas, Ipad</td>
-                          <td><span class="badge bg-label-primary me-1">17:00 WIB</span></td>
-                          <td><span class="badge bg-label-warning me-1">20:00 WIB</span></td>
-                          <td>Approved by PIC 1</td>
-                        </tr>
-                        <tr style="text-align:center">
-                          <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>1</strong></td>
-                          <td>Zhody</td>
-                          <td>19 April 2021</td>
-                          <td>Maintenance</td>
-                          <td>Laptop, Tas, Ipad</td>
-                          <td><span class="badge bg-label-primary me-1">17:00 WIB</span></td>
-                          <td><span class="badge bg-label-warning me-1">20:00 WIB</span></td>
-                          <td>Approved by PIC 1</td>
-                        </tr>
-                        <tr style="text-align:center">
-                          <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>1</strong></td>
-                          <td>Zhody</td>
-                          <td>19 April 2021</td>
-                          <td>Maintenance</td>
-                          <td>Laptop, Tas, Ipad</td>
-                          <td><span class="badge bg-label-primary me-1">17:00 WIB</span></td>
-                          <td><span class="badge bg-label-warning me-1">20:00 WIB</span></td>
-                          <td>Approved by PIC 1</td>
-                        </tr>
+                        <?php $i++; ?>
+                        @endforeach
                       </tbody>
                     </table>
               </div>
@@ -463,6 +385,27 @@ $user = Session::get('user');
             
             <!-- / Content -->
 <script type="text/javascript">
-  document.getElementById('nama_visitor').value = "aaa";
+  var msg = '{{Session::get('alert')}}';
+  var exist = '{{Session::has('alert')}}';
+  if(exist){
+    alert(msg);
+  }
+
+  function approve(id,nama_visitor){
+    console.log(nama_visitor);
+    $('#nama_visitor').val(nama_visitor);
+    $('#id_approval_checkin').val(id);
+  }
+
+  function reject(id){
+    console.log(id)
+    $('#id_rejection_checkin').val(id);
+  }
+
+  function checkout(id,nama_visitor){
+    console.log(id)
+    $('#id_data_checkin').val(id);
+    document.getElementById('variable_nama').innerHTML=nama_visitor;
+  }
 </script>
 @endsection

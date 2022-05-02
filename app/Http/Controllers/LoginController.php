@@ -26,14 +26,15 @@ class LoginController extends Controller
                 if(Hash::check($Password,$CekVisitor->password_visitor)){
                     Session::put('user',$CekVisitor->nama_lengkap_visitor);
                     Session::put('nik_visitor',$CekVisitor->nik_visitor);
-                    $VisitorCheckIn = list_checkin::whereRaw('nik_visitor = ?',[$CekVisitor->nik_visitor])->first();
+                    //$VisitorCheckIn = list_checkin::whereRaw('nik_visitor = ?',[$CekVisitor->nik_visitor])->first();
                     
                     log_activity::create([
                         'activity' => 'login',
                         'id_actor' => $CekVisitor->nik_visitor,
                         'id_object' => null,
                     ]);
-                    return view('visitor.dashboard-visitor',['DataVisitor'=>$CekVisitor,'DataCheckIn'=>$VisitorCheckIn]);
+                    //return view('visitor.dashboard-visitor',['DataVisitor'=>$CekVisitor,'DataCheckIn'=>$VisitorCheckIn]);
+                    return redirect('dashboard-visitor');
                 }else{
                     return back()->with('alert','Gagal Masuk! Password Salah');
                 }
@@ -43,7 +44,8 @@ class LoginController extends Controller
             if($Password ==  $CekPetugasDC->password_petugas){
                 Session::put('user',$CekPetugasDC->nama_lengkap_petugas);
                 Session::put('id_petugas',$CekPetugasDC->id_petugas);
-                return view('petugas-dc.approval-check-in');
+                return redirect('approval-check-in');
+                //return view('petugas-dc.approval-check-in');
             }else{
                 return back()->with('alert','Gagal Masuk! Password Salah');
             }
