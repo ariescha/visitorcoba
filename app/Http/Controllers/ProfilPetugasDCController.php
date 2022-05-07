@@ -10,7 +10,7 @@ class ProfilPetugasDCController extends Controller
     public function index(){
         $IdPetugasDC = Session::get('id_petugas');
         //dd($IdPetugasDC);
-        $PetugasDC = Petugas_DC::find($IdPetugasDC)->first();
+        $PetugasDC = Petugas_DC::find($IdPetugasDC);
        
         return view('petugas-dc.profil')->with('PetugasDC',$PetugasDC);
     }
