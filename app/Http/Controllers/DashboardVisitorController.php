@@ -11,34 +11,32 @@ use App\Models\Petugas_DC;
 use App\Models\log_activity;
 
 
-class DashboardVisitorController extends Controller
-{
+class DashboardVisitorController extends Controller{
 
-    // function logHistory($input){
-    //     dd($input);
-    // }
-    public function index()
-    {
-
-        // logHistory("fauzi");
-        //get session nik visitor
+    public function index(){
+        //session
         $nikVisitor = Session::get('nik_visitor');
 
+        //get data checkin terakhir
         $VisitorCheckIn = list_checkin::whereRaw('nik_visitor = ?',[$nikVisitor])->latest()->first();
-        // dd($VisitorCheckIn);
-        // $DataVisitor = Session::get('DataVisitor');
-        // $DataCheckIn = Session::get('DataCheckIn');
-        // dd($uzi, $DataVisitor, $DataCheckIn);
+
+        //Visitor Checkin for user table history checkin null
+        if ($VisitorCheckIn==null){
+          $VisitorCheckIn = new \stdClass();
+          $VisitorCheckIn->checkin_time = date('Y-m-d H:i:s');
+          //status if null
+          $VisitorCheckIn->status_checkin = 99;
+          $VisitorCheckIn->approval_timestamp = null;
+          $VisitorCheckIn->rejected_alasan = null;
+        } 
 
     	//get data petugas
     	$dataPetugas = DB::table('petugas_dc')->get();
         
-        //get status visitor
-        // $statusVisitor = (Visitor::whereRaw('nik_visitor = ?', [$nikVisitor])->first()) -> status_visitor;
+        //get data visitor
         $DataVisitor = Visitor::whereRaw('nik_visitor = ?', [$nikVisitor])->first();
-        // dd($DataVisitor);
         
-        // dd($nikVisitor);
+        //get table histor checkin
         $tableHistory = DB::table('list_checkin')
                         ->where('list_checkin.nik_visitor', $nikVisitor)
                         ->leftjoin('petugas_dc','list_checkin.id_petugas','=','petugas_dc.id_petugas')
@@ -48,27 +46,27 @@ class DashboardVisitorController extends Controller
                         ->orderBy('created_at', 'DESC')
                         ->get();
 
-    	// mengirim data pegawai ke view index
+    	// return view with data
     	return view('visitor.dashboard-visitor',['dataPetugas' => $dataPetugas, 'DataVisitor' => $DataVisitor,'tableHistory' => $tableHistory, 'DataCheckIn' => $VisitorCheckIn]);
     }
 
+
     //checkin
     public function store(Request $request){
-        
+        //session
         $nikVisitor = Session::get('nik_visitor');
 
         //get data visitor
     	$dataVisitor = Visitor::whereRaw('nik_visitor = ?', [$nikVisitor])->first();
-        // Visitor::update()
 
+        //define request form
         $idPetugas = $request->daftarPic;
         $barangBawaan = $request->barangBawaan;
         $keperluanVisit = $request->keperluanVisit;
-        // $dateCheckin = $request->dateCheckin;
         $dateCheckin = date('Y-m-d');
         $dateCheckinTimestamp = date('Y-m-d H:i:s');
-        // dd($idPetugas,$barangBawaan,$keperluanVisit,$nikVisitor,$dateCheckin, $dataVisitor, $dataVisitor->status_visitor);
 
+        //insert checkin data to list checkin
         if(isset($dataVisitor)){
             if($dataVisitor->status_visitor == 1){
                 
@@ -98,11 +96,10 @@ class DashboardVisitorController extends Controller
     }
 
     public function revisiRegister(Request $request){
+        //session
         $nikVisitorSession = Session::get('nik_visitor');
 
-        //get data visitor
-    	// $dataVisitor = Visitor::whereRaw('nik_visitor = ?', [$nikVisitor])->first();
-
+        //define request data
         $namaLengkapVisitor = $request->namaLengkapVisitor;
         $nikVisitor = $request->nikVisitor;
         $nomorHpVisitor = $request->nomorHpVisitor;
@@ -111,9 +108,8 @@ class DashboardVisitorController extends Controller
         $Current = date('His-dmY');
         $FotoKtpVisitor = $request->file('foto_ktp');
         
-        if ($FotoKtpVisitor==null){
-            // dd('data foto kosong');
-            
+        //revisi without ktp
+        if ($FotoKtpVisitor==null){            
             DB::table('visitor')->where('nik_visitor',$nikVisitorSession)
                 ->update([
                     'nik_visitor' => $nikVisitor
@@ -124,22 +120,14 @@ class DashboardVisitorController extends Controller
                     'nama_lengkap_visitor' => $namaLengkapVisitor,
                     'nomor_hp_visitor' => $nomorHpVisitor,
                     'asal_instansi_visitor' => $asalInstansiVisitor,
-                    // 'foto_ktp_visitor' => $FotoKtpVisitorsName,
                     'status_visitor' => 0
                 ]);
             
-            return redirect('/dashboard-visitor');
         }else{
+            //revisi with ktp
             $FotoKtpVisitorsName = $Current.'-'.$FotoKtpVisitor->getClientOriginalName();
             $FotoKtpVisitor->move('dokumen',$FotoKtpVisitorsName);
         
-            // if (is_null($nomorHpVisitor)){
-            //     return back()->with('alert','nomor hp kosong');
-            // }
-
-            // dd($nikVisitorSession, $namaLengkapVisitor, $nikVisitor, $nomorHpVisitor, $asalInstansiVisitor, $FotoKtpVisitorsName);
-
-
             DB::table('visitor')->where('nik_visitor',$nikVisitorSession)
                 ->update([
                     'nik_visitor' => $nikVisitor
@@ -152,23 +140,33 @@ class DashboardVisitorController extends Controller
                     'asal_instansi_visitor' => $asalInstansiVisitor,
                     'foto_ktp_visitor' => $FotoKtpVisitorsName,
                     'status_visitor' => 0
-                    ]);
+                ]);
+        }
 
-            return redirect('/dashboard-visitor');
+        //put new nik visitor session
+        if ($nikVisitor!=$nikVisitorSession){
+            Session::put('nik_visitor',$nikVisitor);
         }
         
+        //log activity revisi register visitor
+        log_activity::create([
+            'activity' => 'revisi register',
+            'id_actor' => $nikVisitor //nik visitor
+            // 'id_object' => $VisitorCheckIn->id_checkin, //id checkin
+        ]);
+
+        return redirect('/dashboard-visitor');
     }
 
     public function checkoutVisitor(){
+        //session
         $nikVisitorSession = Session::get('nik_visitor');
-        // dd('masukk', $nikVisitorSession);
 
+        //get last id checkin
         $VisitorCheckIn = list_checkin::whereRaw('nik_visitor = ?',[$nikVisitorSession])->latest()->first();
-        
         $idCheckin = $VisitorCheckIn -> id_checkin;
-        // $checkinTime = $VisitorCheckIn -> checkin_time;
-        // dd($idCheckin); 
 
+        //date for checkout time
         $dateCheckout = date('Y-m-d');
         $dateCheckoutTimestamp = date('Y-m-d H:i:s');
 
@@ -178,11 +176,13 @@ class DashboardVisitorController extends Controller
                     'status_checkin' => 3
                 ]);
 
-
-        // dd($VisitorCheckIn, $dateCheckout, $dateCheckoutTimestamp);
+        //log activity (checkout by self) visitor
+        log_activity::create([
+            'activity' => 'checkout by self',
+            'id_actor' => $nikVisitorSession, //nik visitor
+            'id_object' => $idCheckin //id checkin
+        ]);
 
         return redirect('/dashboard-visitor');
     }
-
-    
 }

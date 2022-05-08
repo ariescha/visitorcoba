@@ -318,7 +318,8 @@ Approval Registrasi | JMDC Visitor
                           <td>{{ $v->asal_instansi_visitor }}</td>
                           <td>{{ $v->email_visitor }}</td>
                           <td>{{ $v->nomor_hp_visitor }}</td>
-                          <td><a href="{{route('DownloadKtp',['filename'=> $vn->foto_ktp_visitor])}}">Unduh</a></td>
+                          <td><button class="btn rounded-pill btn-sm btn-success" onclick="DownloadKtp('{{$v->foto_ktp_visitor}}')">Unduh</button></td>
+                          <!-- <td><a href="{{route('DownloadKtp',['filename'=> $v->foto_ktp_visitor])}}">Unduh</a></td> -->
                           <td>{{ $v->status_nda }}</td>
                           <td> @if ($v->status_nda_visitor == 1)
                           <button class="btn rounded-pill btn-sm btn-info" data-bs-toggle="modal"
@@ -429,6 +430,39 @@ Approval Registrasi | JMDC Visitor
       $("#file_nda_input").val('');
       $('#tanggal_akhir_nda').val('');
       $('#tanggal_mulai_nda').val('');
+    }
+
+    function DownloadKtp(filename) {
+      console.log('1');
+      console.log(filename);
+      $.ajax({
+        url: '/downloadktp/'+filename,
+        type: 'GET',
+        data: {},
+        //dataType: 'json',
+        xhrFields: {
+                responseType: 'blob'
+            },
+        error: function(e) {
+          console.log('Error');
+          console.log(e);
+        },
+        success: function(data) {
+          console.log(data);
+          if (data instanceof Blob) {
+            var blob = new Blob([data]);
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
+          }
+          else {
+            console.log('kosong');
+            alert('File tidak ditemukan!');
+          }
+         
+        }
+      });
     }
 
       

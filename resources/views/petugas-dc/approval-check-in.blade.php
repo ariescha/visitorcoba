@@ -295,8 +295,12 @@ $user = Session::get('user');
                           <td>{{$data_checkin->barang_bawaan}}</td>
                           <td>{{$data_checkin->approval_timestamp}}</td>
                           <td>{{$data_checkin->nama_lengkap_petugas}}</td>
+                          @if($data_checkin->status_nda_visitor==1)
                           <td><button id="click-checkout" class="btn rounded-pill btn-sm btn-warning" data-bs-toggle="modal" onclick="checkout('{{$data_checkin->id_checkin}}','{{$data_checkin->nama_lengkap_visitor}}')"
                           data-bs-target="#modal-check-out">Check Out</button></td>
+                          @else
+                            <td><button class="btn rounded-pill btn-sm btn-danger" disabled>Check Out</button></td>                          
+                          @endif
                         </tr>
                       <?php $i++; ?>
                       @endforeach

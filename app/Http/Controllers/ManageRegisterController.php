@@ -6,6 +6,7 @@ use App\Models\nda;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Routing\ResponseFactory;
 
 class ManageRegisterController extends Controller
 {
@@ -74,11 +75,17 @@ class ManageRegisterController extends Controller
 
     public function downloadktp($file_name) {
         $file_path = public_path('dokumen/'.$file_name);
+        //$file_path = '/dokumen/'.$file_name;
 
         if (file_exists($file_path)) {
+            //return response('Hello World', 200);
             return response()->download($file_path);
+            //return response()->json(['status' => true, 'data' => $file_path]);
+            //return Response::json(['hello' => $value],201);
         } else {
-            return redirect()->back() ->with('alert', 'File Tidak Ada!');
+            return response('', 200);
+            //return Response::json(['hello' => $value],201);
+            //return redirect()->back() ->with('alert', 'File Tidak Ada!');
             //alert('bocah tolol');
         }
     }
@@ -142,5 +149,5 @@ class ManageRegisterController extends Controller
             //alert('bocah tolol');
         }
     }
-    
+    //tes
 }
