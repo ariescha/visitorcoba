@@ -114,7 +114,6 @@ $user = Session::get('user');
                   <div class="card mb-4">
                     <h5 class="card-header">Profile Details</h5>
                     <!-- Account -->
-<<<<<<< Updated upstream
                     <div class="card-body">
                       <div class="d-flex align-items-start align-items-sm-center gap-4">
                         <!-- <img
@@ -146,9 +145,6 @@ $user = Session::get('user');
                         <!-- </div> -->
                       </div>
                     </div>
-=======
-                   
->>>>>>> Stashed changes
                     <hr class="my-0" />
                     <div class="card-body">
                     <form id="formAuthentication" class="mb-4" action="{{route('update-profil-visitor')}}" method="POST" enctype="multipart/form-data">

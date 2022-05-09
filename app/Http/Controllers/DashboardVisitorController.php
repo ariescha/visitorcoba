@@ -45,13 +45,8 @@ class DashboardVisitorController extends Controller{
                         'list_checkin.checkin_time','list_checkin.checkout_time')
                         ->orderBy('created_at', 'DESC')
                         ->get();
-<<<<<<< Updated upstream
 
     	// return view with data
-=======
-        //dd($DataVisitor);
-    	// mengirim data pegawai ke view index
->>>>>>> Stashed changes
     	return view('visitor.dashboard-visitor',['dataPetugas' => $dataPetugas, 'DataVisitor' => $DataVisitor,'tableHistory' => $tableHistory, 'DataCheckIn' => $VisitorCheckIn]);
     }
 
