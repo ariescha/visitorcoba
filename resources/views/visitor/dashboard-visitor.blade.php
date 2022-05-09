@@ -79,7 +79,7 @@ $niksession = Session::get('nik_visitor');
                           </div>
                           <div class="flex-grow-1">
                             <span class="fw-semibold d-block">{{$user}}</span>
-                            <small class="text-muted">Admin</small>
+                            <small class="text-muted">Visitor</small>
                           </div>
                         </div>
                       </a>
@@ -529,15 +529,15 @@ $niksession = Session::get('nik_visitor');
                       document.getElementById("rejected-notif").style.display = "none";
                       document.getElementById("waiting-approval-data").style.display = "none";
                     }
-                    else if(status_checkin == 99){ //if datacheckin kosong, diinject dari code 99
-                      document.getElementById("waiting-approval-check-in").style.display = "none";
-                      document.getElementById("form-check-in").style.display = "show";
-                      document.getElementById("checked-in").style.display = "none";
-                      document.getElementById("rejected-form").style.display = "none";
-                      document.getElementById("rejected-check-in").style.display = "none";
-                      document.getElementById("rejected-notif").style.display = "none";
-                      document.getElementById("waiting-approval-data").style.display = "none";
-                    }
+                    // else if(status_checkin == 99){ //if datacheckin kosong, diinject dari code 99
+                    //   document.getElementById("waiting-approval-check-in").style.display = "none";
+                    //   document.getElementById("form-check-in").style.display = "show";
+                    //   document.getElementById("checked-in").style.display = "none";
+                    //   document.getElementById("rejected-form").style.display = "none";
+                    //   document.getElementById("rejected-check-in").style.display = "none";
+                    //   document.getElementById("rejected-notif").style.display = "none";
+                    //   document.getElementById("waiting-approval-data").style.display = "none";
+                    // }
 
                   }else if(status_visitor == 2){ //registrasi direject
                     document.getElementById("waiting-approval-check-in").style.display = "none";
