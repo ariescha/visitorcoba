@@ -44,6 +44,7 @@ class LoginController extends Controller
             if($Password ==  $CekPetugasDC->password_petugas){
                 Session::put('user',$CekPetugasDC->nama_lengkap_petugas);
                 Session::put('id_petugas',$CekPetugasDC->id_petugas);
+                Session::put('status_petugas',$CekPetugasDC->is_superadmin);
                 return redirect('approval-check-in');
                 //return view('petugas-dc.approval-check-in');
             }else{
