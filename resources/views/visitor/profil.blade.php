@@ -158,7 +158,7 @@ $user = Session::get('user');
                               id="namaLengkapVisitor"
                               name="namaLengkapVisitor"
                               value='{{$DataVisitor->nama_lengkap_visitor}}'
-                              autofocus
+                              autofocus required
                             />
                           </div>
                           <div class="mb-3 col-md-6">
@@ -169,6 +169,7 @@ $user = Session::get('user');
                               name="nikVisitor" 
                               id="nikVisitor" 
                               value='{{$DataVisitor->nik_visitor}}'
+                              required
                               />
                           </div>
                           <div class="mb-3 col-md-6">
@@ -179,6 +180,7 @@ $user = Session::get('user');
                               id="asalInstansiVisitor"
                               name="asalInstansiVisitor"
                               value='{{$DataVisitor->asal_instansi_visitor}}'
+                              required
                             />
                           </div>
                           
@@ -190,7 +192,7 @@ $user = Session::get('user');
                               id="emailVisitor"
                               name="emailVisitor"
                               value='{{$DataVisitor->email_visitor}}'
-                              readonly
+                              readonly 
                             />
                           </div>
 
@@ -204,6 +206,7 @@ $user = Session::get('user');
                                 name="nomorHpVisitor"
                                 class="form-control"
                                 value='{{$DataVisitor->nomor_hp_visitor}}'
+                                maxlength="13" required
                               />
                             </div>
                           </div>

@@ -21,18 +21,21 @@
                 <div data-i18n="Analytics">Approval Check In</div>
               </a>
             </li>
+            
             <li class="menu-item">
               <a href="{{route('approval-registrasi')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-edit"></i>
                 <div data-i18n="Analytics">Approval Registrasi</div>
               </a>
             </li>
+            @if($is_superadmin == 1)
             <li class="menu-item">
               <a href="{{route('manajemen-petugas')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user-pin"></i>
                 <div data-i18n="Analytics">Manajemen Petugas DC</div>
               </a>
             </li>
+            @endif
             <li class="menu-item">
               <a href="{{route('profil-petugas-dc')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user"></i>
