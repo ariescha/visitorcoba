@@ -25,7 +25,7 @@ class DashboardVisitorController extends Controller{
           $VisitorCheckIn = new \stdClass();
           $VisitorCheckIn->checkin_time = date('Y-m-d H:i:s');
           //status if null
-          $VisitorCheckIn->status_checkin = 99;
+          $VisitorCheckIn->status_checkin = 3;
           $VisitorCheckIn->approval_timestamp = null;
           $VisitorCheckIn->rejected_alasan = null;
         } 
