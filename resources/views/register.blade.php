@@ -96,24 +96,24 @@
                     id="nama_lengkap"
                     name="nama_lengkap"
                     placeholder="Masukkan nama lengkap anda"
-                    autofocus
+                    autofocus required oninvalid="this.setCustomValidity('Silahkan isi nama lengkap!')" oninput="this.setCustomValidity('')"
                   />
                 </div>
                 <div class="mb-3">
                   <label for="nik" class="form-label">NIK</label>
-                  <input type="text" class="form-control" id="nik" name="nik" placeholder="Masukkan NIK anda" />
+                  <input type="number" class="form-control" id="nik" name="nik" placeholder="Masukkan NIK anda" required oninvalid="this.setCustomValidity('Silahkan isi NIK!')" oninput="this.setCustomValidity('')"/>
                 </div>
                 <div class="mb-3">
                   <label for="no_hp" class="form-label">No HP</label>
-                  <input type="text" class="form-control" id="no_hp" name="no_hp" placeholder="Masukkan no HP anda" />
+                  <input type="number" class="form-control" id="no_hp" name="no_hp" placeholder="Masukkan no HP anda" required oninvalid="this.setCustomValidity('Silahkan isi nomor HP!')" oninput="this.setCustomValidity('')" />
                 </div>
                 <div class="mb-3">
                   <label for="email" class="form-label">Email</label>
-                  <input type="email" class="form-control" id="email" name="email" placeholder="Masukkan email anda" />
+                  <input type="email" class="form-control" id="email" name="email" placeholder="Masukkan email anda" required oninvalid="this.setCustomValidity('Silahkan isi email!')" oninput="this.setCustomValidity('')"/>
                 </div>
                 <div class="mb-3">
                   <label for="asal_instansi" class="form-label">Asal Instansi</label>
-                  <input type="text" class="form-control" id="asal_instansi" name="asal_instansi" placeholder="Masukkan asal instansi anda" />
+                  <input type="text" class="form-control" id="asal_instansi" name="asal_instansi" placeholder="Masukkan asal instansi anda" required oninvalid="this.setCustomValidity('Silahkan isi asal instansi!')" oninput="this.setCustomValidity('')" />
                 </div>
                 <div class="mb-3 form-password-toggle">
                   <label class="form-label" for="password">Password</label>
@@ -124,7 +124,7 @@
                       class="form-control"
                       name="password"
                       placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                      aria-describedby="password"
+                      aria-describedby="password" required oninvalid="this.setCustomValidity('Silahkan isi password baru!')" oninput="this.setCustomValidity('')"
                     />
                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                   </div>
@@ -132,7 +132,7 @@
                 <div class="mb-3">
                     <label for="foto_ktp" class="form-label">Foto KTP</label>
                     
-                        <input class="form-control" type="file" id="foto_ktp" name="foto_ktp" accept="image/*" />
+                        <input class="form-control" type="file" id="foto_ktp" name="foto_ktp" accept="image/*" required oninvalid="this.setCustomValidity('Silahkan upload foto KTP!')" oninput="this.setCustomValidity('')" />
                     
                 </div>
 

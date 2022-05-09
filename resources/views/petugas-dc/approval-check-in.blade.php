@@ -5,6 +5,12 @@ Approval Check In | JMDC Visitor
 @section('content')
 <?php 
 $user = Session::get('user');
+if(session::has('status_petugas')){
+  $is_superadmin = Session::get('status_petugas');
+}
+else{
+  $is_superadmin = 0;
+}
 ?>
 @include('petugas-dc.sidebar')
 

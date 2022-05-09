@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Session;
 
 use Illuminate\Http\Request;
 use App\Models\Petugas_DC;
@@ -10,8 +11,9 @@ use Illuminate\Support\Facades\Hash;
 class ManagePetugasController extends Controller
 {
     public function index(){
-        $PetugasDC = Petugas_DC::all();
-        // dd($PetugasDC);
+        $id_petugas = Session::get('id_petugas');
+        $PetugasDC = Petugas_DC::where('id_petugas','!=',$id_petugas)->get();
+        //dd($PetugasDC);
         return view('petugas-dc.manajemen-petugas')->with('PetugasDC',$PetugasDC);
     }
     public function store(Request $request){
