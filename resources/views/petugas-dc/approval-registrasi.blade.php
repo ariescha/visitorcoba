@@ -12,7 +12,7 @@ else{
   $is_superadmin = 0;
 }
 ?>
-<body>
+<body> 
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
@@ -329,6 +329,8 @@ else{
       // $('#Visitor').DataTable();
       LoadNewRegistrasiVisitor(false);
       LoadRegistrasiVisitor(false);
+      //ShowNotif('Approve', 'red');
+
     } );
       
     function loadModalApprove(nama,nik) {
@@ -429,7 +431,8 @@ else{
           }
           else {
             console.log('kosong');
-            alert('File tidak ditemukan!');
+            ShowNotif('File tidak ditemukan!', 'red');
+            //alert('File tidak ditemukan!');
           }
          
         }
@@ -462,7 +465,8 @@ else{
           }
           else {
             console.log('kosong');
-            alert('File tidak ditemukan!');
+            ShowNotif('File tidak ditemukan!', 'red');
+            //alert('File tidak ditemukan!');
           }
          
         }
@@ -574,7 +578,13 @@ else{
           
           $('#loader').hide();
           if (showAlert) {
-            alert(type +' Berhasil');
+            if (type == 'Approve') {
+              ShowNotif(type +' Berhasil!', 'green');
+            }
+            else {
+              ShowNotif(type +' Berhasil!', 'red');
+            }
+            //alert(type +' Berhasil');
           }
         }
       });

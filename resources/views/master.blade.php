@@ -31,6 +31,48 @@
 
     <meta name="description" content="" />
     <style>
+      #TempatNotif {
+        visibility: hidden;
+        min-width: 250px;
+        margin-left: -125px;
+        background-color: #00FF00;
+        color: #fff;
+        text-align: center;
+        border-radius: 2px;
+        padding: 16px;
+        position: fixed;
+        z-index: 20;
+        left: 90%;
+        /* top: 10%; */
+        bottom: 50px;
+        font-size: 17px;
+      }
+
+      #TempatNotif.show {
+        visibility: visible;
+        -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        animation: fadein 0.5s, fadeout 0.5s 2.5s;
+      }
+
+      @-webkit-keyframes fadein {
+        from {bottom: 0; opacity: 0;} 
+        to {bottom: 50px; opacity: 1;}
+      }
+
+      @keyframes fadein {
+        from {bottom: 0; opacity: 0;}
+        to {bottom: 50px; opacity: 1;}
+      }
+
+      @-webkit-keyframes fadeout {
+        from {bottom: 50px; opacity: 1;} 
+        to {bottom: 0; opacity: 0;}
+      }
+
+      @keyframes fadeout {
+        from {bottom: 50px; opacity: 1;}
+        to {bottom: 0; opacity: 0;}
+      }
     /* Center the loader */
       #loader {
         position: absolute;
@@ -114,6 +156,12 @@
 
   </head>
   <div id="loader" style="display:none;"></div>
+  <div id="TempatNotif">Some text some message..</div>
+  <!-- <div class="pull-alert">
+    <div class="alert alert-success pull-right" >
+        <strong>Approve Berhasil!</strong>
+      </div>
+  </div>  -->
 @yield('content')
             <!-- Footer -->
             <footer class="content-footer footer bg-footer-theme">
@@ -171,6 +219,21 @@
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
+    <script>
+      function ShowNotif(text, warna) {
+        var x = document.getElementById("TempatNotif");
+        x.innerHTML = text;
+        if (warna == null) {
+          x.style.backgroundColor = "red";
+        }
+        else {
+          x.style.backgroundColor = warna;
+        }
+        
+        x.className = "show";
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 1000);
+      }
+    </script>
     <script src="assets/vendor/libs/jquery/jquery.js"></script>
     <script src="assets/vendor/libs/popper/popper.js"></script>
     <script src="assets/vendor/js/bootstrap.js"></script>
