@@ -158,7 +158,8 @@ $user = Session::get('user');
                               id="namaLengkapVisitor"
                               name="namaLengkapVisitor"
                               value='{{$DataVisitor->nama_lengkap_visitor}}'
-                              autofocus required
+                              autofocus required 
+                              oninvalid="this.setCustomValidity('Silahkan isi nama!')" oninput="this.setCustomValidity('')"
                             />
                           </div>
                           <div class="mb-3 col-md-6">
@@ -170,6 +171,7 @@ $user = Session::get('user');
                               id="nikVisitor" 
                               value='{{$DataVisitor->nik_visitor}}'
                               required
+                              oninvalid="this.setCustomValidity('Silahkan isi NIK!')" oninput="this.setCustomValidity('')"
                               />
                           </div>
                           <div class="mb-3 col-md-6">
@@ -181,6 +183,7 @@ $user = Session::get('user');
                               name="asalInstansiVisitor"
                               value='{{$DataVisitor->asal_instansi_visitor}}'
                               required
+                              oninvalid="this.setCustomValidity('Silahkan isi asal instansi!')" oninput="this.setCustomValidity('')"
                             />
                           </div>
                           
@@ -207,6 +210,7 @@ $user = Session::get('user');
                                 class="form-control"
                                 value='{{$DataVisitor->nomor_hp_visitor}}'
                                 maxlength="13" required
+                                oninvalid="this.setCustomValidity('Silahkan isi nomor HP!')" oninput="this.setCustomValidity('')"
                               />
                             </div>
                           </div>
