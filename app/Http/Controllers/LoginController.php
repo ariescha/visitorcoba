@@ -41,7 +41,7 @@ class LoginController extends Controller
           
             
         }else if(empty($CekVisitor) && isset($CekPetugasDC)){
-            if($Password ==  $CekPetugasDC->password_petugas){
+            if($Password ==  $CekPetugasDC->password_petugas && $CekPetugasDC->status_petugas == 1){
                 Session::put('user',$CekPetugasDC->nama_lengkap_petugas);
                 Session::put('id_petugas',$CekPetugasDC->id_petugas);
                 Session::put('status_petugas',$CekPetugasDC->is_superadmin);

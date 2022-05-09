@@ -8,6 +8,24 @@ use App\Models\Petugas_DC;
 use App\Models\log_activity;
 class ProfilPetugasDCController extends Controller
 {
+    function __construct(){
+        $this->middleware(function ($request,$next) {
+            // fetch session and use it in entire class with constructor
+            $this->user = session()->get('user');
+            //dd($this->user);
+            //return $next($request);
+            if($this->user == null){
+            
+                return redirect('login')->with('alert','Sesi anda telah habis! Silahkan masuk kembali.');
+                
+            }
+            else{
+                return $next($request);
+            }
+        });
+       
+        
+    }
     public function index(){
         $IdPetugasDC = Session::get('id_petugas');
         //dd($IdPetugasDC);
