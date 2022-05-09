@@ -5,6 +5,12 @@ Manajemen Petugas Data Center | JMDC Visitor
 @section('content')
 <?php 
 $user = Session::get('user');
+if(session::has('status_petugas')){
+  $is_superadmin = Session::get('status_petugas');
+}
+else{
+  $is_superadmin = 0;
+}
 ?>
 <body>
 
@@ -34,12 +40,14 @@ $user = Session::get('user');
                 <div data-i18n="Analytics">Approval Registrasi</div>
               </a>
             </li>
+            @if($is_superadmin == 1)
             <li class="menu-item active">
               <a href="{{route('manajemen-petugas')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user-pin"></i>
                 <div data-i18n="Analytics">Manajemen Petugas DC</div>
               </a>
             </li>
+            @endif
             <li class="menu-item">
               <a href="{{route('profil-petugas-dc')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user"></i>
@@ -198,19 +206,19 @@ $user = Session::get('user');
                             <div class="modal-body">
                                 <div class="mb-4">
                                     <label for="no_hp_petugas" class="form-label">Nama Lengkap</label>
-                                    <input type="text" class="form-control" id="nama_lengkap_petugas" name="nama_lengkap_petugas" placeholder="Masukkan nama lengkap petugas" />
+                                    <input type="text" class="form-control" id="nama_lengkap_petugas" name="nama_lengkap_petugas" placeholder="Masukkan nama lengkap petugas" required/>
                                 </div>
                                 <div class="mb-4">
                                     <label for="npp_petugas" class="form-label">NPP</label>
-                                    <input type="text" class="form-control" id="npp_petugas" name="npp_petugas" placeholder="Masukkan NPP Petugas" />
+                                    <input type="text" class="form-control" id="npp_petugas" name="npp_petugas" placeholder="Masukkan NPP Petugas" required />
                                 </div>
                                 <div class="mb-4">
                                     <label for="email_petugas" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email_petugas" name="email_petugas" placeholder="Masukkan email petugas" />
+                                    <input type="email" class="form-control" id="email_petugas" name="email_petugas" placeholder="Masukkan email petugas" required/>
                                 </div>
                                 <div class="mb-4 form-password-toggle">
                                     <div class="d-flex justify-content-between">
-                                        <label class="form-label" for="password_petugas">Password</label>
+                                        <label class="form-label" for="password_petugas" required>Password</label>
                                     </div>
                                     <div class="input-group input-group-merge">
                                         <input
@@ -219,18 +227,18 @@ $user = Session::get('user');
                                         class="form-control"
                                         name="password_petugas"
                                         placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                        aria-describedby="password"
+                                        aria-describedby="password" required
                                         />
                                         <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                                     </div>
                                 </div>
                                 <div class="mb-4">
                                     <label for="no_hp_petugas" class="form-label">No HP</label>
-                                    <input type="text" class="form-control" id="no_hp_petugas" name="no_hp_petugas" placeholder="Masukkan nomor HP petugas" />
+                                    <input type="text" class="form-control" id="no_hp_petugas" name="no_hp_petugas" required placeholder="Masukkan nomor HP petugas" maxlength="13"/>
                                 </div>
                                 <div class="mb-4">
                                     <label for="status_petugas" class="form-label">Status</label>
-                                    <select name="status_petugas" id="status_petugas" class="form-control">
+                                    <select name="status_petugas" id="status_petugas" class="form-control" required>
                                         <option value="" selected disabled>Pilih Status</option>
                                         <option value="1">Aktif</option>
                                         <option value="0">Tidak Aktif</option>
@@ -241,7 +249,7 @@ $user = Session::get('user');
                                 <!-- <button type="button" class="btn btn-danger"  data-bs-dismiss="modal">
                                     Cancel
                                 </button> -->
-                                <button class="btn btn-success"  data-bs-dismiss="modal" type="submit">
+                                <button class="btn btn-success"   type="submit">
                                     TAMBAH
                                 </button>
                             </div>
@@ -264,11 +272,11 @@ $user = Session::get('user');
                               
                                 <div class="mb-4">
                                     <label for="edit_nama_lengkap_petugas" class="form-label">Nama Lengkap</label>
-                                    <input type="text" class="form-control" id="edit_nama_lengkap_petugas" name="edit_nama_lengkap_petugas"  />
+                                    <input type="text" class="form-control" id="edit_nama_lengkap_petugas" name="edit_nama_lengkap_petugas" required />
                                 </div>
                                 <div class="mb-4">
                                     <label for="edit_npp_petugas" class="form-label">NPP</label>
-                                    <input type="text" class="form-control" id="edit_npp_petugas" name="edit_npp_petugas"  />
+                                    <input type="text" class="form-control" id="edit_npp_petugas" name="edit_npp_petugas" required />
                                 </div>
                                 <div class="mb-4">
                                     <label for="edit_email_petugas" class="form-label">Email</label>
@@ -276,7 +284,7 @@ $user = Session::get('user');
                                 </div>
                                 <div class="mb-4 form-password-toggle">
                                     <div class="d-flex justify-content-between">
-                                        <label class="form-label" for="edit_password_petugas">Password</label>
+                                        <label class="form-label" for="edit_password_petugas" required>Password</label>
                                     </div>
                                     <div class="input-group input-group-merge">
                                         <input
@@ -285,18 +293,18 @@ $user = Session::get('user');
                                         class="form-control"
                                         name="edit_password_petugas"
                                         placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                        aria-describedby="password" disabled
+                                        aria-describedby="password" readonly
                                         />
                                         <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                                     </div>
                                 </div>
                                 <div class="mb-4">
                                     <label for="edit_no_hp_petugas" class="form-label">No HP</label>
-                                    <input type="text" class="form-control" id="edit_no_hp_petugas" name="edit_no_hp_petugas"/>
+                                    <input type="text" class="form-control" id="edit_no_hp_petugas" name="edit_no_hp_petugas" maxlength="13" required/>
                                 </div>
                                 <div class="mb-4">
                                     <label for="edit_status_petugas" class="form-label">Status</label>
-                                    <select name="edit_status_petugas" id="edit_status_petugas" class="form-control">
+                                    <select name="edit_status_petugas" id="edit_status_petugas" class="form-control" required>
                                         <option value="" selected disabled>Pilih Status</option>
                                         <option value="1" id="status_aktif">Aktif</option>
                                         <option value="0" id="status_tidak_aktif">Tidak Aktif</option>
@@ -307,7 +315,7 @@ $user = Session::get('user');
                                 <!-- <button type="button" class="btn btn-danger"  data-bs-dismiss="modal">
                                     Cancel
                                 </button> -->
-                                <button class="btn btn-success"  data-bs-dismiss="modal" type="submit">
+                                <button class="btn btn-success"  type="submit">
                                     EDIT
                                 </button>
                             </div>

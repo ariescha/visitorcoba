@@ -3,6 +3,15 @@
 Approval Registrasi | JMDC Visitor
 @endsection
 @section('content')
+<?php 
+$user = Session::get('user');
+if(session::has('status_petugas')){
+  $is_superadmin = Session::get('status_petugas');
+}
+else{
+  $is_superadmin = 0;
+}
+?>
 <body>
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
@@ -30,12 +39,14 @@ Approval Registrasi | JMDC Visitor
                 <div data-i18n="Analytics">Approval Registrasi</div>
               </a>
             </li>
+            @if($is_superadmin == 1)
             <li class="menu-item">
               <a href="{{route('manajemen-petugas')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user-pin"></i>
                 <div data-i18n="Analytics">Manajemen Petugas DC</div>
               </a>
             </li>
+            @endif
             <li class="menu-item">
               <a href="{{route('profil-petugas-dc')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user"></i>
@@ -288,7 +299,6 @@ Approval Registrasi | JMDC Visitor
                         </tr>
                       </thead>
                       <tbody class="table-border-bottom-0">
-                        
                       </tbody>
                     </table>
               </div>
