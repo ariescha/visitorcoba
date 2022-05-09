@@ -6,6 +6,7 @@ use App\Models\nda;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Routing\ResponseFactory;
 
 class ManageRegisterController extends Controller
 {
@@ -28,7 +29,9 @@ class ManageRegisterController extends Controller
         $VisitorNew = DB::table('visitor')
                     ->where ('status_visitor', '=', 0)
                     ->get();
-        return view('petugas-dc.approval-registrasi',['visitor' => $visitor, 'VisitorNew' => $VisitorNew]);
+
+        return view('petugas-dc.approval-registrasi');
+        //return view('petugas-dc.approval-registrasi',['visitor' => $visitor, 'VisitorNew' => $VisitorNew]);
     }
 
     public function ApproveRegister(Request $request){
@@ -48,7 +51,8 @@ class ManageRegisterController extends Controller
             'id_object' => $request->NikVisitor,
         ]);
 
-        return redirect('/approval-registrasi');
+        return response()->json(['status' => true, 'data' => null]);
+        //return redirect('/approval-registrasi');
     }
 
     public function RejectRegister(Request $request){
@@ -69,16 +73,23 @@ class ManageRegisterController extends Controller
             'id_object' => $request->NikVisitor,
         ]);
 
-        return redirect('/approval-registrasi');
+        return response()->json(['status' => true, 'data' => null]);
+        //return redirect('/approval-registrasi');
     }
 
     public function downloadktp($file_name) {
         $file_path = public_path('dokumen/'.$file_name);
+        //$file_path = '/dokumen/'.$file_name;
 
         if (file_exists($file_path)) {
+            //return response('Hello World', 200);
             return response()->download($file_path);
+            //return response()->json(['status' => true, 'data' => $file_path]);
+            //return Response::json(['hello' => $value],201);
         } else {
-            return redirect()->back() ->with('alert', 'File Tidak Ada!');
+            return response('', 200);
+            //return Response::json(['hello' => $value],201);
+            //return redirect()->back() ->with('alert', 'File Tidak Ada!');
             //alert('bocah tolol');
         }
     }
@@ -106,7 +117,7 @@ class ManageRegisterController extends Controller
             'id_actor' => $id_petugas,
             'id_object' => $request->NikVisitor,
         ]);
-
+        
         return redirect('/approval-registrasi');
     }
     // public function GetNDA($nik)
@@ -138,9 +149,33 @@ class ManageRegisterController extends Controller
         if (file_exists($file_path)) {
             return response()->download($file_path);
         } else {
-            return redirect()->back() ->with('alert', 'File Tidak Ada!');
+            return response('', 200);
+            //return redirect()->back() ->with('alert', 'File Tidak Ada!');
             //alert('bocah tolol');
         }
+    }
+    public function LoadNewRegistrasiVisitor() {
+        $VisitorNew = DB::table('visitor')
+                    ->where ('status_visitor', '=', 0)
+                    ->get();
+        
+        return response()->json(['status' => true, 'data' => $VisitorNew]);
+        //return response()->json($data);
+    }
+    public function LoadRegistrasiVisitor() {
+        $visitor = DB::table('visitor')
+                    ->leftJoin('petugas_dc', function($join){
+                        $join->on('visitor.approval_by', '=', 'petugas_dc.id_petugas')
+                            ->orOn('visitor.rejected_by', '=', 'petugas_dc.id_petugas');
+                    })
+                    ->select('visitor.*')
+                    ->selectRaw("(case when status_nda_visitor = 1 then 'Ada' when status_nda_visitor = 2 then 'kadaluwarsa' else 'Belum Ada' end) as status_nda")
+                    ->selectRaw("(case when status_nda_visitor = 1 then 'Lihat File' when status_nda_visitor = 2 then 'Perbarui' else 'Unggah' end) as text_nda")
+                    ->selectRaw("(case when status_visitor = 1 then concat('Diapprove Oleh ',nama_lengkap_petugas) when status_visitor = 2 then concat('Direject Oleh ',nama_lengkap_petugas) else '' end) as keterangan")
+                    ->where ('status_visitor', '!=', 0)
+                    ->get();
+        
+        return response()->json(['status' => true, 'data' => $visitor]);
     }
     
 }
