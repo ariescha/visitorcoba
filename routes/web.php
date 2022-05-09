@@ -19,6 +19,8 @@ Route::get('/', function () {
 
 //Approval Registrasi Visitor
 Route::get('approval-registrasi','ManageRegisterController@index')->name('approval-registrasi');
+Route::get('LoadNewRegistrasiVisitor','ManageRegisterController@LoadNewRegistrasiVisitor')->name('LoadNewRegistrasiVisitor');
+Route::get('LoadRegistrasiVisitor','ManageRegisterController@LoadRegistrasiVisitor')->name('LoadRegistrasiVisitor');
 Route::post('approve-registrasi','ManageRegisterController@ApproveRegister')->name('approve-registrasi');
 Route::post('reject-registrasi','ManageRegisterController@RejectRegister')->name('reject-registrasi');
 Route::post('upload-nda','ManageRegisterController@UploadNDA')->name('upload-nda');
