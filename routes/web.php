@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +15,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('login');
+});
+Route::fallback(function () {
+    if(Session::has('level_user')){
+        $level_user = Session::get('level_user');
+        if($level_user == 0){
+            return redirect('dashboard-visitor');
+        }else{
+            return redirect('approval-check-in');
+        }
+    }else{
+        return redirect('login');
+    }
+    
+
 });
 
 //Approval Registrasi Visitor
@@ -29,10 +44,13 @@ Route::get('/downloadNda/{filename}', 'ManageRegisterController@DownloadNda')->n
 Route::get('/downloadktp/{filename}', 'ManageRegisterController@DownloadKtp')->name('DownloadKtp');
 
 //Approval Checkin
+Route::post('CheckoutPetugas','ManageCheckInController@CheckoutPetugas')->name('CheckoutPetugas');
 Route::get('approval-check-in','ManageCheckInController@index')->name('approval-check-in');
+Route::get('LoadNewApprovalCheckin','ManageCheckInController@LoadNewApprovalCheckin')->name('LoadNewApprovalCheckin');
+Route::get('LoadApprovalCheckin','ManageCheckInController@LoadApprovalCheckin')->name('LoadApprovalCheckin');
+Route::get('LoadApprovalCheckinHistory','ManageCheckInController@LoadApprovalCheckinHistory')->name('LoadApprovalCheckinHistory');
 Route::post('approve-check-in','ManageCheckInController@approve')->name('approve-check-in');
 Route::post('reject-check-in','ManageCheckInController@reject')->name('reject-check-in');
-Route::post('check-out','ManageCheckInController@checkout')->name('check-out');
 
 Route::get('login','LoginController@index')->name('login');
 Route::post('login-post','LoginController@store')->name('login-post');

@@ -26,6 +26,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title')</title>
 
@@ -41,7 +42,7 @@
         border-radius: 2px;
         padding: 16px;
         position: fixed;
-        z-index: 20;
+        z-index: 50;
         left: 90%;
         /* top: 10%; */
         bottom: 50px;
