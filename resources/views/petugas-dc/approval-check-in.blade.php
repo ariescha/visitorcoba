@@ -149,15 +149,18 @@ else{
                                         </div>
                                     </div>
                                     <div class="row mb-3">
+                                      <center>
                                         <div id="my_camera"></div>
                                         <div id="my_result"></div>
+                                      </center>
                                     </div>
-                                    </br>
-                                    <input type="button" id="take_snapshot" value="Ambil Gambar"
-                                        onclick="takeSnapshot()">
-                                    <input type="button" id="reset_snapshot" value="Reset Gambar"
-                                        onclick="resetSnapshot()" disabled>
+                                    <center>
+                                    <button type="button" class="btn btn-lg btn-info" id="take_snapshot"
+                                        onclick="takeSnapshot()"><i class="bx bx-camera bx-md"></i></button>
+                                    <button type="button" class="btn btn-lg btn-info" id="reset_snapshot"
+                                        onclick="resetSnapshot()" disabled><i class="bx bx-reset bx-md"></i></button>
                                     <input type="hidden" id="gambar_visitor" name="gambar_visitor">
+                                    </center>
                                     <!-- <div class="row mb-3">
                               <label class="col-sm-4 col-form-label" for="basic-default-email">Foto Bukti Visitor</label>
                               <div class="col-sm-8">
