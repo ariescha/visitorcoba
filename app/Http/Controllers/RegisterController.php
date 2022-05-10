@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Http\Request;
 use App\Models\Visitor;
@@ -14,15 +15,24 @@ class RegisterController extends Controller
     }
 
     public function store(Request $request){
-        $Current = date('His-dmY');
         $Email = $request->email;
         $Nik = $request->nik;
         $CekEmailVisitor = Visitor::whereRaw('email_visitor = ?', [$Email])->first();
         $CekNikVisitor = Visitor::whereRaw('nik_visitor = ?', [$Nik])->first();
         $CekEmailPetugas = Petugas_DC::whereRaw('email_petugas = ?',[$Email])->first();
         $FotoKtpVisitor = $request->file('foto_ktp');
-        $FotoKtpVisitors = $Current.'-'.$FotoKtpVisitor->getClientOriginalName();
-        $FotoKtpVisitor->move('dokumen',$FotoKtpVisitors);
+        
+        $Current = date('His-dmY');
+        $extension = $FotoKtpVisitor->getClientOriginalExtension();
+        //$Current.'-gambar_visitor-'.$nama;
+        $FileNameKTP = $Current.'-KTP-'.$Email.'.'.$extension;
+        //.$FotoKtpVisitor->getClientOriginalName();
+
+        Storage::disk('sftpKTP')->put($FileNameKTP, fopen($FotoKtpVisitor, 'r+'));
+        //$FotoKtpVisitor->move('dokumen',$FotoKtpVisitors);
+        	
+        
+
         if(!isset($CekEmailVisitor) && !isset($CekNikVisitor) && !isset($CekEmailPetugas)){
         
                 Visitor::create([
@@ -32,7 +42,7 @@ class RegisterController extends Controller
                     'asal_instansi_visitor'=> $request->asal_instansi,
                     'email_visitor'        => $Email,
                     'password_visitor'     => Hash::make($request->password),
-                    'foto_ktp_visitor'     => $FotoKtpVisitors,
+                    'foto_ktp_visitor'     => $FileNameKTP,
                     'status_visitor'       => 0,
                 ]);
 

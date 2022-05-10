@@ -6,6 +6,7 @@ use App\Models\nda;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Routing\ResponseFactory;
 
 class ManageCheckInController extends Controller
@@ -74,8 +75,15 @@ class ManageCheckInController extends Controller
         list(, $data) = explode(',',$data);
         $data = str_replace(' ', '+', $data);
         $data = base64_decode($data);
-        $img_name = $Current.'-gambar_visitor-'.$nama;
-        file_put_contents(UPLOAD_DIR.$img_name.".jpeg", $data);
+        $img_name = $Current.'-Foto-'.$nama.'.jpeg';
+        //file_put_contents(UPLOAD_DIR.$img_name.".jpeg", $data);
+
+        //$Current = date('His-dmY');
+        //$extension = $FileNda->getClientOriginalExtension();
+        //$FileNameNda = $Current.'-NDA-'.$Email.'.'.$extension;
+        //.$FotoKtpVisitor->getClientOriginalName();
+
+        Storage::disk('sftpFoto')->put($img_name, $data);
 
         // $FotoKtpVisitor = $request->file('file');
         // $FotoKtpVisitors = $Current.'-'.$FotoKtpVisitor->getClientOriginalName();
