@@ -11,6 +11,28 @@ use App\Models\log_activity;
 
 class ProfilVisitorController extends Controller
 {
+    function __construct(){
+        $this->middleware(function ($request,$next) {
+            // fetch session and use it in entire class with constructor
+            $this->user = session()->get('user');
+            $this->level_user = session()->get('level_user');
+
+            //dd($this->user);
+            //return $next($request);
+            if($this->user == null){
+                return redirect('login')->with('alert','Sesi anda telah habis! Silahkan masuk kembali.');
+            }
+            else{
+                if($this->level_user == 0){
+                    return $next($request);
+                }else{
+                    return abort(401);
+                }
+            }
+        });
+       
+        
+    }
     public function index(){
         //session and get data visitor
         $nikVisitor = Session::get('nik_visitor');
@@ -24,35 +46,56 @@ class ProfilVisitorController extends Controller
         //session
         $nikVisitorSession = Session::get('nik_visitor');
 
+        //get data for check change instansi
+        $Visitor = Visitor::whereRaw('nik_visitor = ?', [$nikVisitorSession])->first();
+        $asalInstansiVisitorDB = $Visitor->asal_instansi_visitor;
+
         //define request
-        $namaLengkapVisitor = $request->namaLengkapVisitor;
-        $nikVisitor = $request->nikVisitor;
-        $nomorHpVisitor = $request->nomorHpVisitor;
-        $asalInstansiVisitor = $request->asalInstansiVisitor;
+        $namaLengkapVisitorUpdate = $request->namaLengkapVisitor;
+        $nikVisitorUpdate = $request->nikVisitor;
+        $nomorHpVisitorUpdate = $request->nomorHpVisitor;
+        $asalInstansiVisitorUpdate = $request->asalInstansiVisitor;
 
         //update db
         DB::table('visitor')->where('nik_visitor',$nikVisitorSession)
         ->update([
-            'nik_visitor' => $nikVisitor
+            'nik_visitor' => $nikVisitorUpdate
         ]);
 
-        DB::table('visitor')->where('nik_visitor',$nikVisitor)
-        ->update([
-            'nama_lengkap_visitor' => $namaLengkapVisitor,
-            'nomor_hp_visitor' => $nomorHpVisitor,
-            'asal_instansi_visitor' => $asalInstansiVisitor,
-            'status_visitor' => 0
-            // 'foto_ktp_visitor' => $FotoKtpVisitorsName
-        ]);
+        //IF ASAL INSTANSI CHANGE -> WAITING APPROVAL
+        if ($asalInstansiVisitorUpdate!=$asalInstansiVisitorDB){
+
+            DB::table('visitor')->where('nik_visitor',$nikVisitorUpdate)
+                ->update([
+                    'nama_lengkap_visitor' => $namaLengkapVisitorUpdate,
+                    'nomor_hp_visitor' => $nomorHpVisitorUpdate,
+                    'asal_instansi_visitor' => $asalInstansiVisitorUpdate,
+                    'status_nda_visitor' => 2
+                ]);
+
+            DB::table('nda')->where('nik_visitor',$nikVisitorUpdate)
+                ->update([
+                    'status_nda' => 2
+                ]);
+        }else{
+            DB::table('visitor')->where('nik_visitor',$nikVisitorUpdate)
+                ->update([
+                    'nama_lengkap_visitor' => $namaLengkapVisitorUpdate,
+                    'nomor_hp_visitor' => $nomorHpVisitorUpdate,
+                    'asal_instansi_visitor' => $asalInstansiVisitorUpdate,
+                    // 'status_visitor' => 0
+                ]);
+        }
 
         //put new nik visitor session
-        if ($nikVisitor!=$nikVisitorSession){
-            Session::put('nik_visitor',$nikVisitor);
+        if ($nikVisitorUpdate!=$nikVisitorSession){
+            Session::put('nik_visitor',$nikVisitorUpdate);
         }
+
         //log activity update profile visitor
         log_activity::create([
             'activity' => 'update profile visitor',
-            'id_actor' => $nikVisitor //nik visitor
+            'id_actor' => $nikVisitorUpdate //nik visitor
             // 'id_object' => $VisitorCheckIn->id_checkin, //id checkin
         ]);
 

@@ -6,36 +6,9 @@ Profil Visitor | JMDC Visitor
 <?php 
 $user = Session::get('user');
 ?>
-<div class="layout-wrapper layout-content-navbar">
-      <div class="layout-container">
-         <!-- Menu -->
 
-         <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-          <div class="app-brand demo">
-            <img src="assets/img/logo-landscape.png" height="70" alt="View Badge User" data-app-dark-img="logo.png" data-app-light-img="logo.png"/>
-           
-          </div>
+        @include('visitor.sidebar')
 
-          <div class="menu-inner-shadow"></div>
-
-          <ul class="menu-inner py-1">
-            <!-- Dashboard -->
-            <li class="menu-item">
-              <a href="{{route('dashboard-visitor')}}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-fingerprint"></i>
-                <div data-i18n="Analytics">Dashboard Check In</div>
-              </a>
-            </li>
-            <li class="menu-item active">
-              <a href="{{route('profil-visitor')}}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-user"></i>
-                <div data-i18n="Analytics">Profil</div>
-              </a>
-            </li>
-            
-          </ul>
-        </aside>
-        <!-- / Menu -->
         <!-- Layout container -->
         <div class="layout-page">
           <!-- Navbar -->
@@ -158,7 +131,8 @@ $user = Session::get('user');
                               id="namaLengkapVisitor"
                               name="namaLengkapVisitor"
                               value='{{$DataVisitor->nama_lengkap_visitor}}'
-                              autofocus required
+                              autofocus required 
+                              oninvalid="this.setCustomValidity('Silahkan isi nama!')" oninput="this.setCustomValidity('')"
                             />
                           </div>
                           <div class="mb-3 col-md-6">
@@ -170,6 +144,7 @@ $user = Session::get('user');
                               id="nikVisitor" 
                               value='{{$DataVisitor->nik_visitor}}'
                               required
+                              oninvalid="this.setCustomValidity('Silahkan isi NIK!')" oninput="this.setCustomValidity('')"
                               />
                           </div>
                           <div class="mb-3 col-md-6">
@@ -181,6 +156,7 @@ $user = Session::get('user');
                               name="asalInstansiVisitor"
                               value='{{$DataVisitor->asal_instansi_visitor}}'
                               required
+                              oninvalid="this.setCustomValidity('Silahkan isi asal instansi!')" oninput="this.setCustomValidity('')"
                             />
                           </div>
                           
@@ -207,6 +183,7 @@ $user = Session::get('user');
                                 class="form-control"
                                 value='{{$DataVisitor->nomor_hp_visitor}}'
                                 maxlength="13" required
+                                oninvalid="this.setCustomValidity('Silahkan isi nomor HP!')" oninput="this.setCustomValidity('')"
                               />
                             </div>
                           </div>

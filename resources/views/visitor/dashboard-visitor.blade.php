@@ -1,41 +1,15 @@
 @extends('master')
+@section('title')
+Dashboard Visitor | JMDC Visitor
+@endsection
 @section('content')
 <?php 
 $user = Session::get('user');
 $niksession = Session::get('nik_visitor');
 ?>
-<body>
 
-<div class="layout-wrapper layout-content-navbar">
-      <div class="layout-container">
-         <!-- Menu -->
+        @include('visitor.sidebar')    
 
-         <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-          <div class="app-brand demo">
-            <img src="assets/img/logo-landscape.png" height="70" alt="View Badge User" data-app-dark-img="logo.png" data-app-light-img="logo.png"/>
-           
-          </div>
-
-          <div class="menu-inner-shadow"></div>
-
-          <ul class="menu-inner py-1">
-            <!-- Dashboard -->
-            <li class="menu-item active">
-              <a href="{{route('dashboard-visitor')}}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-fingerprint"></i>
-                <div data-i18n="Analytics">Dashboard Check In</div>
-              </a>
-            </li>
-            <li class="menu-item">
-              <a href="{{route('profil-visitor')}}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-user"></i>
-                <div data-i18n="Analytics">Profil</div>
-              </a>
-            </li>
-            
-          </ul>
-        </aside>
-        <!-- / Menu -->
         <!-- Layout container -->
         <div class="layout-page">
           <!-- Navbar -->
@@ -105,9 +79,10 @@ $niksession = Session::get('nik_visitor');
           <div class="content-wrapper">
             <!-- Content -->
             <div class="container-xxl flex-grow-1 container-p-y">
+
               <div class="row" id="waiting-approval-data">
                 <div class="col-lg-12 mb-4 order-0">
-                <div class="card"  style="display:show">
+                  <div class="card"  style="display:show">
                     <div class="d-flex align-items-end row">
                       <div class="col-sm-8">
                         <div class="card-body">
@@ -135,9 +110,10 @@ $niksession = Session::get('nik_visitor');
                         </div>
                       </div>
                     </div>
-                    </div>
                   </div>
-                  </div>
+                </div>
+              </div>
+                  
               <div class="row"  id="rejected-notif">
                 <div class="col-lg-12 mb-4 order-0">
                   <div class="card" style="display:show">
@@ -168,14 +144,14 @@ $niksession = Session::get('nik_visitor');
                       </div>
                     </div>
                   </div>
-                  </div>
                 </div>
+              </div>
+
               <div class="row" id="rejected-form" >
                 <div class="col-lg-12 mb-4 order-0">
                   <div class="card" style="display:show">
                     <div class="d-flex align-items-end row">
                       <div class="col-sm-8">
-                        
                         <div class="card-body">
                         <h5>FORM PERBAIKAN DATA</h5>
                         <form id="formAuthentication" class="mb-4" action="{{route('revisi-register')}}" method="POST" enctype="multipart/form-data">
@@ -190,6 +166,8 @@ $niksession = Session::get('nik_visitor');
                               placeholder="Masukkan nama lengkap anda"
                               value='{{$DataVisitor->nama_lengkap_visitor}}'
                               autofocus
+                              required
+                              oninvalid="this.setCustomValidity('Silahkan isi nama lengkap!')" oninput="this.setCustomValidity('')"
                             />
                           </div>
                           <div class="mb-4">
@@ -201,6 +179,8 @@ $niksession = Session::get('nik_visitor');
                               name="nikVisitor" 
                               placeholder="Masukkan NIK anda" 
                               value='{{$DataVisitor->nik_visitor}}'
+                              required
+                              oninvalid="this.setCustomValidity('Silahkan isi NIK!')" oninput="this.setCustomValidity('')"
                             />
                           </div>
                           <div class="mb-4">
@@ -212,6 +192,8 @@ $niksession = Session::get('nik_visitor');
                               name="nomorHpVisitor" 
                               placeholder="Masukkan no HP anda" 
                               value='{{$DataVisitor->nomor_hp_visitor}}'
+                              required
+                              oninvalid="this.setCustomValidity('Silahkan isi nomor HP!')" oninput="this.setCustomValidity('')"
                               />
                           </div>
                           <div class="mb-4">
@@ -235,9 +217,10 @@ $niksession = Session::get('nik_visitor');
                               name="asalInstansiVisitor" 
                               placeholder="Masukkan asal instansi anda" 
                               value= '{{$DataVisitor->asal_instansi_visitor}}'
+                              required
+                              oninvalid="this.setCustomValidity('Silahkan isi asal instansi!')" oninput="this.setCustomValidity('')"
                               />
                           </div>
-                          
                           <div class="mb-3">
                                 <label for="foto_ktp" class="form-label">Foto KTP</label>
                     
@@ -249,7 +232,11 @@ $niksession = Session::get('nik_visitor');
                     </div>
                   </div>
                 </div>
-              </div></div>
+              </div>
+            </div>
+
+
+            
               <div class="row"  id="checked-in">
                 <div class="col-lg-12 mb-4 order-0">
                   
@@ -259,7 +246,7 @@ $niksession = Session::get('nik_visitor');
                         <div class="card-body">
                           <h5 class="card-title text-primary">Anda sedang berada di Data Center! 🎉</h5>
                             <p class="mb-4">
-                              Anda telah check in pada <span class="fw-bold" id="checkin_time">{{$DataCheckIn->checkin_time}}</span>{{$DataCheckIn->checkin_time}}. Perhatikan barang bawaan Anda
+                              Anda telah check in pada <span class="fw-bold" id="checkin_time">{{$DataCheckIn->checkin_time}}</span>. Perhatikan barang bawaan Anda
                               dan patuhi aturan di Data Center
                               <br>
                             </p>
@@ -282,9 +269,10 @@ $niksession = Session::get('nik_visitor');
                   </div>
                   </div>
                   </div>
+
               <div class="row" id="waiting-approval-check-in" >
                 <div class="col-lg-12 mb-4 order-0">
-                  <div class="card" style="display:none">
+                  <div class="card">
                     <div class="d-flex align-items-end row">
                       <div class="col-sm-8">
                         <div class="card-body">
@@ -306,6 +294,7 @@ $niksession = Session::get('nik_visitor');
                   </div>
                   </div>
                   </div>
+                  
                   <div class="row"  id="rejected-check-in">
                 <div class="col-lg-12 mb-4 order-0">
                   <div class="card" style="display:show">
@@ -350,11 +339,12 @@ $niksession = Session::get('nik_visitor');
                             <div class="row mb-3">
                               <label class="col-sm-4 col-form-label" for="basic-default-name">PIC Data Center</label>
                               <div class="col-sm-8">
-                                <select class="form-control" name="daftarPic" id="daftarPic">
-                                  <option value="" selected>Pilih PIC</option>
+                                <select class="form-control" name="daftarPic" id="daftarPic" required>
+                                  <option value="" disabled selected>Pilih PIC</option>
                                   @foreach($dataPetugas as $p)
                                   <option value="{{ $p->id_petugas }}">{{ $p->nama_lengkap_petugas }}</option>
 		                              @endforeach
+                                  
                                 </select>
                               </div>
                             </div>
@@ -366,6 +356,7 @@ $niksession = Session::get('nik_visitor');
                                   id="barangBawaan"
                                   name="barangBawaan"
                                   placeholder="Contoh : Tas, Tumblr"
+                                  required
                                 ></textarea>
                               </div>
                             </div>
@@ -377,6 +368,7 @@ $niksession = Session::get('nik_visitor');
                                     name="keperluanVisit"
                                     class="form-control"
                                     placeholder="Jelaskan keperluan anda disini.."
+                                    required
                                   ></textarea>
                               </div>
                             </div>
@@ -436,6 +428,7 @@ $niksession = Session::get('nik_visitor');
                       <th>Barang Yang Dibawa</th>
                       <th>Waktu Check In</th>
                       <th>Waktu Check Out</th>
+                      <th>Keterangan</th>
                     </tr>
                   </thead>
                   <tbody class="table-border-bottom-0">
@@ -449,7 +442,7 @@ $niksession = Session::get('nik_visitor');
                       <td>{{ $p->barang_bawaan }}</td>
                       <td><span class="badge bg-label-primary me-1">{{ $p->checkin_time }}</span></td>
                       <td><span class="badge bg-label-danger me-1">{{ $p->checkout_time }}</span></td>
-                      
+                      <td>{{ $p->keterangan }}</td>
                     </tr>
                     <?php $tempHistory++;?>
                     @endforeach
@@ -529,15 +522,6 @@ $niksession = Session::get('nik_visitor');
                       document.getElementById("rejected-notif").style.display = "none";
                       document.getElementById("waiting-approval-data").style.display = "none";
                     }
-                    // else if(status_checkin == 99){ //if datacheckin kosong, diinject dari code 99
-                    //   document.getElementById("waiting-approval-check-in").style.display = "none";
-                    //   document.getElementById("form-check-in").style.display = "show";
-                    //   document.getElementById("checked-in").style.display = "none";
-                    //   document.getElementById("rejected-form").style.display = "none";
-                    //   document.getElementById("rejected-check-in").style.display = "none";
-                    //   document.getElementById("rejected-notif").style.display = "none";
-                    //   document.getElementById("waiting-approval-data").style.display = "none";
-                    // }
 
                   }else if(status_visitor == 2){ //registrasi direject
                     document.getElementById("waiting-approval-check-in").style.display = "none";

@@ -15,19 +15,33 @@
 
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
-            <li class="menu-item active">
-              <a href="{{route('dashboard-visitor')}}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-fingerprint"></i>
-                <div data-i18n="Analytics">Dashboard Check In</div>
-              </a>
-            </li>
-            <li class="menu-item">
-              <a href="{{route('profil-visitor')}}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-user"></i>
-                <div data-i18n="Analytics">Profil</div>
-              </a>
-            </li>
+              <li class="menu-item active" id="dashboard-visitor">
+                <a href="{{route('dashboard-visitor')}}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-fingerprint"></i>
+                  <div data-i18n="Analytics">Dashboard Check In</div>
+                </a>
+              </li>
+              <li class="menu-item" id="profil-visitor">
+                <a href="{{route('profil-visitor')}}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-user"></i>
+                  <div data-i18n="Analytics">Profil</div>
+                </a>
+              </li>
+              
             
           </ul>
         </aside>
         <!-- / Menu -->
+        <script type="text/javascript">
+          var currentRoute='{{Route::current()->getName()}}';
+          $( document ).ready(function() {
+              if(currentRoute == 'dashboard-visitor'){
+                document.getElementById('dashboard-visitor').classList.add('active');
+                document.getElementById('profil-visitor').classList.remove('active');
+                
+              }else{
+                document.getElementById('dashboard-visitor').classList.remove('active');
+                document.getElementById('profil-visitor').classList.add('active');
+              }
+          });
+          </script>

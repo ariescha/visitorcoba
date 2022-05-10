@@ -12,7 +12,28 @@ use App\Models\log_activity;
 
 
 class DashboardVisitorController extends Controller{
+    function __construct(){
+        $this->middleware(function ($request,$next) {
+            // fetch session and use it in entire class with constructor
+            $this->user = session()->get('user');
+            $this->level_user = session()->get('level_user');
 
+            //dd($this->user);
+            //return $next($request);
+            if($this->user == null){
+                return redirect('login')->with('alert','Sesi anda telah habis! Silahkan masuk kembali.');
+            }
+            else{
+                if($this->level_user == 0){
+                    return $next($request);
+                }else{
+                    return abort(401);
+                }
+            }
+        });
+       
+        
+    }
     public function index(){
         //session
         $nikVisitor = Session::get('nik_visitor');
@@ -31,21 +52,42 @@ class DashboardVisitorController extends Controller{
         } 
 
     	//get data petugas
-    	$dataPetugas = DB::table('petugas_dc')->get();
+    	$dataPetugas = DB::table('petugas_dc')
+                        ->where('status_petugas', 1)
+                        ->get();
         
         //get data visitor
         $DataVisitor = Visitor::whereRaw('nik_visitor = ?', [$nikVisitor])->first();
         
         //get table histor checkin
         $tableHistory = DB::table('list_checkin')
-                        ->where('list_checkin.nik_visitor', $nikVisitor)
+                        ->whereRaw('list_checkin.nik_visitor = '.$nikVisitor.' and (list_checkin.status_checkin = 3 or list_checkin.status_checkin = 2)')
                         ->leftjoin('petugas_dc','list_checkin.id_petugas','=','petugas_dc.id_petugas')
                         ->select('list_checkin.created_at','petugas_dc.nama_lengkap_petugas',
                         'list_checkin.keperluan_visit','list_checkin.barang_bawaan',
-                        'list_checkin.checkin_time','list_checkin.checkout_time')
+                        'list_checkin.checkin_time','list_checkin.checkout_time', 'list_checkin.status_checkin')
                         ->orderBy('created_at', 'DESC')
                         ->get();
-
+        
+        $tableHistoryProses = $tableHistory;
+        $lenghtTableHistory = count($tableHistory);
+        
+        for ($x = 0; $x < $lenghtTableHistory; $x++) {
+            $status = $tableHistory[$x] -> status_checkin;
+            if ($status == 0){
+                $tableHistoryProses[$x] -> keterangan = 'Menunggu Approval';
+            } else if($status == 1){
+                $tableHistoryProses[$x] -> keterangan = 'Sedang CheckIn';
+            } else if($status == 2){
+                $tableHistoryProses[$x] -> keterangan = 'CheckIn Ditolak';
+            } else if($status == 3){
+                $tableHistoryProses[$x] -> keterangan = 'Sudah CheckOut';
+            } else{
+                $tableHistoryProses[$x] -> keterangan = '';
+            }
+        
+        }
+        
     	// return view with data
     	return view('visitor.dashboard-visitor',['dataPetugas' => $dataPetugas, 'DataVisitor' => $DataVisitor,'tableHistory' => $tableHistory, 'DataCheckIn' => $VisitorCheckIn]);
     }
