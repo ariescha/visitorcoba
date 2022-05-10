@@ -189,6 +189,7 @@ else{
                             <form id="approval-register" action="{{route('upload-nda')}}" method="post" enctype="multipart/form-data">
                               {{csrf_field()}}
                               <input type="hidden" id="NikVisitorNda" type = "text" name="NikVisitor"> 
+                              <input type="hidden" id="EmailVisitorNda" type = "text" name="EmailVisitor"> 
                               <div class="form-group row">
                                 <div class="col-sm-6">
                                   <label for="tanggal_mulai" class="form-label">Tanggal Mulai NDA</label>
@@ -301,7 +302,7 @@ else{
         $('#AlasanReject').val('');
     }
 
-    function loadModalFileNda(nama,nik, statusNda) {
+    function loadModalFileNda(nama,nik, statusNda,email) {
       $.ajax({
         url: '/get-nda',
         type: 'POST',
@@ -354,6 +355,7 @@ else{
         $('#FormNdaUpload').show();
       }
       $('#NikVisitorNda').val(nik);
+      $('#EmailVisitorNda').val(email);
       $('#ModalFileNda').text(tempText + ' NDA ' + nama);
       $("#file_nda_input").val('');
       $('#tanggal_akhir_nda').val('');
@@ -597,7 +599,7 @@ else{
                   else {
                     cssClass = 'danger'
                   }
-                  return '<button class="btn rounded-pill btn-sm btn-'+cssClass+'" data-bs-toggle="modal" data-bs-target="#modal-FileNda" onclick="loadModalFileNda(`'+row.nama_lengkap_visitor+'`,`'+row.nik_visitor+'`,`'+row.status_nda_visitor+'`)">'+row.text_nda +'</button>'
+                  return '<button class="btn rounded-pill btn-sm btn-'+cssClass+'" data-bs-toggle="modal" data-bs-target="#modal-FileNda" onclick="loadModalFileNda(`'+row.nama_lengkap_visitor+'`,`'+row.nik_visitor+'`,`'+row.status_nda_visitor+'`,`'+row.email_visitor+'`)">'+row.text_nda +'</button>'
                   //return '<button class="btn rounded-pill btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modal-approve-registrasi" onclick="loadModalApprove(`'+row.nama_lengkap_visitor+'`,`'+row.nik_visitor+'`)">Approve</button><button class="btn rounded-pill btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal-reject-registrasi" onclick="loadModalReject(`'+row.nama_lengkap_visitor+'`,`'+row.nik_visitor+'`)">Reject</button>'
                 }
               }

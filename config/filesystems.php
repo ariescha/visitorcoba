@@ -35,6 +35,38 @@ return [
             'root' => storage_path('app'),
         ],
 
+        'sftpKTP' => [
+            'driver' => 'sftp',
+            'host' => env('FTP_HOST'),
+            'username' => env('FTP_USERNAME'),
+            'password' => env('FTP_PASSWORD'),
+            'root' => env('FTP_ROOT_KTP') // for example: /public_html/images
+         
+            // Settings for SSH key based authentication...
+            //'privateKey' => '/root/to/privateKey',
+            //'password' => 'encryption-password',
+         
+            // Optional SFTP Settings...
+            // 'port' => 22,
+            // 'timeout' => 30,
+        ],
+
+        'sftpNDA' => [
+            'driver' => 'sftp',
+            'host' => env('FTP_HOST'),
+            'username' => env('FTP_USERNAME'),
+            'password' => env('FTP_PASSWORD'),
+            'root' => env('FTP_ROOT_NDA')
+        ],
+
+        'sftpFoto' => [
+            'driver' => 'sftp',
+            'host' => env('FTP_HOST'),
+            'username' => env('FTP_USERNAME'),
+            'password' => env('FTP_PASSWORD'),
+            'root' => env('FTP_ROOT_FOTO')
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
