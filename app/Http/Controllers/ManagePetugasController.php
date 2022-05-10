@@ -10,6 +10,28 @@ use Illuminate\Support\Facades\Hash;
 
 class ManagePetugasController extends Controller
 {
+    function __construct(){
+        $this->middleware(function ($request,$next) {
+            // fetch session and use it in entire class with constructor
+            $this->user = session()->get('user');
+            $this->level_user = session()->get('level_user');
+
+            //dd($this->user);
+            //return $next($request);
+            if($this->user == null){
+                return redirect('login')->with('alert','Sesi anda telah habis! Silahkan masuk kembali.');
+            }
+            else{
+                if($this->level_user == 1){
+                    return $next($request);
+                }else{
+                    return abort(401);
+                }
+            }
+        });
+       
+        
+    }
     public function index(){
         $id_petugas = Session::get('id_petugas');
         $PetugasDC = Petugas_DC::where('id_petugas','!=',$id_petugas)->get();
