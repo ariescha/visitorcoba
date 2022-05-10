@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +15,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('login');
+});
+Route::fallback(function () {
+    if(Session::has('level_user')){
+        $level_user = Session::get('level_user');
+        if($level_user == 0){
+            return redirect('dashboard-visitor');
+        }else{
+            return redirect('approval-check-in');
+        }
+    }else{
+        return redirect('login');
+    }
+    
+
 });
 
 //Approval Registrasi Visitor
