@@ -101,7 +101,7 @@
                     id="email"
                     name="email"
                     placeholder="Masukkan email anda"
-                    autofocus
+                    autofocus required
                   />
                 </div>
                 <div class="mb-3">
@@ -112,7 +112,7 @@
                     id="password"
                     name="password"
                     placeholder="Masukkan password baru"
-                    autofocus
+                    autofocus required
                   />
                 </div>
                 <div class="mb-3">
@@ -123,7 +123,7 @@
                     id="konfirmasi-password"
                     name="konfirmasi-password"
                     placeholder="Masukkan password baru"
-                    autofocus
+                    autofocus required
                   />
                 </div>
                 

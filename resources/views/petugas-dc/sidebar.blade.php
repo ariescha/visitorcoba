@@ -50,26 +50,35 @@
 
         <script type="text/javascript">
           var currentRoute='{{Route::current()->getName()}}';
+          var is_superadmin = '{{$is_superadmin}}';
           $( document ).ready(function() {
               if(currentRoute == 'approval-check-in'){
                 document.getElementById('approval-check-in').classList.add('active');
                 document.getElementById('approval-registrasi').classList.remove('active');
-                document.getElementById('manajemen-petugas').classList.remove('active');
+                if(is_superadmin == 1){
+                  document.getElementById('manajemen-petugas').classList.remove('active');
+                }
                 document.getElementById('profil-petugas-dc').classList.remove('active');
               }else if (currentRoute == 'approval-registrasi'){
                 document.getElementById('approval-check-in').classList.remove('active');
                 document.getElementById('approval-registrasi').classList.add('active');
+                if(is_superadmin == 1){
                 document.getElementById('manajemen-petugas').classList.remove('active');
+                }
                 document.getElementById('profil-petugas-dc').classList.remove('active');
               } else if(currentRoute == 'manajemen-petugas'){
                 document.getElementById('approval-check-in').classList.remove('active');
                 document.getElementById('approval-registrasi').classList.remove('active');
+                if(is_superadmin == 1){
                 document.getElementById('manajemen-petugas').classList.add('active');
+                }
                 document.getElementById('profil-petugas-dc').classList.remove('active');
               }else{
                 document.getElementById('approval-check-in').classList.remove('active');
                 document.getElementById('approval-registrasi').classList.remove('active');
+                if(is_superadmin == 1){
                 document.getElementById('manajemen-petugas').classList.remove('active');
+                }
                 document.getElementById('profil-petugas-dc').classList.add('active');
               }
           });
