@@ -29,10 +29,13 @@ Route::get('/downloadNda/{filename}', 'ManageRegisterController@DownloadNda')->n
 Route::get('/downloadktp/{filename}', 'ManageRegisterController@DownloadKtp')->name('DownloadKtp');
 
 //Approval Checkin
+Route::post('CheckoutPetugas','ManageCheckInController@CheckoutPetugas')->name('CheckoutPetugas');
 Route::get('approval-check-in','ManageCheckInController@index')->name('approval-check-in');
+Route::get('LoadNewApprovalCheckin','ManageCheckInController@LoadNewApprovalCheckin')->name('LoadNewApprovalCheckin');
+Route::get('LoadApprovalCheckin','ManageCheckInController@LoadApprovalCheckin')->name('LoadApprovalCheckin');
+Route::get('LoadApprovalCheckinHistory','ManageCheckInController@LoadApprovalCheckinHistory')->name('LoadApprovalCheckinHistory');
 Route::post('approve-check-in','ManageCheckInController@approve')->name('approve-check-in');
 Route::post('reject-check-in','ManageCheckInController@reject')->name('reject-check-in');
-Route::post('check-out','ManageCheckInController@checkout')->name('check-out');
 
 Route::get('login','LoginController@index')->name('login');
 Route::post('login-post','LoginController@store')->name('login-post');

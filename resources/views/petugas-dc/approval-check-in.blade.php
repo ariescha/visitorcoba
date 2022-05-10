@@ -151,7 +151,7 @@ else{
                 <h6 class="card-subtitle" style="color:rgb(52, 51, 51)">Lakukan validasi data visitor sebelum menerima atau menolak check in visitor.</h6>
                   <div class="table-responsive text-nowrap">
                     <br>
-                    <table class="table table-hover" style="background-color:white" >
+                    <table id="NewApprovalCheckin" class="table table-hover" style="background-color:white" >
                       <thead>
                         <tr style="text-align:center">
                           <th>No</th>
@@ -164,24 +164,7 @@ else{
                         </tr>
                       </thead>
                       <tbody class="table-border-bottom-0">
-                      <?php $i = 1; ?>
-                      @foreach($approval_checkin as $approval_checkin)  
-                        <tr style="text-align:center">
-                          <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{$i}}</strong></td>
-                          <td>{{ $approval_checkin-> nama_lengkap_visitor }}</td>
-                          <td>{{ $approval_checkin-> keperluan_visit }}</td>
-                          <td>{{ $approval_checkin-> barang_bawaan }}</td>
-                          <td>{{ $approval_checkin-> nomor_hp_visitor }}</td>
-                          <td>{{ $approval_checkin-> created_at}}</td>
-                          <td>
-                            <button id="click-approve" class="btn rounded-pill btn-sm btn-success" onclick="approve('{{$approval_checkin->id_checkin}}','{{$approval_checkin->nama_lengkap_visitor}}')" data-bs-toggle="modal"
-                          data-bs-target="#modal-approve-check-in">Approve</button>
-                            <button id="click-reject" class="btn rounded-pill btn-sm btn-danger" onclick="reject('{{$approval_checkin->id_checkin}}')" data-bs-toggle="modal"
-                          data-bs-target="#modal-reject-check-in">Reject</button>
-                          </td>
-                        </tr>
-                        <?php $i++; ?>
-                        @endforeach
+                      
                       </tbody>
                     </table>
               </div>
@@ -195,10 +178,10 @@ else{
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="modalToggleLabel">Form Approval Check In</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeModalApprove()"></button>
                         </div>
                         <div class="modal-body">
-                        <form id="approval-checkin" action="{{route('approve-check-in')}}" method="post" enctype="multipart/form-data">
+                        <form id="approval-checkin" method="post" enctype="multipart/form-data">
                             {{csrf_field()}}
                             <input type="hidden" id="id_approval_checkin" type = "number" name="id_approval_checkin"><br/>
                             <div class="row mb-3">
@@ -218,23 +201,31 @@ else{
                                     id="nama_visitor"
                                     name="nama_visitor"
                                     class="form-control"
-                                    disabled
+                                    readonly
                                   >
                               </div>
                             </div>
                             <div class="row mb-3">
+                              <div id="my_camera"></div>
+                              <div id="my_result"></div>   
+                            </div>
+                            </br>
+                            <input type="button" id="take_snapshot" value="Ambil Gambar" onclick="takeSnapshot()">
+                            <input type="button" id="reset_snapshot" value="Reset Gambar" onclick="resetSnapshot()" disabled>
+                            <input type="hidden" id="gambar_visitor" name="gambar_visitor">
+                            <!-- <div class="row mb-3">
                               <label class="col-sm-4 col-form-label" for="basic-default-email">Foto Bukti Visitor</label>
                               <div class="col-sm-8">
                                 <input class="form-control" type="file" id="formFile" name="foto_visitor" accept="image/*" />
                               </div>
-                            </div>
+                            </div> -->
                         </div>
                             <div class="modal-footer">
                                 
-                                <button class="btn btn-danger"  data-bs-dismiss="modal">
+                                <button type="button" onclick="closeModalApprove()" class="btn btn-danger"  data-bs-dismiss="modal">
                                     Cancel
                                 </button>
-                                <button type="submit" class="btn btn-success">
+                                <button type="button" onclick="ApproveCheckin()" class="btn btn-success">
                                     Submit
                                 </button>
                             </div>
@@ -251,7 +242,7 @@ else{
                             <h5 class="modal-title" id="modalToggleLabel">Apakah anda yakin ingin reject?</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form id="rejection-checkin" action="{{route('reject-check-in')}}" method="post" enctype="multipart/form-data">
+                        <form id="rejection-checkin" method="post" enctype="multipart/form-data">
                         {{csrf_field()}}
                         <div class="modal-body">
                             <input type="hidden" id="id_rejection_checkin" type = "number" name="id_rejection_checkin"><br/>
@@ -259,10 +250,10 @@ else{
                             <textarea class="form-control" id="alasan_reject" name="alasan_reject"></textarea>
                         </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-success">
+                                <button type="button" onclick="RejectCheckin()" class="btn btn-success">
                                     Submit
                                 </button>
-                                <button class="btn btn-danger"  data-bs-dismiss="modal">
+                                <button type="button" class="btn btn-danger"  data-bs-dismiss="modal">
                                     Cancel
                                 </button>
                             </div>
@@ -277,7 +268,7 @@ else{
                 <h6 class="card-subtitle" style="color:rgb(52, 51, 51)">Tabel di bawah memuat data visitor yang sedang berada di data center.</h6>
                   <div class="table-responsive text-nowrap">
                     <br> 
-                    <table class="table table-hover" style="background-color:white" >
+                    <table id="ApprovalCheckin" class="table table-hover" style="background-color:white" >
                       <thead>
                         <tr style="text-align:center">
                           <th>No</th>
@@ -291,25 +282,7 @@ else{
                         </tr>
                       </thead>
                       <tbody class="table-border-bottom-0">
-                      <?php $i=1; ?>
-                      @foreach($data_checkin as $data_checkin) 
-                        <tr style="text-align:center">
-                          <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{$i}}</strong></td>
-                          <td>{{$data_checkin->nama_lengkap_visitor}}</td>
-                          <td>{{$data_checkin->tanggal_checkin}}</td>
-                          <td>{{$data_checkin->keperluan_visit}}</td>
-                          <td>{{$data_checkin->barang_bawaan}}</td>
-                          <td>{{$data_checkin->approval_timestamp}}</td>
-                          <td>{{$data_checkin->nama_lengkap_petugas}}</td>
-                          @if($data_checkin->status_nda_visitor==1)
-                          <td><button id="click-checkout" class="btn rounded-pill btn-sm btn-warning" data-bs-toggle="modal" onclick="checkout('{{$data_checkin->id_checkin}}','{{$data_checkin->nama_lengkap_visitor}}')"
-                          data-bs-target="#modal-check-out">Check Out</button></td>
-                          @else
-                            <td><button class="btn rounded-pill btn-sm btn-danger" disabled>Check Out</button></td>                          
-                          @endif
-                        </tr>
-                      <?php $i++; ?>
-                      @endforeach
+                      
                       </tbody>
                     </table>
                     </div>
@@ -328,14 +301,14 @@ else{
                         </div>
                             <div class="modal-footer">
                               
-                              <button class="btn btn-danger"  data-bs-dismiss="modal">
+                              <button type="button" class="btn btn-danger"  data-bs-dismiss="modal">
                                     Batal
                                 </button>
-                              <form id="check-out"  action="{{route('check-out')}}" method="post" enctype="multipart/form-data">
+                              <form id="check-out-petugas" method="post" enctype="multipart/form-data">
                                 {{csrf_field()}}
                                 <input type="hidden" id="id_data_checkin" name="id_data_checkin" type="number">
                                 
-                                <button type="submit" class="btn btn-success">
+                                <button type="button" onclick="CheckoutPetugas()" class="btn btn-success">
                                     Ya, Saya Yakin
                                 </button>                                
                               </form> 
@@ -352,7 +325,7 @@ else{
                 <h6 class="card-subtitle" style="color:rgb(52, 51, 51)">Tabel di bawah memuat data kunjungan visitor yang telah tersimpan.</h6>
                   <div class="table-responsive text-nowrap">
                     <br>
-                    <table class="table table-hover" style="background-color:white" >
+                    <table id="ApprovalCheckinHistory" class="table table-hover" style="background-color:white" >
                       <thead >
                         <tr style="text-align:center">
                           <th>No</th>
@@ -366,20 +339,7 @@ else{
                         </tr>
                       </thead>
                       <tbody class="table-border-bottom-0">
-                        <?php $i=1; ?>
-                        @foreach($history_checkin as $history_checkin)
-                        <tr style="text-align:center">
-                          <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{$i}}</strong></td>
-                          <td>{{$history_checkin->nama_lengkap_visitor}}</td>
-                          <td>{{$history_checkin->tanggal_checkin}}</td>
-                          <td>{{$history_checkin->keperluan_visit}}</td>
-                          <td>{{$history_checkin->barang_bawaan}}</td>
-                          <td>{{$history_checkin->checkin_time}}</td>
-                          <td>{{$history_checkin->checkout_time}}</td>
-                          <td>{{$history_checkin->keterangan}}</td>
-                        </tr>
-                        <?php $i++; ?>
-                        @endforeach
+                        
                       </tbody>
                     </table>
               </div>
@@ -394,17 +354,64 @@ else{
             </div>
             
             <!-- / Content -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
 <script type="text/javascript">
-  var msg = '{{Session::get('alert')}}';
-  var exist = '{{Session::has('alert')}}';
-  if(exist){
-    alert(msg);
+  
+  $(document).ready( function () {
+      // $('#NewVisitor').DataTable();
+      //$('#NewApprovalCheckin').DataTable();
+      // LoadNewRegistrasiVisitor(false);
+      // LoadRegistrasiVisitor(false);
+      LoadNewApprovalCheckin(false);
+      LoadApprovalCheckin(false);
+      LoadApprovalCheckinHistory();
+
+    } );
+
+  function takeSnapshot(){
+    var raw_image;
+    Webcam.snap( 
+      function(data_uri) {
+		    document.getElementById('my_result').innerHTML =  '<img src="' + data_uri + '"/>';
+        // raw_image = data_uri.replace(/^data\:image\/\w+\;base64\,/, '');
+        raw_image = data_uri;
+      }); 
+      document.getElementById('my_camera').style.display = "none";
+      document.getElementById('my_result').style.display = "block";
+      document.getElementById('reset_snapshot').disabled = false;
+      document.getElementById('take_snapshot').disabled = true;
+      
+      console.log(raw_image);
+      document.getElementById('gambar_visitor').value = raw_image;
+  }
+
+  function resetSnapshot(){
+    document.getElementById('my_camera').style.display = "block";
+    document.getElementById('my_result').style.display = "none";
+    document.getElementById('reset_snapshot').disabled = true;
+    document.getElementById('take_snapshot').disabled = false;
+    document.getElementById('gambar_visitor').value = "";
   }
 
   function approve(id,nama_visitor){
     console.log(nama_visitor);
     $('#nama_visitor').val(nama_visitor);
     $('#id_approval_checkin').val(id);
+    $('#nomor_visitor_tag').val('');
+    Webcam.reset();
+    resetSnapshot();
+    Webcam.set({
+      width: 300,
+      height: 240,
+      image_format: 'jpeg',
+      jpeg_quality: 90
+      });
+      Webcam.attach( '#my_camera' );
+  }
+
+  function closeModalApprove(){
+    Webcam.reset();
   }
 
   function reject(id){
@@ -417,5 +424,265 @@ else{
     $('#id_data_checkin').val(id);
     document.getElementById('variable_nama').innerHTML=nama_visitor;
   }
+
+  function LoadNewApprovalCheckin(showAlert, type) {
+      $('#loader').show();
+      console.log('LoadNewApprovalCheckin');
+      $.ajax({
+        url: '/LoadNewApprovalCheckin',
+        type: 'GET',
+        dataType: 'json',
+        error: function(e) {
+          console.log(e);
+        },
+        success: function(data) {
+          console.log(data.data);
+          $('#NewApprovalCheckin').dataTable( {
+              "destroy": true,
+              "aaData": data.data,
+              "columns": [
+                  { "data": null,"orderable": false, 
+                    render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;}},
+                  { "data": "nama_lengkap_visitor" },
+                  { "data": "keperluan_visit" },
+                  { "data": "barang_bawaan" },
+                  { "data": "nomor_hp_visitor" },
+                  { "data": "created_at" },
+                  { "data": "id_checkin" }
+              ],
+              "columnDefs": [ {
+                "targets": 6,
+                "data": "foto_ktp_visitor",
+                "render": function ( data, type, row, meta ) {
+                  return '<button id="click-approve" class="btn rounded-pill btn-sm btn-success" onclick="approve(`'+row.id_checkin+'`,`'+row.nama_lengkap_visitor+'`)" data-bs-toggle="modal" data-bs-target="#modal-approve-check-in">Approve</button><button id="click-reject" class="btn rounded-pill btn-sm btn-danger" onclick="reject(`'+row.id_checkin+'`)" data-bs-toggle="modal" data-bs-target="#modal-reject-check-in">Reject</button>'
+                }
+              }             ]
+          });
+          
+          $('#loader').hide();
+          if (showAlert) {
+            if (type == 'Approve') {
+              ShowNotif(type +' Berhasil!', 'green');
+            }
+            else {
+              ShowNotif(type +' Berhasil!', 'red');
+            }
+            //alert(type +' Berhasil');
+          }
+        }
+      });
+    }
+
+    function LoadApprovalCheckin(showAlert, type) {
+      $('#loader').show();
+      console.log('LoadApprovalCheckin');
+      $.ajax({
+        url: '/LoadApprovalCheckin',
+        type: 'GET',
+        dataType: 'json',
+        error: function(e) {
+          console.log(e);
+        },
+        success: function(data) {
+          console.log(data.data);
+          $('#ApprovalCheckin').dataTable( {
+              "destroy": true,
+              "aaData": data.data,
+              "columns": [
+                  { "data": null,"orderable": false, 
+                    render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;}},
+                  { "data": "nama_lengkap_visitor" },
+                  { "data": "tanggal_checkin" },
+                  { "data": "keperluan_visit" },
+                  { "data": "barang_bawaan" },
+                  { "data": "approval_timestamp" },
+                  { "data": "nama_lengkap_petugas" },
+                  { "data": "status_nda_visitor" }
+              ],
+              "columnDefs": [ {
+                "targets": 7,
+                "data": "status_nda_visitor",
+                "render": function ( data, type, row, meta ) {
+                  var cssClass = 'info'
+                  if (data == 1) {
+                    return '<button id="click-checkout" class="btn rounded-pill btn-sm btn-warning" data-bs-toggle="modal" onclick="checkout(`'+row.id_checkin+'`,`'+row.nama_lengkap_visitor+'`)" data-bs-target="#modal-check-out">Check Out</button>'
+                  }
+                  else {
+                    return '<button class="btn rounded-pill btn-sm btn-danger" disabled>Check Out</button>'
+                  }
+
+                  //return '<button id="click-approve" class="btn rounded-pill btn-sm btn-success" onclick="approve(`'+row.id_checkin+'`,`'+row.nama_lengkap_visitor+'`)" data-bs-toggle="modal" data-bs-target="#modal-approve-check-in">Approve</button><button id="click-reject" class="btn rounded-pill btn-sm btn-danger" onclick="reject(`'+row.id_checkin+'`)" data-bs-toggle="modal" data-bs-target="#modal-reject-check-in">Reject</button>'
+                }
+              }]
+          });
+          
+          $('#loader').hide();
+          if (showAlert) {
+            if (type == 'CheckOut') {
+              ShowNotif(type +' Berhasil!', 'green');
+            }
+            else {
+              ShowNotif(type +' Berhasil!', 'green');
+            }
+            //alert(type +' Berhasil');
+          }
+        }
+      });
+    }
+
+    function LoadApprovalCheckinHistory() {
+      $('#loader').show();
+      console.log('LoadApprovalCheckinHistory');
+      $.ajax({
+        url: '/LoadApprovalCheckinHistory',
+        type: 'GET',
+        dataType: 'json',
+        error: function(e) {
+          console.log(e);
+        },
+        success: function(data) {
+          console.log(data.data);
+          $('#ApprovalCheckinHistory').dataTable( {
+              "destroy": true,
+              "aaData": data.data,
+              "columns": [
+                  { "data": null,"orderable": false, 
+                    render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;}},
+                  { "data": "nama_lengkap_visitor" },
+                  { "data": "tanggal_checkin" },
+                  { "data": "keperluan_visit" },
+                  { "data": "barang_bawaan" },
+                  { "data": "checkin_time" },
+                  { "data": "checkout_time" },
+                  { "data": "keterangan" }
+              ]
+          });
+          
+          $('#loader').hide();
+        }
+      });
+    }
+
+    function CheckoutPetugas() {
+      $('#modal-check-out').modal('hide');
+      $('#loader').show();
+      console.log('CheckoutPetugas');
+      var id_checkin = $('#id_data_checkin').val();
+      console.log(id_checkin);
+      $.ajax({  
+        url:'/CheckoutPetugas',  
+        method:"POST",
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data:$('#check-out-petugas').serialize(),
+        dataType:'json',
+        error: function(e) {
+          console.log(e);
+          console.log('CheckoutPetugas Error');
+        },
+        success:function(data)  
+        {
+          console.log(data);
+          if (data.status) {
+            LoadApprovalCheckin(true, 'CheckOut');
+            LoadApprovalCheckinHistory();
+            console.log('CheckoutPetugas Sukses');
+            $('#loader').hide();
+          }
+          else {
+            $('#loader').hide();
+            ShowNotif(data.data, 'red');
+          }
+        }  
+      });
+    }
+    
+    function ApproveCheckin() {
+      $('#loader').show();
+      console.log('ApproveCheckin');
+      var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+      var file64 = '';
+      file64 = document.getElementById('gambar_visitor').value;
+
+      if (file64 == '') {
+        ShowNotif('Ambil foto terlebih dahulu!', 'red');
+        $('#loader').hide();
+        return;
+      }
+      $('#modal-approve-check-in').modal('hide');
+      closeModalApprove();
+
+      //var files = $('#formFile')[0].files;
+      var id_checkin = $('#id_approval_checkin').val();
+      var nama_visitor = $('#nama_visitor').val();
+      var nomor_visitor_tag = $('#nomor_visitor_tag').val();
+      //console.log(files[0]);
+      var formData = new FormData();
+      formData.append('_token',CSRF_TOKEN);
+      //formData.append('file',files[0]);
+      formData.append('id_approval_checkin',id_checkin);
+      formData.append('nama_visitor',nama_visitor);
+      formData.append('gambar_visitor',file64);
+      formData.append('nomor_visitor_tag',nomor_visitor_tag);
+      $.ajax({  
+        url:'/approve-check-in',  
+        method:"POST",
+        // headers: {
+        //   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        // },
+        //data:$('#approval-checkin').serialize(),
+        data: formData,
+        contentType: false,
+        processData: false,
+        datatype:'json',
+        error: function(e) {
+
+          console.log('ApproveCheckin Error');
+        },
+        success:function(data)  
+        {
+          if (data.status) {
+            $('#loader').hide();
+            LoadNewApprovalCheckin(true, 'Approve');
+            LoadApprovalCheckin();
+            console.log('ApproveCheckin Sukses');
+          }
+        }  
+      });
+    }
+
+    function RejectCheckin() {
+      $('#modal-reject-check-in').modal('hide');
+      $('#loader').show();
+      console.log('RejectCheckin');
+      $.ajax({  
+        url:'/reject-check-in',  
+        method:"POST",
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data:$('#rejection-checkin').serialize(),
+        type:'json',
+        error: function(e) {
+
+          console.log('RejectCheckin Error');
+        },
+        success:function(data)  
+        {
+          if (data.status) {
+            $('#loader').hide();
+            LoadNewApprovalCheckin(true, 'Reject');
+            LoadApprovalCheckin();
+            console.log('RejectCheckin Sukses');
+          }
+        }  
+      });
+    }
+
 </script>
 @endsection
