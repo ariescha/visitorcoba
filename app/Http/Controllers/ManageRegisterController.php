@@ -6,7 +6,9 @@ use App\Models\nda;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Routing\ResponseFactory;
+
 
 class ManageRegisterController extends Controller
 {
@@ -100,28 +102,46 @@ class ManageRegisterController extends Controller
     }
 
     public function downloadktp($file_name) {
-        $file_path = public_path('dokumen/'.$file_name);
+        //$file_path = public_path('dokumen/'.$file_name);
         //$file_path = '/dokumen/'.$file_name;
 
-        if (file_exists($file_path)) {
-            //return response('Hello World', 200);
-            return response()->download($file_path);
-            //return response()->json(['status' => true, 'data' => $file_path]);
-            //return Response::json(['hello' => $value],201);
-        } else {
-            return response('', 200);
-            //return Response::json(['hello' => $value],201);
-            //return redirect()->back() ->with('alert', 'File Tidak Ada!');
-            //alert('bocah tolol');
+        if (Storage::disk('sftpKTP')->exists($file_name)) {
+            $contents = Storage::disk('sftpKTP')->get($file_name);
+            //dd($contents);
+            return Storage::disk('sftpKTP')->download($file_name);
+            //return response()->download($contents);
         }
+        else {
+            return response('', 200);
+        }
+        // if (file_exists($file_path)) {
+            
+        //     //return response('Hello World', 200);
+        //     return response()->download($file_path);
+        //     //return response()->json(['status' => true, 'data' => $file_path]);
+        //     //return Response::json(['hello' => $value],201);
+        // } else {
+        //     return response('', 200);
+        //     //return Response::json(['hello' => $value],201);
+        //     //return redirect()->back() ->with('alert', 'File Tidak Ada!');
+        //     //alert('bocah tolol');
+        // }
     }
 
     public function UploadNDA(Request $request){
         $id_petugas = Session::get('id_petugas');
-        $Current = date('His-dmY');
+        //$Current = date('His-dmY');
         $FileNda = $request->file('file_nda');
-        $FileNameNda = $Current.'-'.$FileNda->getClientOriginalName();
-        $FileNda->move('nda',$FileNameNda);
+        //$FileNameNda = $Current.'-'.$FileNda->getClientOriginalName();
+        $Email = $request->EmailVisitor;
+        $Current = date('His-dmY');
+        $extension = $FileNda->getClientOriginalExtension();
+        $FileNameNda = $Current.'-NDA-'.$Email.'.'.$extension;
+        //.$FotoKtpVisitor->getClientOriginalName();
+
+        Storage::disk('sftpNDA')->put($FileNameNda, fopen($FileNda, 'r+'));
+
+        //$FileNda->move('nda',$FileNameNda);
         nda::create([
             'nik_visitor' => $request->NikVisitor,
             'id_petugas' => $id_petugas,
@@ -165,15 +185,13 @@ class ManageRegisterController extends Controller
         return response()->json($data);
     }
     public function DownloadNda($file_name) {
-        //dd($file_name);
-        $file_path = public_path('nda/'.$file_name);
-
-        if (file_exists($file_path)) {
-            return response()->download($file_path);
-        } else {
+        
+        if (Storage::disk('sftpNDA')->exists($file_name)) {
+            //$contents = Storage::disk('sftpNDA')->get($file_name);
+            return Storage::disk('sftpNDA')->download($file_name);
+        }
+        else {
             return response('', 200);
-            //return redirect()->back() ->with('alert', 'File Tidak Ada!');
-            //alert('bocah tolol');
         }
     }
     public function LoadNewRegistrasiVisitor() {
