@@ -79,6 +79,10 @@
               </div>
               <!-- /Logo -->
               <h4 class="mb-2">RESET PASSWORD</h4>
+              <p>
+                <span>Masukkan email anda yang terdaftar. Kami akan mengirimkan link untuk reset password.</span>
+                
+              </p>
               @if(Session::has('alert'))
                 				<div class="alert alert-danger">
                     			<div>{{Session::get('alert')}}</div>
@@ -101,17 +105,18 @@
                     placeholder="Masukkan email anda"
                     autofocus
                   />
+                  
                 </div>
                 
                 <div class="mb-3">
                   <button class="btn btn-primary d-grid w-100" type="submit">Kirim</button>
                 </div>
+                <a href="{{route('login')}}">
+                      <small>Kembali ke halaman Log In</small>
+                    </a>
               </form>
 
-              <p>
-                <span>Masukkan email anda yang terdaftar. Kami akan mengirimkan link untuk reset password.</span>
-                
-              </p>
+              
             </div>
           </div>
           <!-- /Register -->

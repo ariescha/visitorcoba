@@ -131,11 +131,10 @@
                   <button class="btn btn-primary d-grid w-100" type="submit">Kirim</button>
                 </div>
               </form>
-
-              <p>
-                <span>Masukkan email anda yang terdaftar. Kami akan mengirimkan link untuk reset password.</span>
-                
-              </p>
+              <a href="{{route('login')}}">
+                      <span>Kembali ke halaman Log In</span>
+                    </a>
+              
             </div>
           </div>
           <!-- /Register -->

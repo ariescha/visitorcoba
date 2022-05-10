@@ -26,6 +26,8 @@ class LoginController extends Controller
                 if(Hash::check($Password,$CekVisitor->password_visitor)){
                     Session::put('user',$CekVisitor->nama_lengkap_visitor);
                     Session::put('nik_visitor',$CekVisitor->nik_visitor);
+                    Session::put('level_user',0);
+
                     //$VisitorCheckIn = list_checkin::whereRaw('nik_visitor = ?',[$CekVisitor->nik_visitor])->first();
                     
                     log_activity::create([
@@ -41,10 +43,12 @@ class LoginController extends Controller
           
             
         }else if(empty($CekVisitor) && isset($CekPetugasDC)){
-            if($Password ==  $CekPetugasDC->password_petugas){
+            if($Password ==  $CekPetugasDC->password_petugas && $CekPetugasDC->status_petugas == 1){
                 Session::put('user',$CekPetugasDC->nama_lengkap_petugas);
                 Session::put('id_petugas',$CekPetugasDC->id_petugas);
                 Session::put('status_petugas',$CekPetugasDC->is_superadmin);
+                Session::put('level_user',1);
+
                 return redirect('approval-check-in');
                 //return view('petugas-dc.approval-check-in');
             }else{

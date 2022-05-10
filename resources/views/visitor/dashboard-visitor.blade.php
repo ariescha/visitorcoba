@@ -1,41 +1,15 @@
 @extends('master')
+@section('title')
+Dashboard Visitor | JMDC Visitor
+@endsection
 @section('content')
 <?php 
 $user = Session::get('user');
 $niksession = Session::get('nik_visitor');
 ?>
-<body>
 
-<div class="layout-wrapper layout-content-navbar">
-      <div class="layout-container">
-         <!-- Menu -->
+        @include('visitor.sidebar')    
 
-         <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-          <div class="app-brand demo">
-            <img src="assets/img/logo-landscape.png" height="70" alt="View Badge User" data-app-dark-img="logo.png" data-app-light-img="logo.png"/>
-           
-          </div>
-
-          <div class="menu-inner-shadow"></div>
-
-          <ul class="menu-inner py-1">
-            <!-- Dashboard -->
-            <li class="menu-item active">
-              <a href="{{route('dashboard-visitor')}}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-fingerprint"></i>
-                <div data-i18n="Analytics">Dashboard Check In</div>
-              </a>
-            </li>
-            <li class="menu-item">
-              <a href="{{route('profil-visitor')}}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-user"></i>
-                <div data-i18n="Analytics">Profil</div>
-              </a>
-            </li>
-            
-          </ul>
-        </aside>
-        <!-- / Menu -->
         <!-- Layout container -->
         <div class="layout-page">
           <!-- Navbar -->
