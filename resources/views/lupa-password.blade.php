@@ -103,7 +103,7 @@
                     id="email"
                     name="email"
                     placeholder="Masukkan email anda"
-                    autofocus
+                    autofocus required
                   />
                   
                 </div>

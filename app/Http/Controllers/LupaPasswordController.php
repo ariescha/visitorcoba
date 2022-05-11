@@ -34,7 +34,7 @@ class LupaPasswordController extends Controller
         // });
         Mail::to($request->email)->send(new ResetPasswordMail($token));
 
-        return back()->with('alert', 'We have e-mailed your password reset link!');
+        return back()->with('alert', 'Link reset password berhasil dikirimkan ke email anda. Segera periksa email anda!');
     }
 
     public function resetform($token) { 
@@ -69,7 +69,7 @@ class LupaPasswordController extends Controller
 
         DB::table('reset_password')->where(['email'=> $request->email])->delete();
 
-        return redirect('/login')->with('alert', 'Your password has been changed!');
+        return redirect('/login')->with('alert', 'Password berhasil diubah!');
     
     }
 

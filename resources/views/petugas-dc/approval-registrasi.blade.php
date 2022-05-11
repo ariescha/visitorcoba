@@ -162,7 +162,7 @@ else{
                             {{csrf_field()}}
                             <input type="hidden" id="NikVisitorReject" type = "text" name="NikVisitor">    
                             <label>Jelaskan alasan anda menolak registrasi!</label>
-                            <textarea id="AlasanReject" name="AlasanReject" class="form-control"></textarea>
+                            <textarea id="AlasanReject" name="AlasanReject" class="form-control" required></textarea>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger"  data-bs-dismiss="modal">
