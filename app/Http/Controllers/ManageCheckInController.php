@@ -68,14 +68,16 @@ class ManageCheckInController extends Controller
         $Current = date('His-dmY');
 
         $data = $request->gambar_visitor;
-        $nama = $request->nama_visitor;
+        $email = $request->email_visitor;
+        //dd($email);
+        
 
-        define('UPLOAD_DIR','dokumen/');
+        //define('UPLOAD_DIR','dokumen/');
         list($type,$data) = explode(';',$data);
         list(, $data) = explode(',',$data);
         $data = str_replace(' ', '+', $data);
         $data = base64_decode($data);
-        $img_name = $Current.'-Foto-'.$nama.'.jpeg';
+        $img_name = $Current.'-Foto-'.$email.'.jpeg';
         //file_put_contents(UPLOAD_DIR.$img_name.".jpeg", $data);
 
         //$Current = date('His-dmY');
@@ -187,7 +189,8 @@ class ManageCheckInController extends Controller
                         ->where('id_petugas','=',$id_petugas)
                         ->where('status_checkin','=',0)
                         ->leftjoin('visitor','list_checkin.nik_visitor','=','visitor.nik_visitor')
-                        ->select('list_checkin.id_checkin','list_checkin.created_at','list_checkin.keperluan_visit','list_checkin.barang_bawaan','visitor.nama_lengkap_visitor','visitor.nomor_hp_visitor')
+                        ->select('list_checkin.id_checkin','list_checkin.created_at','list_checkin.keperluan_visit','list_checkin.barang_bawaan','visitor.nama_lengkap_visitor','visitor.nomor_hp_visitor','visitor.email_visitor')
+                        ->orderBy('created_at', 'ASC')
                         ->get();
 
         return response()->json(['status' => true, 'data' => $approval_checkin]);
@@ -201,6 +204,7 @@ class ManageCheckInController extends Controller
                         ->leftjoin('petugas_dc','list_checkin.id_petugas','=','petugas_dc.id_petugas')
                         ->select('list_checkin.id_checkin','visitor.nama_lengkap_visitor','list_checkin.tanggal_checkin','list_checkin.keperluan_visit','list_checkin.barang_bawaan','list_checkin.approval_timestamp','petugas_dc.nama_lengkap_petugas','list_checkin.checkin_time','list_checkin.checkout_time')
                         ->selectRaw("(case when status_checkin = 3 then concat('Diapprove Oleh ',nama_lengkap_petugas) when status_checkin = 2 then concat('Direject Oleh ',nama_lengkap_petugas) end) as keterangan")
+                        ->orderBy('checkout_time', 'DESC')
                         ->get();   
         
         return response()->json(['status' => true, 'data' => $history_checkin]);
@@ -213,9 +217,21 @@ class ManageCheckInController extends Controller
                         ->where('status_checkin','=',1)
                         ->leftjoin('visitor','list_checkin.nik_visitor','=','visitor.nik_visitor')
                         ->leftjoin('petugas_dc','list_checkin.id_petugas','=','petugas_dc.id_petugas')
-                        ->select('list_checkin.id_checkin','visitor.nama_lengkap_visitor','list_checkin.tanggal_checkin','list_checkin.keperluan_visit','list_checkin.barang_bawaan','list_checkin.approval_timestamp','petugas_dc.nama_lengkap_petugas','visitor.status_nda_visitor')
+                        ->select('list_checkin.id_checkin','visitor.nama_lengkap_visitor','list_checkin.tanggal_checkin','list_checkin.keperluan_visit','list_checkin.barang_bawaan','list_checkin.approval_timestamp','petugas_dc.nama_lengkap_petugas','visitor.status_nda_visitor','list_checkin.nomor_tag_visitor', 'list_checkin.foto_visitor')
+                        ->orderBy('checkin_time', 'DESC')
                         ->get();
 
         return response()->json(['status' => true, 'data' => $data_checkin]);
+    }
+
+    public function DownloadFoto($file_name) {
+        
+        if (Storage::disk('sftpFoto')->exists($file_name)) {
+            //$contents = Storage::disk('sftpNDA')->get($file_name);
+            return Storage::disk('sftpFoto')->download($file_name);
+        }
+        else {
+            return response('', 200);
+        }
     }
 }

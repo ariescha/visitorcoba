@@ -51,6 +51,7 @@ Route::get('LoadApprovalCheckin','ManageCheckInController@LoadApprovalCheckin')-
 Route::get('LoadApprovalCheckinHistory','ManageCheckInController@LoadApprovalCheckinHistory')->name('LoadApprovalCheckinHistory');
 Route::post('approve-check-in','ManageCheckInController@approve')->name('approve-check-in');
 Route::post('reject-check-in','ManageCheckInController@reject')->name('reject-check-in');
+Route::get('/downloadfoto/{filename}', 'ManageCheckInController@DownloadFoto')->name('DownloadFoto');
 
 Route::get('login','LoginController@index')->name('login');
 Route::post('login-post','LoginController@store')->name('login-post');

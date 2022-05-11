@@ -34,7 +34,7 @@
     <style>
       #TempatNotif {
         visibility: hidden;
-        min-width: 250px;
+        min-width: 100px;
         margin-left: -125px;
         background-color: #00FF00;
         color: #fff;

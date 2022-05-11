@@ -131,7 +131,8 @@ else{
                                 <form id="approval-checkin" method="post" enctype="multipart/form-data">
                                     {{ csrf_field() }}
                                     <input type="hidden" id="id_approval_checkin" type="number"
-                                        name="id_approval_checkin"><br />
+                                        name="id_approval_checkin">
+                                    <input type="hidden" id="email_visitor_approve" name="email_visitor">
                                     <div class="row mb-3">
                                         <label class="col-sm-4 col-form-label" for="basic-default-company">Nomor Visitor
                                             Tag</label>
@@ -229,10 +230,12 @@ else{
                                             <th>No</th>
                                             <th>Nama Lengkap</th>
                                             <th>Tanggal Kunjungan</th>
+                                            <th>No Tag</th>
                                             <th>Keperluan Visit</th>
                                             <th>Barang yang dibawa</th>
                                             <th>Waktu Check In</th>
                                             <th>Keterangan</th>
+                                            <th>Foto</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -321,381 +324,433 @@ else{
         <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.js"></script>
         <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
         <script type="text/javascript">
-            $(document).ready(function () {
-                // $('#NewVisitor').DataTable();
-                //$('#NewApprovalCheckin').DataTable();
-                // LoadNewRegistrasiVisitor(false);
-                // LoadRegistrasiVisitor(false);
-                LoadNewApprovalCheckin(false);
-                LoadApprovalCheckin(false);
-                LoadApprovalCheckinHistory();
+        $(document).ready(function () {
+            // $('#NewVisitor').DataTable();
+            //$('#NewApprovalCheckin').DataTable();
+            // LoadNewRegistrasiVisitor(false);
+            // LoadRegistrasiVisitor(false);
+            LoadNewApprovalCheckin(false);
+            LoadApprovalCheckin(false);
+            LoadApprovalCheckinHistory();
 
-            });
+        });
 
-            function takeSnapshot() {
-                var raw_image;
-                Webcam.snap(
-                    function (data_uri) {
-                        document.getElementById('my_result').innerHTML = '<img src="' + data_uri + '"/>';
-                        // raw_image = data_uri.replace(/^data\:image\/\w+\;base64\,/, '');
-                        raw_image = data_uri;
-                    });
-                document.getElementById('my_camera').style.display = "none";
-                document.getElementById('my_result').style.display = "block";
-                document.getElementById('reset_snapshot').disabled = false;
-                document.getElementById('take_snapshot').disabled = true;
-
-                console.log(raw_image);
-                document.getElementById('gambar_visitor').value = raw_image;
-            }
-
-            function resetSnapshot() {
-                document.getElementById('my_camera').style.display = "block";
-                document.getElementById('my_result').style.display = "none";
-                document.getElementById('reset_snapshot').disabled = true;
-                document.getElementById('take_snapshot').disabled = false;
-                document.getElementById('gambar_visitor').value = "";
-            }
-
-            function approve(id, nama_visitor) {
-                console.log(nama_visitor);
-                $('#nama_visitor').val(nama_visitor);
-                $('#id_approval_checkin').val(id);
-                $('#nomor_visitor_tag').val('');
-                Webcam.reset();
-                resetSnapshot();
-                Webcam.set({
-                    width: 300,
-                    height: 240,
-                    image_format: 'jpeg',
-                    jpeg_quality: 90
+        function takeSnapshot() {
+            var raw_image;
+            Webcam.snap(
+                function (data_uri) {
+                    document.getElementById('my_result').innerHTML = '<img src="' + data_uri + '"/>';
+                    // raw_image = data_uri.replace(/^data\:image\/\w+\;base64\,/, '');
+                    raw_image = data_uri;
                 });
-                Webcam.attach('#my_camera');
-            }
+            document.getElementById('my_camera').style.display = "none";
+            document.getElementById('my_result').style.display = "block";
+            document.getElementById('reset_snapshot').disabled = false;
+            document.getElementById('take_snapshot').disabled = true;
 
-            function closeModalApprove() {
-                Webcam.reset();
-            }
+            console.log(raw_image);
+            document.getElementById('gambar_visitor').value = raw_image;
+        }
 
-            function reject(id) {
-                console.log(id)
-                $('#id_rejection_checkin').val(id);
-            }
+        function resetSnapshot() {
+            document.getElementById('my_camera').style.display = "block";
+            document.getElementById('my_result').style.display = "none";
+            document.getElementById('reset_snapshot').disabled = true;
+            document.getElementById('take_snapshot').disabled = false;
+            document.getElementById('gambar_visitor').value = "";
+        }
 
-            function checkout(id, nama_visitor) {
-                console.log(id)
-                $('#id_data_checkin').val(id);
-                document.getElementById('variable_nama').innerHTML = nama_visitor;
-            }
+        function approve(id, nama_visitor, email) {
+            console.log(nama_visitor);
+            $('#nama_visitor').val(nama_visitor);
+            $('#email_visitor_approve').val(email);
+            console.log($('#email_visitor_approve').val());
+            $('#id_approval_checkin').val(id);
+            $('#nomor_visitor_tag').val('');
+            Webcam.reset();
+            resetSnapshot();
+            Webcam.set({
+                width: 300,
+                height: 240,
+                image_format: 'jpeg',
+                jpeg_quality: 90
+            });
+            Webcam.attach('#my_camera');
+        }
 
-            function LoadNewApprovalCheckin(showAlert, type) {
-                $('#loader').show();
-                console.log('LoadNewApprovalCheckin');
-                $.ajax({
-                    url: '/LoadNewApprovalCheckin',
-                    type: 'GET',
-                    dataType: 'json',
-                    error: function (e) {
-                        console.log(e);
-                    },
-                    success: function (data) {
-                        console.log(data.data);
-                        $('#NewApprovalCheckin').dataTable({
-                            "destroy": true,
-                            "aaData": data.data,
-                            "columns": [{
-                                    "data": null,
-                                    "orderable": false,
-                                    render: function (data, type, row, meta) {
-                                        return meta.row + meta.settings._iDisplayStart + 1;
-                                    }
-                                },
-                                {
-                                    "data": "nama_lengkap_visitor"
-                                },
-                                {
-                                    "data": "keperluan_visit"
-                                },
-                                {
-                                    "data": "barang_bawaan"
-                                },
-                                {
-                                    "data": "nomor_hp_visitor"
-                                },
-                                {
-                                    "data": "created_at"
-                                },
-                                {
-                                    "data": "id_checkin"
+        function closeModalApprove() {
+            Webcam.reset();
+        }
+
+        function reject(id) {
+            console.log(id)
+            $('#id_rejection_checkin').val(id);
+        }
+
+        function checkout(id, nama_visitor) {
+            console.log(id)
+            $('#id_data_checkin').val(id);
+            document.getElementById('variable_nama').innerHTML = nama_visitor;
+        }
+
+        function LoadNewApprovalCheckin(showAlert, type) {
+            $('#loader').show();
+            console.log('LoadNewApprovalCheckin');
+            $.ajax({
+                url: '/LoadNewApprovalCheckin',
+                type: 'GET',
+                dataType: 'json',
+                error: function (e) {
+                    console.log(e);
+                },
+                success: function (data) {
+                    console.log(data.data);
+                    $('#NewApprovalCheckin').dataTable({
+                        "destroy": true,
+                        "aaData": data.data,
+                        "columns": [{
+                                "data": null,
+                                "orderable": false,
+                                render: function (data, type, row, meta) {
+                                    return meta.row + meta.settings._iDisplayStart + 1;
                                 }
-                            ],
-                            "columnDefs": [{
-                                "targets": 6,
-                                "data": "foto_ktp_visitor",
-                                "render": function (data, type, row, meta) {
-                                    return '<button id="click-approve" class="btn rounded-pill btn-sm btn-success" onclick="approve(`' +
+                            },
+                            {
+                                "data": "nama_lengkap_visitor"
+                            },
+                            {
+                                "data": "keperluan_visit"
+                            },
+                            {
+                                "data": "barang_bawaan"
+                            },
+                            {
+                                "data": "nomor_hp_visitor"
+                            },
+                            {
+                                "data": "created_at"
+                            },
+                            {
+                                "data": "id_checkin"
+                            }
+                        ],
+                        "columnDefs": [{
+                            "targets": 6,
+                            "data": "id_checkin",
+                            "render": function (data, type, row, meta) {
+                                return '<button id="click-approve" class="btn rounded-pill btn-sm btn-success" onclick="approve(`' +
+                                    row.id_checkin + '`,`' + row
+                                    .nama_lengkap_visitor + '`,`' + row.email_visitor +'`)" data-bs-toggle="modal" data-bs-target="#modal-approve-check-in">Approve</button><button id="click-reject" class="btn rounded-pill btn-sm btn-danger" onclick="reject(`' +
+                                    row.id_checkin +
+                                    '`)" data-bs-toggle="modal" data-bs-target="#modal-reject-check-in">Reject</button>'
+                            }
+                        }]
+                    });
+
+                    $('#loader').hide();
+                    if (showAlert) {
+                        if (type == 'Approve') {
+                            ShowNotif(type + ' Berhasil!', 'green');
+                        } else {
+                            ShowNotif(type + ' Berhasil!', 'red');
+                        }
+                        //alert(type +' Berhasil');
+                    }
+                }
+            });
+        }
+
+        function LoadApprovalCheckin(showAlert, type) {
+            $('#loader').show();
+            console.log('LoadApprovalCheckin');
+            $.ajax({
+                url: '/LoadApprovalCheckin',
+                type: 'GET',
+                dataType: 'json',
+                error: function (e) {
+                    console.log(e);
+                },
+                success: function (data) {
+                    console.log(data.data);
+                    $('#ApprovalCheckin').dataTable({
+                        "destroy": true,
+                        "aaData": data.data,
+                        "columns": [{
+                                "data": null,
+                                "orderable": false,
+                                render: function (data, type, row, meta) {
+                                    return meta.row + meta.settings._iDisplayStart + 1;
+                                }
+                            },
+                            {
+                                "data": "nama_lengkap_visitor"
+                            },
+                            {
+                                "data": "tanggal_checkin"
+                            },
+                            {
+                                "data": "nomor_tag_visitor"
+                            },
+                            {
+                                "data": "keperluan_visit"
+                            },
+                            {
+                                "data": "barang_bawaan"
+                            },
+                            {
+                                "data": "approval_timestamp"
+                            },
+                            {
+                                "data": "nama_lengkap_petugas"
+                            },
+                            {
+                                "data": "foto_visitor"
+                            },
+                            {
+                                "data": "status_nda_visitor"
+                            }
+                        ],
+                        "columnDefs": [
+                        {
+                            "targets": 8,
+                            "data": "foto_visitor",
+                            "render": function ( data, type, row, meta ) {
+                            return '<button class="btn rounded-pill btn-sm btn-info" onclick="DownloadFoto(`'+row.foto_visitor+'`)">Unduh</button>'
+                            }
+                        },
+                        {
+                            "targets": 9,
+                            "data": "status_nda_visitor",
+                            "render": function (data, type, row, meta) {
+                                var cssClass = 'info'
+                                if (data == 1) {
+                                    return '<button id="click-checkout" class="btn rounded-pill btn-sm btn-warning" data-bs-toggle="modal" onclick="checkout(`' +
                                         row.id_checkin + '`,`' + row
                                         .nama_lengkap_visitor +
-                                        '`)" data-bs-toggle="modal" data-bs-target="#modal-approve-check-in">Approve</button><button id="click-reject" class="btn rounded-pill btn-sm btn-danger" onclick="reject(`' +
-                                        row.id_checkin +
-                                        '`)" data-bs-toggle="modal" data-bs-target="#modal-reject-check-in">Reject</button>'
+                                        '`)" data-bs-target="#modal-check-out">Check Out</button>'
+                                } else {
+                                    return '<button class="btn rounded-pill btn-sm btn-danger" disabled>Check Out</button>'
                                 }
-                            }]
-                        });
 
-                        $('#loader').hide();
-                        if (showAlert) {
-                            if (type == 'Approve') {
-                                ShowNotif(type + ' Berhasil!', 'green');
-                            } else {
-                                ShowNotif(type + ' Berhasil!', 'red');
+                                //return '<button id="click-approve" class="btn rounded-pill btn-sm btn-success" onclick="approve(`'+row.id_checkin+'`,`'+row.nama_lengkap_visitor+'`)" data-bs-toggle="modal" data-bs-target="#modal-approve-check-in">Approve</button><button id="click-reject" class="btn rounded-pill btn-sm btn-danger" onclick="reject(`'+row.id_checkin+'`)" data-bs-toggle="modal" data-bs-target="#modal-reject-check-in">Reject</button>'
                             }
-                            //alert(type +' Berhasil');
-                        }
-                    }
-                });
-            }
+                        }]
+                    });
 
-            function LoadApprovalCheckin(showAlert, type) {
-                $('#loader').show();
-                console.log('LoadApprovalCheckin');
-                $.ajax({
-                    url: '/LoadApprovalCheckin',
-                    type: 'GET',
-                    dataType: 'json',
-                    error: function (e) {
-                        console.log(e);
-                    },
-                    success: function (data) {
-                        console.log(data.data);
-                        $('#ApprovalCheckin').dataTable({
-                            "destroy": true,
-                            "aaData": data.data,
-                            "columns": [{
-                                    "data": null,
-                                    "orderable": false,
-                                    render: function (data, type, row, meta) {
-                                        return meta.row + meta.settings._iDisplayStart + 1;
-                                    }
-                                },
-                                {
-                                    "data": "nama_lengkap_visitor"
-                                },
-                                {
-                                    "data": "tanggal_checkin"
-                                },
-                                {
-                                    "data": "keperluan_visit"
-                                },
-                                {
-                                    "data": "barang_bawaan"
-                                },
-                                {
-                                    "data": "approval_timestamp"
-                                },
-                                {
-                                    "data": "nama_lengkap_petugas"
-                                },
-                                {
-                                    "data": "status_nda_visitor"
-                                }
-                            ],
-                            "columnDefs": [{
-                                "targets": 7,
-                                "data": "status_nda_visitor",
-                                "render": function (data, type, row, meta) {
-                                    var cssClass = 'info'
-                                    if (data == 1) {
-                                        return '<button id="click-checkout" class="btn rounded-pill btn-sm btn-warning" data-bs-toggle="modal" onclick="checkout(`' +
-                                            row.id_checkin + '`,`' + row
-                                            .nama_lengkap_visitor +
-                                            '`)" data-bs-target="#modal-check-out">Check Out</button>'
-                                    } else {
-                                        return '<button class="btn rounded-pill btn-sm btn-danger" disabled>Check Out</button>'
-                                    }
-
-                                    //return '<button id="click-approve" class="btn rounded-pill btn-sm btn-success" onclick="approve(`'+row.id_checkin+'`,`'+row.nama_lengkap_visitor+'`)" data-bs-toggle="modal" data-bs-target="#modal-approve-check-in">Approve</button><button id="click-reject" class="btn rounded-pill btn-sm btn-danger" onclick="reject(`'+row.id_checkin+'`)" data-bs-toggle="modal" data-bs-target="#modal-reject-check-in">Reject</button>'
-                                }
-                            }]
-                        });
-
-                        $('#loader').hide();
-                        if (showAlert) {
-                            if (type == 'CheckOut') {
-                                ShowNotif(type + ' Berhasil!', 'green');
-                            } else {
-                                ShowNotif(type + ' Berhasil!', 'green');
-                            }
-                            //alert(type +' Berhasil');
-                        }
-                    }
-                });
-            }
-
-            function LoadApprovalCheckinHistory() {
-                $('#loader').show();
-                console.log('LoadApprovalCheckinHistory');
-                $.ajax({
-                    url: '/LoadApprovalCheckinHistory',
-                    type: 'GET',
-                    dataType: 'json',
-                    error: function (e) {
-                        console.log(e);
-                    },
-                    success: function (data) {
-                        console.log(data.data);
-                        $('#ApprovalCheckinHistory').dataTable({
-                            "destroy": true,
-                            "aaData": data.data,
-                            "columns": [{
-                                    "data": null,
-                                    "orderable": false,
-                                    render: function (data, type, row, meta) {
-                                        return meta.row + meta.settings._iDisplayStart + 1;
-                                    }
-                                },
-                                {
-                                    "data": "nama_lengkap_visitor"
-                                },
-                                {
-                                    "data": "tanggal_checkin"
-                                },
-                                {
-                                    "data": "keperluan_visit"
-                                },
-                                {
-                                    "data": "barang_bawaan"
-                                },
-                                {
-                                    "data": "checkin_time"
-                                },
-                                {
-                                    "data": "checkout_time"
-                                },
-                                {
-                                    "data": "keterangan"
-                                }
-                            ]
-                        });
-
-                        $('#loader').hide();
-                    }
-                });
-            }
-
-            function CheckoutPetugas() {
-                $('#modal-check-out').modal('hide');
-                $('#loader').show();
-                console.log('CheckoutPetugas');
-                var id_checkin = $('#id_data_checkin').val();
-                console.log(id_checkin);
-                $.ajax({
-                    url: '/CheckoutPetugas',
-                    method: "POST",
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    data: $('#check-out-petugas').serialize(),
-                    dataType: 'json',
-                    error: function (e) {
-                        console.log(e);
-                        console.log('CheckoutPetugas Error');
-                    },
-                    success: function (data) {
-                        console.log(data);
-                        if (data.status) {
-                            LoadApprovalCheckin(true, 'CheckOut');
-                            LoadApprovalCheckinHistory();
-                            console.log('CheckoutPetugas Sukses');
-                            $('#loader').hide();
-                        } else {
-                            $('#loader').hide();
-                            ShowNotif(data.data, 'red');
-                        }
-                    }
-                });
-            }
-
-            function ApproveCheckin() {
-                $('#loader').show();
-                console.log('ApproveCheckin');
-                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-
-                var file64 = '';
-                file64 = document.getElementById('gambar_visitor').value;
-
-                if (file64 == '') {
-                    ShowNotif('Ambil foto terlebih dahulu!', 'red');
                     $('#loader').hide();
-                    return;
+                    if (showAlert) {
+                        if (type == 'CheckOut') {
+                            ShowNotif(type + ' Berhasil!', 'green');
+                        } else {
+                            ShowNotif(type + ' Berhasil!', 'green');
+                        }
+                        //alert(type +' Berhasil');
+                    }
                 }
-                $('#modal-approve-check-in').modal('hide');
-                closeModalApprove();
+            });
+        }
 
-                //var files = $('#formFile')[0].files;
-                var id_checkin = $('#id_approval_checkin').val();
-                var nama_visitor = $('#nama_visitor').val();
-                var nomor_visitor_tag = $('#nomor_visitor_tag').val();
-                //console.log(files[0]);
-                var formData = new FormData();
-                formData.append('_token', CSRF_TOKEN);
-                //formData.append('file',files[0]);
-                formData.append('id_approval_checkin', id_checkin);
-                formData.append('nama_visitor', nama_visitor);
-                formData.append('gambar_visitor', file64);
-                formData.append('nomor_visitor_tag', nomor_visitor_tag);
-                $.ajax({
-                    url: '/approve-check-in',
-                    method: "POST",
-                    // headers: {
-                    //   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    // },
-                    //data:$('#approval-checkin').serialize(),
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    datatype: 'json',
-                    error: function (e) {
+        function ApproveCheckin() {
+            
+            console.log('ApproveCheckin');
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+            var nomor_visitor_tag = '';
+            nomor_visitor_tag = $('#nomor_visitor_tag').val();
 
-                        console.log('ApproveCheckin Error');
-                    },
-                    success: function (data) {
-                        if (data.status) {
-                            $('#loader').hide();
-                            LoadNewApprovalCheckin(true, 'Approve');
-                            LoadApprovalCheckin();
-                            console.log('ApproveCheckin Sukses');
-                        }
-                    }
-                });
+            var file64 = '';
+            file64 = document.getElementById('gambar_visitor').value;
+            
+            if (nomor_visitor_tag == '') {
+                ShowNotif('Isi nomor visitor tag terlebih dahulu!', 'red');
+                return;
             }
 
-            function RejectCheckin() {
-                $('#modal-reject-check-in').modal('hide');
-                $('#loader').show();
-                console.log('RejectCheckin');
-                $.ajax({
-                    url: '/reject-check-in',
-                    method: "POST",
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    data: $('#rejection-checkin').serialize(),
-                    type: 'json',
-                    error: function (e) {
-
-                        console.log('RejectCheckin Error');
-                    },
-                    success: function (data) {
-                        if (data.status) {
-                            $('#loader').hide();
-                            LoadNewApprovalCheckin(true, 'Reject');
-                            LoadApprovalCheckin();
-                            console.log('RejectCheckin Sukses');
-                        }
-                    }
-                });
+            if (file64 == '') {
+                ShowNotif('Ambil foto terlebih dahulu!', 'red');
+                return;
             }
 
-        </script>
-        @endsection
+            $('#loader').show();
+            $('#modal-approve-check-in').modal('hide');
+            closeModalApprove();
+
+            //var files = $('#formFile')[0].files;
+            var id_checkin = $('#id_approval_checkin').val();
+            var nama_visitor = $('#nama_visitor').val();
+            var email_visitor = $('#email_visitor_approve').val();
+            
+            //console.log(files[0]);
+            var formData = new FormData();
+            formData.append('_token', CSRF_TOKEN);
+            //formData.append('file',files[0]);
+            formData.append('id_approval_checkin', id_checkin);
+            formData.append('nama_visitor', nama_visitor);
+            formData.append('gambar_visitor', file64);
+            formData.append('nomor_visitor_tag', nomor_visitor_tag);
+            formData.append('email_visitor', email_visitor);
+            
+            $.ajax({
+                url: '/approve-check-in',
+                method: "POST",
+                // headers: {
+                //   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                // },
+                //data:$('#approval-checkin').serialize(),
+                data: formData,
+                contentType: false,
+                processData: false,
+                datatype: 'json',
+                error: function (e) {
+
+                    console.log('ApproveCheckin Error');
+                },
+                success: function (data) {
+                    if (data.status) {
+                        $('#loader').hide();
+                        LoadNewApprovalCheckin(true, 'Approve');
+                        LoadApprovalCheckin();
+                        console.log('ApproveCheckin Sukses');
+                    }
+                }
+            });
+        }
+            
+
+    function LoadApprovalCheckinHistory() {
+      $('#loader').show();
+      console.log('LoadApprovalCheckinHistory');
+      $.ajax({
+        url: '/LoadApprovalCheckinHistory',
+        type: 'GET',
+        dataType: 'json',
+        error: function(e) {
+          console.log(e);
+        },
+        success: function(data) {
+          console.log(data.data);
+          $('#ApprovalCheckinHistory').dataTable( {
+              "destroy": true,
+              "aaData": data.data,
+              "columns": [
+                  { "data": null,"orderable": false, 
+                    render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;}},
+                  { "data": "nama_lengkap_visitor" },
+                  { "data": "tanggal_checkin" },
+                  { "data": "keperluan_visit" },
+                  { "data": "barang_bawaan" },
+                  { "data": "checkin_time" },
+                  { "data": "checkout_time" },
+                  { "data": "keterangan" }
+              ]
+          });
+          
+          $('#loader').hide();
+        }
+      });
+    }
+
+    function CheckoutPetugas() {
+      $('#modal-check-out').modal('hide');
+      $('#loader').show();
+      console.log('CheckoutPetugas');
+      var id_checkin = $('#id_data_checkin').val();
+      console.log(id_checkin);
+      $.ajax({  
+        url:'/CheckoutPetugas',  
+        method:"POST",
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data:$('#check-out-petugas').serialize(),
+        dataType:'json',
+        error: function(e) {
+          console.log(e);
+          console.log('CheckoutPetugas Error');
+        },
+        success:function(data)  
+        {
+          console.log(data);
+          if (data.status) {
+            LoadApprovalCheckin(true, 'CheckOut');
+            LoadApprovalCheckinHistory();
+            console.log('CheckoutPetugas Sukses');
+            $('#loader').hide();
+          }
+          else {
+            $('#loader').hide();
+            ShowNotif(data.data, 'red');
+          }
+        }  
+      });
+    }
+    
+    function RejectCheckin() {
+      if ($('#alasan_reject').val() == '') {
+        ShowNotif('Silahkan isi Alasan!', 'red');
+        return;
+      }
+      $('#modal-reject-check-in').modal('hide');
+      $('#loader').show();
+      console.log('RejectCheckin');
+      $.ajax({  
+        url:'/reject-check-in',  
+        method:"POST",
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data:$('#rejection-checkin').serialize(),
+        type:'json',
+        error: function(e) {
+
+          console.log('RejectCheckin Error');
+        },
+        success:function(data)  
+        {
+          if (data.status) {
+            $('#loader').hide();
+            LoadNewApprovalCheckin(true, 'Reject');
+            LoadApprovalCheckin();
+            LoadApprovalCheckinHistory();
+            console.log('RejectCheckin Sukses');
+          }
+        }  
+      });
+    }
+
+    function DownloadFoto(filename) {
+      $('#loader').show();
+      $.ajax({
+        url: '/downloadfoto/'+filename,
+        type: 'GET',
+        data: {},
+        //dataType: 'json',
+        xhrFields: {
+                responseType: 'blob'
+            },
+        error: function(e) {
+          console.log('Error');
+          console.log(e);
+        },
+        success: function(data) {
+          console.log(data);
+          $('#loader').hide();
+          if (data instanceof Blob) {
+            var blob = new Blob([data]);
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
+          }
+          else {
+            console.log('kosong');
+            ShowNotif('File tidak ditemukan!', 'red');
+            //alert('File tidak ditemukan!');
+          }
+         
+        }
+      });
+    }
+
+</script>
+@endsection
