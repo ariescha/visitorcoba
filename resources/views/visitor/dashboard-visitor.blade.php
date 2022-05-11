@@ -418,7 +418,7 @@ $niksession = Session::get('nik_visitor');
             <div class="card">
               <h5 class="card-header">Check In History</h5>
               <div class="table-responsive text-nowrap">
-                <table class="table table-hover">
+                <table id="CheckinHistory" class="table table-hover">
                   <thead>
                     <tr style="text-align:center">
                       <th>No</th>
@@ -454,8 +454,11 @@ $niksession = Session::get('nik_visitor');
                 </div>
               </div>
             </div>
+
+            <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
             <script type="text/javascript">
                 $(document).ready(function() {
+                  $('#CheckinHistory').DataTable();
                   var status_visitor = "<?php echo $DataVisitor->status_visitor; ?>";
                   var status_checkin = "<?php echo $DataCheckIn->status_checkin; ?>";
                   var date_checkin = "<?php echo $DataCheckIn->approval_timestamp; ?>"
@@ -523,7 +526,8 @@ $niksession = Session::get('nik_visitor');
                       document.getElementById("waiting-approval-data").style.display = "none";
                     }
 
-                  }else if(status_visitor == 2){ //registrasi direject
+                  }
+                  else if(status_visitor == 2){ //registrasi direject
                     document.getElementById("waiting-approval-check-in").style.display = "none";
                       document.getElementById("form-check-in").style.display = "none";
                       document.getElementById("checked-in").style.display = "none";
