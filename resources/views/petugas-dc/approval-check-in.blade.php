@@ -721,7 +721,7 @@ else{
     function DownloadFoto(filename) {
       $('#loader').show();
       $.ajax({
-        url: "{{url('/downloadfoto/filename')}}", //'/downloadfoto/'+filename,
+        url: "{{url('/downloadfoto/')}}"+'/'+filename, //'/downloadfoto/'+filename,
         type: 'GET',
         data: {},
         //dataType: 'json',
