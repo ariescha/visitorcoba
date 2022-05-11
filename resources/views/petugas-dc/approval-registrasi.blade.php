@@ -103,7 +103,7 @@ else{
                     <br>
                     <table class="table table-hover" id="NewVisitor" style="background-color:white" >
                       <thead>
-                        <tr>
+                        <tr style="text-align:center">
                           <th>No</th>
                           <th>Nama Lengkap</th>
                           <th>NIK</th>
