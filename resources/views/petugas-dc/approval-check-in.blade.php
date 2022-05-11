@@ -131,7 +131,8 @@ else{
                                 <form id="approval-checkin" method="post" enctype="multipart/form-data">
                                     {{ csrf_field() }}
                                     <input type="hidden" id="id_approval_checkin" type="number"
-                                        name="id_approval_checkin"><br />
+                                        name="id_approval_checkin">
+                                    <input type="hidden" id="email_visitor_approve" name="email_visitor">
                                     <div class="row mb-3">
                                         <label class="col-sm-4 col-form-label" for="basic-default-company">Nomor Visitor
                                             Tag</label>
@@ -229,10 +230,12 @@ else{
                                             <th>No</th>
                                             <th>Nama Lengkap</th>
                                             <th>Tanggal Kunjungan</th>
+                                            <th>No Tag</th>
                                             <th>Keperluan Visit</th>
                                             <th>Barang yang dibawa</th>
                                             <th>Waktu Check In</th>
                                             <th>Keterangan</th>
+                                            <th>Foto</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -357,9 +360,11 @@ else{
             document.getElementById('gambar_visitor').value = "";
         }
 
-        function approve(id, nama_visitor) {
+        function approve(id, nama_visitor, email) {
             console.log(nama_visitor);
             $('#nama_visitor').val(nama_visitor);
+            $('#email_visitor_approve').val(email);
+            console.log($('#email_visitor_approve').val());
             $('#id_approval_checkin').val(id);
             $('#nomor_visitor_tag').val('');
             Webcam.reset();
@@ -431,12 +436,11 @@ else{
                         ],
                         "columnDefs": [{
                             "targets": 6,
-                            "data": "foto_ktp_visitor",
+                            "data": "id_checkin",
                             "render": function (data, type, row, meta) {
                                 return '<button id="click-approve" class="btn rounded-pill btn-sm btn-success" onclick="approve(`' +
                                     row.id_checkin + '`,`' + row
-                                    .nama_lengkap_visitor +
-                                    '`)" data-bs-toggle="modal" data-bs-target="#modal-approve-check-in">Approve</button><button id="click-reject" class="btn rounded-pill btn-sm btn-danger" onclick="reject(`' +
+                                    .nama_lengkap_visitor + '`,`' + row.email_visitor +'`)" data-bs-toggle="modal" data-bs-target="#modal-approve-check-in">Approve</button><button id="click-reject" class="btn rounded-pill btn-sm btn-danger" onclick="reject(`' +
                                     row.id_checkin +
                                     '`)" data-bs-toggle="modal" data-bs-target="#modal-reject-check-in">Reject</button>'
                             }
@@ -485,6 +489,9 @@ else{
                                 "data": "tanggal_checkin"
                             },
                             {
+                                "data": "nomor_tag_visitor"
+                            },
+                            {
                                 "data": "keperluan_visit"
                             },
                             {
@@ -497,11 +504,22 @@ else{
                                 "data": "nama_lengkap_petugas"
                             },
                             {
+                                "data": "foto_visitor"
+                            },
+                            {
                                 "data": "status_nda_visitor"
                             }
                         ],
-                        "columnDefs": [{
-                            "targets": 7,
+                        "columnDefs": [
+                        {
+                            "targets": 8,
+                            "data": "foto_visitor",
+                            "render": function ( data, type, row, meta ) {
+                            return '<button class="btn rounded-pill btn-sm btn-info" onclick="DownloadFoto(`'+row.foto_visitor+'`)">Unduh</button>'
+                            }
+                        },
+                        {
+                            "targets": 9,
                             "data": "status_nda_visitor",
                             "render": function (data, type, row, meta) {
                                 var cssClass = 'info'
@@ -559,6 +577,7 @@ else{
             //var files = $('#formFile')[0].files;
             var id_checkin = $('#id_approval_checkin').val();
             var nama_visitor = $('#nama_visitor').val();
+            var email_visitor = $('#email_visitor_approve').val();
             
             //console.log(files[0]);
             var formData = new FormData();
@@ -568,6 +587,8 @@ else{
             formData.append('nama_visitor', nama_visitor);
             formData.append('gambar_visitor', file64);
             formData.append('nomor_visitor_tag', nomor_visitor_tag);
+            formData.append('email_visitor', email_visitor);
+            
             $.ajax({
                 url: '/approve-check-in',
                 method: "POST",
@@ -694,6 +715,40 @@ else{
             console.log('RejectCheckin Sukses');
           }
         }  
+      });
+    }
+
+    function DownloadFoto(filename) {
+      $('#loader').show();
+      $.ajax({
+        url: '/downloadfoto/'+filename,
+        type: 'GET',
+        data: {},
+        //dataType: 'json',
+        xhrFields: {
+                responseType: 'blob'
+            },
+        error: function(e) {
+          console.log('Error');
+          console.log(e);
+        },
+        success: function(data) {
+          console.log(data);
+          $('#loader').hide();
+          if (data instanceof Blob) {
+            var blob = new Blob([data]);
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
+          }
+          else {
+            console.log('kosong');
+            ShowNotif('File tidak ditemukan!', 'red');
+            //alert('File tidak ditemukan!');
+          }
+         
+        }
       });
     }
 
