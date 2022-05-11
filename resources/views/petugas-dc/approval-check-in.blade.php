@@ -397,7 +397,7 @@ else{
             $('#loader').show();
             console.log('LoadNewApprovalCheckin');
             $.ajax({
-                url: '/LoadNewApprovalCheckin',
+                url: "{{url('/LoadNewApprovalCheckin')}}",
                 type: 'GET',
                 dataType: 'json',
                 error: function (e) {
@@ -464,7 +464,7 @@ else{
             $('#loader').show();
             console.log('LoadApprovalCheckin');
             $.ajax({
-                url: '/LoadApprovalCheckin',
+                url: "{{url('/LoadApprovalCheckin')}}",
                 type: 'GET',
                 dataType: 'json',
                 error: function (e) {
@@ -590,7 +590,7 @@ else{
             formData.append('email_visitor', email_visitor);
             
             $.ajax({
-                url: '/approve-check-in',
+                url: "{{url('/approve-check-in')}}",
                 method: "POST",
                 // headers: {
                 //   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -620,7 +620,7 @@ else{
       $('#loader').show();
       console.log('LoadApprovalCheckinHistory');
       $.ajax({
-        url: '/LoadApprovalCheckinHistory',
+        url: "{{url('/LoadApprovalCheckinHistory')}}",
         type: 'GET',
         dataType: 'json',
         error: function(e) {
@@ -657,7 +657,7 @@ else{
       var id_checkin = $('#id_data_checkin').val();
       console.log(id_checkin);
       $.ajax({  
-        url:'/CheckoutPetugas',  
+        url:"{{url('/CheckoutPetugas')}}",  
         method:"POST",
         headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -694,7 +694,7 @@ else{
       $('#loader').show();
       console.log('RejectCheckin');
       $.ajax({  
-        url:'/reject-check-in',  
+        url:"{{url('/reject-check-in')}}",  
         method:"POST",
         headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -721,7 +721,7 @@ else{
     function DownloadFoto(filename) {
       $('#loader').show();
       $.ajax({
-        url: '/downloadfoto/'+filename,
+        url: "{{url('/downloadfoto/filename')}}", //'/downloadfoto/'+filename,
         type: 'GET',
         data: {},
         //dataType: 'json',
