@@ -696,6 +696,168 @@ else{
                     }
                 });
             }
+            //alert(type +' Berhasil');
+          }
+        }
+      });
+    }
 
-        </script>
-        @endsection
+    function LoadApprovalCheckinHistory() {
+      $('#loader').show();
+      console.log('LoadApprovalCheckinHistory');
+      $.ajax({
+        url: '/LoadApprovalCheckinHistory',
+        type: 'GET',
+        dataType: 'json',
+        error: function(e) {
+          console.log(e);
+        },
+        success: function(data) {
+          console.log(data.data);
+          $('#ApprovalCheckinHistory').dataTable( {
+              "destroy": true,
+              "aaData": data.data,
+              "columns": [
+                  { "data": null,"orderable": false, 
+                    render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;}},
+                  { "data": "nama_lengkap_visitor" },
+                  { "data": "tanggal_checkin" },
+                  { "data": "keperluan_visit" },
+                  { "data": "barang_bawaan" },
+                  { "data": "checkin_time" },
+                  { "data": "checkout_time" },
+                  { "data": "keterangan" }
+              ]
+          });
+          
+          $('#loader').hide();
+        }
+      });
+    }
+
+    function CheckoutPetugas() {
+      $('#modal-check-out').modal('hide');
+      $('#loader').show();
+      console.log('CheckoutPetugas');
+      var id_checkin = $('#id_data_checkin').val();
+      console.log(id_checkin);
+      $.ajax({  
+        url:'/CheckoutPetugas',  
+        method:"POST",
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data:$('#check-out-petugas').serialize(),
+        dataType:'json',
+        error: function(e) {
+          console.log(e);
+          console.log('CheckoutPetugas Error');
+        },
+        success:function(data)  
+        {
+          console.log(data);
+          if (data.status) {
+            LoadApprovalCheckin(true, 'CheckOut');
+            LoadApprovalCheckinHistory();
+            console.log('CheckoutPetugas Sukses');
+            $('#loader').hide();
+          }
+          else {
+            $('#loader').hide();
+            ShowNotif(data.data, 'red');
+          }
+        }  
+      });
+    }
+    
+    function ApproveCheckin() {
+      $('#loader').show();
+      console.log('ApproveCheckin');
+      var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+      var file64 = '';
+      file64 = document.getElementById('gambar_visitor').value;
+
+      if (file64 == '') {
+        ShowNotif('Ambil foto terlebih dahulu!', 'red');
+        $('#loader').hide();
+        return;
+      }
+      $('#modal-approve-check-in').modal('hide');
+      closeModalApprove();
+
+      //var files = $('#formFile')[0].files;
+      var id_checkin = $('#id_approval_checkin').val();
+      var nama_visitor = $('#nama_visitor').val();
+      var nomor_visitor_tag = $('#nomor_visitor_tag').val();
+      //console.log(files[0]);
+      var formData = new FormData();
+      formData.append('_token',CSRF_TOKEN);
+      //formData.append('file',files[0]);
+      formData.append('id_approval_checkin',id_checkin);
+      formData.append('nama_visitor',nama_visitor);
+      formData.append('gambar_visitor',file64);
+      formData.append('nomor_visitor_tag',nomor_visitor_tag);
+      $.ajax({  
+        url:'/approve-check-in',  
+        method:"POST",
+        // headers: {
+        //   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        // },
+        //data:$('#approval-checkin').serialize(),
+        data: formData,
+        contentType: false,
+        processData: false,
+        datatype:'json',
+        error: function(e) {
+
+          console.log('ApproveCheckin Error');
+        },
+        success:function(data)  
+        {
+          if (data.status) {
+            $('#loader').hide();
+            LoadNewApprovalCheckin(true, 'Approve');
+            LoadApprovalCheckin();
+            console.log('ApproveCheckin Sukses');
+          }
+        }  
+      });
+    }
+
+    function RejectCheckin() {
+      if ($('#alasan_reject').val() == '') {
+        ShowNotif('Silahkan isi Alasan!', 'red');
+        return;
+      }
+      $('#modal-reject-check-in').modal('hide');
+      $('#loader').show();
+      console.log('RejectCheckin');
+      $.ajax({  
+        url:'/reject-check-in',  
+        method:"POST",
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data:$('#rejection-checkin').serialize(),
+        type:'json',
+        error: function(e) {
+
+          console.log('RejectCheckin Error');
+        },
+        success:function(data)  
+        {
+          if (data.status) {
+            $('#loader').hide();
+            LoadNewApprovalCheckin(true, 'Reject');
+            LoadApprovalCheckin();
+            LoadApprovalCheckinHistory();
+            console.log('RejectCheckin Sukses');
+          }
+        }  
+      });
+    }
+
+</script>
+@endsection

@@ -197,6 +197,7 @@ class ManageRegisterController extends Controller
     public function LoadNewRegistrasiVisitor() {
         $VisitorNew = DB::table('visitor')
                     ->where ('status_visitor', '=', 0)
+                    ->orderBy('created_at', 'ASC')
                     ->get();
         
         return response()->json(['status' => true, 'data' => $VisitorNew]);
@@ -213,6 +214,7 @@ class ManageRegisterController extends Controller
                     ->selectRaw("(case when status_nda_visitor = 1 then 'Lihat File' when status_nda_visitor = 2 then 'Perbarui' else 'Unggah' end) as text_nda")
                     ->selectRaw("(case when status_visitor = 1 then concat('Diapprove Oleh ',nama_lengkap_petugas) when status_visitor = 2 then concat('Direject Oleh ',nama_lengkap_petugas) else '' end) as keterangan")
                     ->where ('status_visitor', '!=', 0)
+                    ->orderBy('created_at', 'DESC')
                     ->get();
         
         return response()->json(['status' => true, 'data' => $visitor]);
