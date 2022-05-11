@@ -89,11 +89,11 @@
                     			<div>{{Session::get('alert-success')}}</div>
                 				</div>
             				@endif -->
-              <form id="formAuthentication" class="mb-3" action="{{route('reset-password-send')}}" method="POST" enctype="multipart/form-data">
+              <form id="form-password" class="mb-3" action="{{route('reset-password-send')}}" method="POST" enctype="multipart/form-data">
                 {{csrf_field()}}
                 <input type="hidden" name="token" value="{{ $token }}">
-
-                <div class="mb-3">
+      
+                <div class="mb-3 ">
                   <label for="email" class="form-label">Email</label>
                   <input
                     type="text"
@@ -101,34 +101,48 @@
                     id="email"
                     name="email"
                     placeholder="Masukkan email anda"
-                    autofocus required
+                    value="{{ $email->email }}"
+                    readonly
                   />
                 </div>
-                <div class="mb-3">
-                  <label for="email" class="form-label">Password Baru</label>
+                <div class="mb-3 form-password-toggle">
+                <div class="d-flex justify-content-between">
+                  <label for="password" class="form-label">Password Baru</label>
+                </div>
+                <div class="input-group input-group-merge">
                   <input
-                    type="text"
+                    type="password"
                     class="form-control"
                     id="password"
                     name="password"
-                    placeholder="Masukkan password baru"
-                    autofocus required
+                    placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" autofocus
+                    required
                   />
+                  <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+
                 </div>
-                <div class="mb-3">
-                  <label for="email" class="form-label">Konfirmasi Password Baru</label>
+                </div>
+                <div class="mb-3 form-password-toggle">
+                <div class="d-flex justify-content-between">
+                  <label for="konfirmasi-password" class="form-label">Konfirmasi Password Baru</label>
+                </div>
+                <div class="input-group input-group-merge">
                   <input
-                    type="text"
+                    type="password"
                     class="form-control"
                     id="konfirmasi-password"
                     name="konfirmasi-password"
-                    placeholder="Masukkan password baru"
-                    autofocus required
+                    placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                    required onkeyup="validasipassword()"
                   />
+                  <span class="input-group-text cursor-pointer" id="konfirmasi-password-see"><i class="bx bx-hide"></i></span>
+
+                </div>
+                <small id="alert-password"></small>
                 </div>
                 
                 <div class="mb-3">
-                  <button class="btn btn-primary d-grid w-100" type="submit">Kirim</button>
+                  <button class="btn btn-primary d-grid w-100" type="button" onclick="validate()">Kirim</button>
                 </div>
               </form>
               <a href="{{route('login')}}">
@@ -160,7 +174,37 @@
 
     <!-- Main JS -->
     <script src="{{URL::asset('assets/js/main.js')}}"></script>
+    <script type=text/javascript>
+      var password_validate = 0;
+    function validasipassword(){
+      console.log('tes');
+      var password_baru = document.getElementById("password").value;
+      var password_konfirmasi = document.getElementById("konfirmasi-password").value;
+      if(password_baru !== password_konfirmasi){
+        document.getElementById("konfirmasi-password").style = "border-color:red";
+        document.getElementById("konfirmasi-password-see").style = "border-color:red";
+        password_validate = 0;
+      }else{
+        document.getElementById("konfirmasi-password").style = "border-color:blue";
+        document.getElementById("konfirmasi-password-see").style = "border-color:blue";
+        document.getElementById("alert-password").innerHTML="";
 
+        password_validate = 1;
+      }
+    }
+    function validate(){
+      if(password_validate == 0){
+        document.getElementById("alert-password").innerHTML="Password tidak cocok!";
+        document.getElementById("alert-password").style="color:red;";
+
+      }
+      else{
+        document.getElementById("konfirmasi-password").style = "";
+        document.getElementById("konfirmasi-password-see").style = "";
+        document.getElementById("form-password").submit();
+      }
+    }
+    </script>
     <!-- Page JS -->
 
     <!-- Place this tag in your head or just before your close body tag. -->
