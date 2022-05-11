@@ -37,8 +37,13 @@ class LupaPasswordController extends Controller
         return back()->with('alert', 'Link reset password berhasil dikirimkan ke email anda. Segera periksa email anda!');
     }
 
-    public function resetform($token) { 
-        return view('reset-password-form', ['token' => $token]);
+    public function resetform($token){ 
+        $email = DB::table('reset_password')->where(['token'=> $token])->select('email')->first();
+        if($email !== null){
+            return view('reset-password-form', ['token' => $token,'email'=>$email]);
+        }else{
+            return ("Mohon maaf, waktu ganti password anda sudah habis! Silahkan request ganti password ulang!");
+        }
      }
 
     public function reset(Request $request){
