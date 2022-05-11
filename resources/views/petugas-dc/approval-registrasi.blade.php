@@ -461,6 +461,10 @@ else{
     }
 
     function RejectRegistrasi() {
+      if ($('#AlasanReject').val() == '') {
+        ShowNotif('Silahkan isi Alasan!', 'red');
+        return;
+      }
       $('#modal-reject-registrasi').modal('hide');
       $('#loader').show();
       console.log('rejectRegistrasi');
@@ -592,14 +596,24 @@ else{
                 "targets": 8,
                 "data": "status_nda_visitor",
                 "render": function ( data, type, row, meta ) {
-                  var cssClass = 'info'
+                  var cssClass = 'info';
+                  var disabled = '';
+                  var text = row.text_nda;
                   if (data == 1) {
                     cssClass = 'info';
+                  }
+                  else if (row.status_visitor == 2) {
+                    cssClass = 'secondary';
+                    text = 'Rejected';
+                    disabled = 'disabled';
                   }
                   else {
                     cssClass = 'danger'
                   }
-                  return '<button class="btn rounded-pill btn-sm btn-'+cssClass+'" data-bs-toggle="modal" data-bs-target="#modal-FileNda" onclick="loadModalFileNda(`'+row.nama_lengkap_visitor+'`,`'+row.nik_visitor+'`,`'+row.status_nda_visitor+'`,`'+row.email_visitor+'`)">'+row.text_nda +'</button>'
+                  
+                  
+                  return '<button '+ disabled+' class="btn rounded-pill btn-sm btn-'+cssClass+'" data-bs-toggle="modal" data-bs-target="#modal-FileNda" onclick="loadModalFileNda(`'+row.nama_lengkap_visitor+'`,`'+row.nik_visitor+'`,`'+row.status_nda_visitor+'`,`'+row.email_visitor+'`)">'+text+'</button>'
+                  
                   //return '<button class="btn rounded-pill btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modal-approve-registrasi" onclick="loadModalApprove(`'+row.nama_lengkap_visitor+'`,`'+row.nik_visitor+'`)">Approve</button><button class="btn rounded-pill btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal-reject-registrasi" onclick="loadModalReject(`'+row.nama_lengkap_visitor+'`,`'+row.nik_visitor+'`)">Reject</button>'
                 }
               }

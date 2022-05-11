@@ -188,6 +188,7 @@ class ManageCheckInController extends Controller
                         ->where('status_checkin','=',0)
                         ->leftjoin('visitor','list_checkin.nik_visitor','=','visitor.nik_visitor')
                         ->select('list_checkin.id_checkin','list_checkin.created_at','list_checkin.keperluan_visit','list_checkin.barang_bawaan','visitor.nama_lengkap_visitor','visitor.nomor_hp_visitor')
+                        ->orderBy('created_at', 'ASC')
                         ->get();
 
         return response()->json(['status' => true, 'data' => $approval_checkin]);
@@ -201,6 +202,7 @@ class ManageCheckInController extends Controller
                         ->leftjoin('petugas_dc','list_checkin.id_petugas','=','petugas_dc.id_petugas')
                         ->select('list_checkin.id_checkin','visitor.nama_lengkap_visitor','list_checkin.tanggal_checkin','list_checkin.keperluan_visit','list_checkin.barang_bawaan','list_checkin.approval_timestamp','petugas_dc.nama_lengkap_petugas','list_checkin.checkin_time','list_checkin.checkout_time')
                         ->selectRaw("(case when status_checkin = 3 then concat('Diapprove Oleh ',nama_lengkap_petugas) when status_checkin = 2 then concat('Direject Oleh ',nama_lengkap_petugas) end) as keterangan")
+                        ->orderBy('checkin_time', 'DESC')
                         ->get();   
         
         return response()->json(['status' => true, 'data' => $history_checkin]);
@@ -214,6 +216,7 @@ class ManageCheckInController extends Controller
                         ->leftjoin('visitor','list_checkin.nik_visitor','=','visitor.nik_visitor')
                         ->leftjoin('petugas_dc','list_checkin.id_petugas','=','petugas_dc.id_petugas')
                         ->select('list_checkin.id_checkin','visitor.nama_lengkap_visitor','list_checkin.tanggal_checkin','list_checkin.keperluan_visit','list_checkin.barang_bawaan','list_checkin.approval_timestamp','petugas_dc.nama_lengkap_petugas','visitor.status_nda_visitor')
+                        ->orderBy('checkout_time', 'DESC')
                         ->get();
 
         return response()->json(['status' => true, 'data' => $data_checkin]);
