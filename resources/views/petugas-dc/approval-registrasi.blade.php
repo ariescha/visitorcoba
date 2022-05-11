@@ -304,7 +304,7 @@ else{
 
     function loadModalFileNda(nama,nik, statusNda,email) {
       $.ajax({
-        url: '/get-nda',
+        url: "{{url('/get-nda')}}",
         type: 'POST',
         data: {
           '_token': "{{ csrf_token() }}",
@@ -367,7 +367,7 @@ else{
       console.log(filename);
       $('#loader').show();
       $.ajax({
-        url: '/downloadktp/'+filename,
+        url: "{{url('/downloadktp/')}}"+'/'+filename,
         type: 'GET',
         data: {},
         //dataType: 'json',
@@ -401,7 +401,7 @@ else{
     function DownloadNda(filename) {
       $('#loader').show();
       $.ajax({
-        url: '/downloadNda/'+filename,
+        url: "{{url('/downloadNda/')}}"+'/'+filename,
         type: 'GET',
         data: {},
         //dataType: 'json',
@@ -437,7 +437,7 @@ else{
       $('#loader').show();
       console.log('ApproveRegistrasi');
       $.ajax({  
-        url:'/approve-registrasi',  
+        url:"{{url('/approve-registrasi')}}",  
         method:"POST",
         headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -469,7 +469,7 @@ else{
       $('#loader').show();
       console.log('rejectRegistrasi');
       $.ajax({  
-        url:'/reject-registrasi',  
+        url:"{{url('/reject-registrasi')}}",  
         method:"POST",
         headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -496,7 +496,7 @@ else{
       $('#loader').show();
       console.log('LoadNewRegistrasiVisitor');
       $.ajax({
-        url: '/LoadNewRegistrasiVisitor',
+        url: "{{url('/LoadNewRegistrasiVisitor')}}",
         type: 'GET',
         dataType: 'json',
         error: function(e) {
@@ -557,7 +557,7 @@ else{
       $('#loader').show();
       console.log('LoadRegistrasiVisitor');
       $.ajax({
-        url: '/LoadRegistrasiVisitor',
+        url: "{{url('/LoadRegistrasiVisitor')}}",
         type: 'GET',
         dataType: 'json',
         error: function(e) {
