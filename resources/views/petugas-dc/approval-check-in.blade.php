@@ -696,11 +696,7 @@ else{
                     }
                 });
             }
-            //alert(type +' Berhasil');
-          }
-        }
-      });
-    }
+            
 
     function LoadApprovalCheckinHistory() {
       $('#loader').show();
