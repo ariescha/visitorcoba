@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Routing\ResponseFactory;
-
 class ManageCheckInController extends Controller
 {
     function __construct(){
@@ -34,6 +33,7 @@ class ManageCheckInController extends Controller
         
     }
     public function index(){
+        date_default_timezone_set("Asia/Bangkok");
         // $id_petugas = Session::get('id_petugas');
         // $approval_checkin = DB::table('list_checkin')
         //                 ->where('id_petugas','=',$id_petugas)
@@ -64,6 +64,7 @@ class ManageCheckInController extends Controller
     }
 
     public function approve(Request $request){
+        date_default_timezone_set("Asia/Bangkok");
         $id_petugas = Session::get('id_petugas');
         $Current = date('His-dmY');
 
@@ -112,6 +113,7 @@ class ManageCheckInController extends Controller
     }
 
     public function reject(Request $request){
+        date_default_timezone_set("Asia/Bangkok");
         $id_petugas = Session::get('id_petugas');
         DB::table('list_checkin')->where('id_checkin',$request->id_rejection_checkin)
         ->update([
@@ -130,8 +132,9 @@ class ManageCheckInController extends Controller
     }
 
     public function checkout(Request $request){
+    date_default_timezone_set("Asia/Bangkok");
     $id_petugas = Session::get('id_petugas');    
-    dd($id_petugas);
+    
     $temp_list = DB::table('list_checkin')
         ->where('id_checkin','=',$request->id_data_checkin)
         ->leftjoin('visitor','list_checkin.nik_visitor','=','visitor.nik_visitor')
@@ -158,6 +161,7 @@ class ManageCheckInController extends Controller
     }
 
     public function CheckoutPetugas(Request $request){
+        date_default_timezone_set("Asia/Bangkok");
         $id_petugas = Session::get('id_petugas');    
         //dd($id_petugas);
         $temp_list = DB::table('list_checkin')
@@ -187,12 +191,16 @@ class ManageCheckInController extends Controller
     
 
     public function LoadNewApprovalCheckin() {
+        date_default_timezone_set("Asia/Bangkok");
         $id_petugas = Session::get('id_petugas');
         $approval_checkin = DB::table('list_checkin')
                         ->where('id_petugas','=',$id_petugas)
                         ->where('status_checkin','=',0)
                         ->leftjoin('visitor','list_checkin.nik_visitor','=','visitor.nik_visitor')
                         ->select('list_checkin.id_checkin','list_checkin.created_at','list_checkin.keperluan_visit','list_checkin.barang_bawaan','visitor.nama_lengkap_visitor','visitor.nomor_hp_visitor','visitor.email_visitor')
+                        ->selectraw("DATE_FORMAT(list_checkin.approval_timestamp,'%d-%m-%Y %H:%i') as approval_timestamp")
+                        ->selectraw("DATE_FORMAT(list_checkin.checkin_time,'%d-%m-%Y') as checkin_time")
+                        ->selectraw("DATE_FORMAT(list_checkin.checkout_time,'%d-%m-%Y %H:%i') as checkout_time")
                         ->orderBy('created_at', 'ASC')
                         ->get();
 
@@ -200,13 +208,17 @@ class ManageCheckInController extends Controller
     }
 
     public function LoadApprovalCheckinHistory() {
+        date_default_timezone_set("Asia/Bangkok");
         $history_checkin = DB::table('list_checkin')
                         ->where('status_checkin','=',2)
                         ->orwhere('status_checkin','=',3)
                         ->leftjoin('visitor','list_checkin.nik_visitor','=','visitor.nik_visitor')
                         ->leftjoin('petugas_dc','list_checkin.id_petugas','=','petugas_dc.id_petugas')
-                        ->select('list_checkin.id_checkin','visitor.nama_lengkap_visitor','list_checkin.tanggal_checkin','list_checkin.keperluan_visit','list_checkin.barang_bawaan','list_checkin.approval_timestamp','petugas_dc.nama_lengkap_petugas','list_checkin.checkin_time','list_checkin.checkout_time')
+                        ->select('list_checkin.id_checkin','visitor.nama_lengkap_visitor','list_checkin.tanggal_checkin','list_checkin.keperluan_visit','list_checkin.barang_bawaan','petugas_dc.nama_lengkap_petugas')
                         ->selectRaw("(case when status_checkin = 3 then concat('Diapprove Oleh ',nama_lengkap_petugas) when status_checkin = 2 then concat('Direject Oleh ',nama_lengkap_petugas) end) as keterangan")
+                        ->selectraw("DATE_FORMAT(list_checkin.approval_timestamp,'%d-%m-%Y %H:%i') as approval_timestamp")
+                        ->selectraw("DATE_FORMAT(list_checkin.checkin_time,'%d-%m-%Y') as checkin_time")
+                        ->selectraw("DATE_FORMAT(list_checkin.checkout_time,'%d-%m-%Y %H:%i') as checkout_time")
                         ->orderBy('checkout_time', 'DESC')
                         ->get();   
         
@@ -214,6 +226,7 @@ class ManageCheckInController extends Controller
     }
 
     public function LoadApprovalCheckin() {
+        date_default_timezone_set("Asia/Bangkok");
         $id_petugas = Session::get('id_petugas');
         $data_checkin = DB::table('list_checkin')
                         ->where('list_checkin.id_petugas','=',$id_petugas)
@@ -221,6 +234,9 @@ class ManageCheckInController extends Controller
                         ->leftjoin('visitor','list_checkin.nik_visitor','=','visitor.nik_visitor')
                         ->leftjoin('petugas_dc','list_checkin.id_petugas','=','petugas_dc.id_petugas')
                         ->select('list_checkin.id_checkin','visitor.nama_lengkap_visitor','list_checkin.tanggal_checkin','list_checkin.keperluan_visit','list_checkin.barang_bawaan','list_checkin.approval_timestamp','petugas_dc.nama_lengkap_petugas','visitor.status_nda_visitor','list_checkin.nomor_tag_visitor', 'list_checkin.foto_visitor')
+                        ->selectraw("DATE_FORMAT(list_checkin.approval_timestamp,'%d-%m-%Y %H:%i') as approval_timestamp")
+                        ->selectraw("DATE_FORMAT(list_checkin.checkin_time,'%d-%m-%Y') as checkin_time")
+                        ->selectraw("DATE_FORMAT(list_checkin.checkout_time,'%d-%m-%Y %H:%i') as checkout_time")
                         ->orderBy('checkin_time', 'DESC')
                         ->get();
 
@@ -228,7 +244,7 @@ class ManageCheckInController extends Controller
     }
 
     public function DownloadFoto($file_name) {
-        
+        date_default_timezone_set("Asia/Bangkok");
         if (Storage::disk('sftpFoto')->exists($file_name)) {
             //$contents = Storage::disk('sftpNDA')->get($file_name);
             return Storage::disk('sftpFoto')->download($file_name);

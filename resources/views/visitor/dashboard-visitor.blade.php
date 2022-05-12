@@ -82,7 +82,7 @@ $niksession = Session::get('nik_visitor');
 
               <div class="row" id="waiting-approval-data">
                 <div class="col-lg-12 mb-4 order-0">
-                  <div class="card"  style="display:show">
+                  <div class="card"">
                     <div class="d-flex align-items-end row">
                       <div class="col-sm-8">
                         <div class="card-body">
@@ -116,7 +116,7 @@ $niksession = Session::get('nik_visitor');
                   
               <div class="row"  id="rejected-notif">
                 <div class="col-lg-12 mb-4 order-0">
-                  <div class="card" style="display:show">
+                  <div class="card">
                     <div class="d-flex align-items-end row">
                       <div class="col-sm-8">
                         <div class="card-body">
@@ -149,7 +149,7 @@ $niksession = Session::get('nik_visitor');
 
               <div class="row" id="rejected-form" >
                 <div class="col-lg-12 mb-4 order-0">
-                  <div class="card" style="display:show">
+                  <div class="card">
                     <div class="d-flex align-items-end row">
                       <div class="col-sm-8">
                         <div class="card-body">
@@ -297,7 +297,7 @@ $niksession = Session::get('nik_visitor');
                   
                   <div class="row"  id="rejected-check-in">
                 <div class="col-lg-12 mb-4 order-0">
-                  <div class="card" style="display:show">
+                  <div class="card">
                     <div class="d-flex align-items-end row">
                       <div class="col-sm-8">
                         <div class="card-body">
@@ -329,7 +329,7 @@ $niksession = Session::get('nik_visitor');
                 </div>
               <div class="row"  id="form-check-in">
                 <div class="col-lg-12 mb-4 order-0">
-                  <div class="card" style="display:show">
+                  <div class="card">
                     <div class="d-flex align-items-end row">
                       <div class="col-sm-8">
                         <div class="card-body">
@@ -417,12 +417,13 @@ $niksession = Session::get('nik_visitor');
                   <!-- Hoverable Table rows -->
             <div class="card">
               <h5 class="card-header">Check In History</h5>
+              <div class="card-body">
               <div class="table-responsive text-nowrap">
                 <table id="CheckinHistory" class="table table-hover">
                   <thead>
                     <tr style="text-align:center">
                       <th>No</th>
-                      <th>Tanggal Kedatangan</th>
+                      <th>Tanggal Kunjungan</th>
                       <th>PIC Data Center</th>
                       <th>Keperluan Visit</th>
                       <th>Barang Yang Dibawa</th>
@@ -436,11 +437,11 @@ $niksession = Session::get('nik_visitor');
                     @foreach($tableHistory as $p)
                     <tr style="text-align:center"> 
                       <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{$tempHistory}}</strong></td>
-                      <td>{{ $p->created_at }}</td>
+                      <td>{{ $p->checkin_time }}</td>
                       <td>{{ $p->nama_lengkap_petugas }}</td>
                       <td>{{ $p->keperluan_visit }}</td>
                       <td>{{ $p->barang_bawaan }}</td>
-                      <td><span class="badge bg-label-primary me-1">{{ $p->checkin_time }}</span></td>
+                      <td><span class="badge bg-label-primary me-1">{{ $p->approval_timestamp }}</span></td>
                       <td><span class="badge bg-label-danger me-1">{{ $p->checkout_time }}</span></td>
                       <td>{{ $p->keterangan }}</td>
                     </tr>
@@ -449,6 +450,7 @@ $niksession = Session::get('nik_visitor');
                   </tbody>
                 </table>
               </div>
+            </div>
             </div>
             <!--/ Hoverable Table rows -->
                 </div>

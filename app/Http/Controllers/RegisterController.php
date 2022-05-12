@@ -11,16 +11,19 @@ use App\Models\log_activity;
 class RegisterController extends Controller
 {
     public function index(){
+        date_default_timezone_set("Asia/Bangkok");
         return view('register');
     }
 
     public function store(Request $request){
+        date_default_timezone_set("Asia/Bangkok");
         $Email = $request->email;
         $Nik = $request->nik;
         $CekEmailVisitor = Visitor::whereRaw('email_visitor = ?', [$Email])->first();
         $CekNikVisitor = Visitor::whereRaw('nik_visitor = ?', [$Nik])->first();
         $CekEmailPetugas = Petugas_DC::whereRaw('email_petugas = ?',[$Email])->first();
         $FotoKtpVisitor = $request->file('foto_ktp');
+        //dd($FotoKtpVisitor);
         
         $Current = date('His-dmY');
         $extension = $FotoKtpVisitor->getClientOriginalExtension();

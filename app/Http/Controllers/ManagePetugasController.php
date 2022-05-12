@@ -33,12 +33,14 @@ class ManagePetugasController extends Controller
         
     }
     public function index(){
+        date_default_timezone_set("Asia/Bangkok");
         $id_petugas = Session::get('id_petugas');
         $PetugasDC = Petugas_DC::where('id_petugas','!=',$id_petugas)->get();
         //dd($PetugasDC);
         return view('petugas-dc.manajemen-petugas')->with('PetugasDC',$PetugasDC);
     }
     public function store(Request $request){
+        date_default_timezone_set("Asia/Bangkok");
         $id_petugas_superadmin = Session::get('id_petugas');
         // dd($request);
         $PetugasDC = new Petugas_DC;
@@ -67,6 +69,7 @@ class ManagePetugasController extends Controller
     }
     public function update(Request $request){
         //dd($request);
+        date_default_timezone_set("Asia/Bangkok");
         $id_petugas_superadmin = Session::get('id_petugas');
 
         $PetugasDC = Petugas_DC::find($request->edit_id_petugas);
