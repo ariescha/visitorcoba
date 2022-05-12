@@ -70,14 +70,14 @@ class ManageCheckInController extends Controller
         $data = $request->gambar_visitor;
         $email = $request->email_visitor;
         //dd($email);
-        
+        $FileFoto = $request->file('foto_user');
 
         //define('UPLOAD_DIR','dokumen/');
-        list($type,$data) = explode(';',$data);
-        list(, $data) = explode(',',$data);
-        $data = str_replace(' ', '+', $data);
-        $data = base64_decode($data);
-        $img_name = $Current.'-Foto-'.$email.'.jpeg';
+        // list($type,$data) = explode(';',$data);
+        // list(, $data) = explode(',',$data);
+        // $data = str_replace(' ', '+', $data);
+        // $data = base64_decode($data);
+        // $img_name = $Current.'-Foto-'.$email.'.jpeg';
         //file_put_contents(UPLOAD_DIR.$img_name.".jpeg", $data);
 
         //$Current = date('His-dmY');
@@ -85,7 +85,10 @@ class ManageCheckInController extends Controller
         //$FileNameNda = $Current.'-NDA-'.$Email.'.'.$extension;
         //.$FotoKtpVisitor->getClientOriginalName();
 
-        Storage::disk('sftpFoto')->put($img_name, $data);
+        $extension = $FileFoto->getClientOriginalExtension();
+        $img_name = $Current.'-Foto-'.$email.'.'.$extension;
+        Storage::disk('sftpFoto')->put($img_name, fopen($FileFoto, 'r+'));
+        //Storage::disk('sftpFoto')->put($img_name, $data);
 
         // $FotoKtpVisitor = $request->file('file');
         // $FotoKtpVisitors = $Current.'-'.$FotoKtpVisitor->getClientOriginalName();
