@@ -303,8 +303,9 @@ else{
     }
 
     function loadModalFileNda(nama,nik, statusNda,email) {
+      $('#loader').show();
       $.ajax({
-        url: '/get-nda',
+        url: "{{url('/get-nda')}}",
         type: 'POST',
         data: {
           '_token': "{{ csrf_token() }}",
@@ -312,10 +313,13 @@ else{
         },
         error: function() {
           console.log('Error');
+          $('#loader').hide();
+          ShowNotif('Load NDA Gagal!', 'red');
         },
         dataType: 'json',
         success: function(data) {
           console.log(data);
+          $('#loader').hide();
           $('#fileNdaTable').dataTable( {
               "destroy": true,
               "aaData": data,
@@ -367,7 +371,7 @@ else{
       console.log(filename);
       $('#loader').show();
       $.ajax({
-        url: '/downloadktp/'+filename,
+        url: "{{url('/downloadktp/')}}"+'/'+filename,
         type: 'GET',
         data: {},
         //dataType: 'json',
@@ -377,6 +381,8 @@ else{
         error: function(e) {
           console.log('Error');
           console.log(e);
+          $('#loader').hide();
+          ShowNotif('DownloadKtp Gagal!', 'red');  
         },
         success: function(data) {
           console.log(data);
@@ -401,7 +407,7 @@ else{
     function DownloadNda(filename) {
       $('#loader').show();
       $.ajax({
-        url: '/downloadNda/'+filename,
+        url: "{{url('/downloadNda/')}}"+'/'+filename,
         type: 'GET',
         data: {},
         //dataType: 'json',
@@ -411,6 +417,8 @@ else{
         error: function(e) {
           console.log('Error');
           console.log(e);
+          $('#loader').hide();
+          ShowNotif('DownloadNda Gagal!', 'red');
         },
         success: function(data) {
           console.log(data);
@@ -437,7 +445,7 @@ else{
       $('#loader').show();
       console.log('ApproveRegistrasi');
       $.ajax({  
-        url:'/approve-registrasi',  
+        url:"{{url('/approve-registrasi')}}",  
         method:"POST",
         headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -445,7 +453,8 @@ else{
         data:$('#approval-register').serialize(),
         type:'json',
         error: function(e) {
-
+          $('#loader').hide();
+          ShowNotif('ApproveRegistrasi Gagal!', 'red');
           console.log('ApproveRegistrasi Error');
         },
         success:function(data)  
@@ -469,7 +478,7 @@ else{
       $('#loader').show();
       console.log('rejectRegistrasi');
       $.ajax({  
-        url:'/reject-registrasi',  
+        url:"{{url('/reject-registrasi')}}",  
         method:"POST",
         headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -477,7 +486,8 @@ else{
         data:$('#reject-register').serialize(),
         type:'json',
         error: function(e) {
-
+          $('#loader').hide();
+          ShowNotif('RejectRegistrasi Gagal!', 'red');
           console.log('RejectRegistrasi Error');
         },
         success:function(data)  
@@ -496,11 +506,13 @@ else{
       $('#loader').show();
       console.log('LoadNewRegistrasiVisitor');
       $.ajax({
-        url: '/LoadNewRegistrasiVisitor',
+        url: "{{url('/LoadNewRegistrasiVisitor')}}",
         type: 'GET',
         dataType: 'json',
         error: function(e) {
           console.log(e);
+          $('#loader').hide();
+          ShowNotif('LoadNewRegistrasiVisitor Gagal!', 'red');
         },
         success: function(data) {
           console.log(data.data);
@@ -557,11 +569,13 @@ else{
       $('#loader').show();
       console.log('LoadRegistrasiVisitor');
       $.ajax({
-        url: '/LoadRegistrasiVisitor',
+        url: "{{url('/LoadRegistrasiVisitor')}}",
         type: 'GET',
         dataType: 'json',
         error: function(e) {
           console.log(e);
+          $('#loader').hide();
+          ShowNotif('LoadRegistrasiVisitor Gagal!', 'red');
         },
         success: function(data) {
           console.log(data.data);

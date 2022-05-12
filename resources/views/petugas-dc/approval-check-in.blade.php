@@ -124,8 +124,7 @@ else{
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="modalToggleLabel">Form Approval Check In</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                                    onclick="closeModalApprove()"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <form id="approval-checkin" method="post" enctype="multipart/form-data">
@@ -150,18 +149,12 @@ else{
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                      <center>
-                                        <div id="my_camera"></div>
-                                        <div id="my_result"></div>
-                                      </center>
+                                        <label class="col-sm-4 col-form-label" for="basic-default-email">Ambil Gambar</label>
+                                        <div class="col-sm-8">
+                                            <input type="file" id="foto_user" accept="image/*" />
+                                        </div>
                                     </div>
-                                    <center>
-                                    <button type="button" class="btn btn-lg btn-info" id="take_snapshot"
-                                        onclick="takeSnapshot()"><i class="bx bx-camera bx-md"></i></button>
-                                    <button type="button" class="btn btn-lg btn-info" id="reset_snapshot"
-                                        onclick="resetSnapshot()" disabled><i class="bx bx-reset bx-md"></i></button>
-                                    <input type="hidden" id="gambar_visitor" name="gambar_visitor">
-                                    </center>
+                                    
                                     <!-- <div class="row mb-3">
                               <label class="col-sm-4 col-form-label" for="basic-default-email">Foto Bukti Visitor</label>
                               <div class="col-sm-8">
@@ -171,7 +164,7 @@ else{
                             </div>
                             <div class="modal-footer">
 
-                                <button type="button" onclick="closeModalApprove()" class="btn btn-danger"
+                                <button type="button" class="btn btn-danger"
                                     data-bs-dismiss="modal">
                                     Cancel
                                 </button>
@@ -335,31 +328,6 @@ else{
 
         });
 
-        function takeSnapshot() {
-            var raw_image;
-            Webcam.snap(
-                function (data_uri) {
-                    document.getElementById('my_result').innerHTML = '<img src="' + data_uri + '"/>';
-                    // raw_image = data_uri.replace(/^data\:image\/\w+\;base64\,/, '');
-                    raw_image = data_uri;
-                });
-            document.getElementById('my_camera').style.display = "none";
-            document.getElementById('my_result').style.display = "block";
-            document.getElementById('reset_snapshot').disabled = false;
-            document.getElementById('take_snapshot').disabled = true;
-
-            console.log(raw_image);
-            document.getElementById('gambar_visitor').value = raw_image;
-        }
-
-        function resetSnapshot() {
-            document.getElementById('my_camera').style.display = "block";
-            document.getElementById('my_result').style.display = "none";
-            document.getElementById('reset_snapshot').disabled = true;
-            document.getElementById('take_snapshot').disabled = false;
-            document.getElementById('gambar_visitor').value = "";
-        }
-
         function approve(id, nama_visitor, email) {
             console.log(nama_visitor);
             $('#nama_visitor').val(nama_visitor);
@@ -367,19 +335,7 @@ else{
             console.log($('#email_visitor_approve').val());
             $('#id_approval_checkin').val(id);
             $('#nomor_visitor_tag').val('');
-            Webcam.reset();
-            resetSnapshot();
-            Webcam.set({
-                width: 300,
-                height: 240,
-                image_format: 'jpeg',
-                jpeg_quality: 90
-            });
-            Webcam.attach('#my_camera');
-        }
-
-        function closeModalApprove() {
-            Webcam.reset();
+            $("#foto_user").val(null);
         }
 
         function reject(id) {
@@ -397,11 +353,13 @@ else{
             $('#loader').show();
             console.log('LoadNewApprovalCheckin');
             $.ajax({
-                url: '/LoadNewApprovalCheckin',
+                url: "{{url('/LoadNewApprovalCheckin')}}",
                 type: 'GET',
                 dataType: 'json',
                 error: function (e) {
                     console.log(e);
+                    $('#loader').hide();
+                    ShowNotif('LoadNewApprovalCheckin Gagal!', 'red');
                 },
                 success: function (data) {
                     console.log(data.data);
@@ -464,11 +422,13 @@ else{
             $('#loader').show();
             console.log('LoadApprovalCheckin');
             $.ajax({
-                url: '/LoadApprovalCheckin',
+                url: "{{url('/LoadApprovalCheckin')}}",
                 type: 'GET',
                 dataType: 'json',
                 error: function (e) {
                     console.log(e);
+                    $('#loader').hide();
+                    ShowNotif('LoadApprovalCheckin Gagal!', 'red');
                 },
                 success: function (data) {
                     console.log(data.data);
@@ -557,24 +517,26 @@ else{
             var nomor_visitor_tag = '';
             nomor_visitor_tag = $('#nomor_visitor_tag').val();
 
-            var file64 = '';
-            file64 = document.getElementById('gambar_visitor').value;
+            //var file64 = '';
+            //file64 = document.getElementById('gambar_visitor').value;
+            var file_foto = '';
+            file_foto = $('#foto_user')[0].files[0];
             
             if (nomor_visitor_tag == '') {
                 ShowNotif('Isi nomor visitor tag terlebih dahulu!', 'red');
                 return;
             }
 
-            if (file64 == '') {
+            if (file_foto == '') {
                 ShowNotif('Ambil foto terlebih dahulu!', 'red');
                 return;
             }
 
             $('#loader').show();
             $('#modal-approve-check-in').modal('hide');
-            closeModalApprove();
-
-            //var files = $('#formFile')[0].files;
+            
+            //$('#file')[0].files[0]
+            
             var id_checkin = $('#id_approval_checkin').val();
             var nama_visitor = $('#nama_visitor').val();
             var email_visitor = $('#email_visitor_approve').val();
@@ -582,15 +544,15 @@ else{
             //console.log(files[0]);
             var formData = new FormData();
             formData.append('_token', CSRF_TOKEN);
-            //formData.append('file',files[0]);
+            formData.append('foto_user',file_foto);
             formData.append('id_approval_checkin', id_checkin);
             formData.append('nama_visitor', nama_visitor);
-            formData.append('gambar_visitor', file64);
+            //formData.append('gambar_visitor', file64);
             formData.append('nomor_visitor_tag', nomor_visitor_tag);
             formData.append('email_visitor', email_visitor);
             
             $.ajax({
-                url: '/approve-check-in',
+                url: "{{url('/approve-check-in')}}",
                 method: "POST",
                 // headers: {
                 //   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -603,6 +565,8 @@ else{
                 error: function (e) {
 
                     console.log('ApproveCheckin Error');
+                    $('#loader').hide();
+                    ShowNotif('Approve Checkin Gagal!', 'red');
                 },
                 success: function (data) {
                     if (data.status) {
@@ -620,11 +584,13 @@ else{
       $('#loader').show();
       console.log('LoadApprovalCheckinHistory');
       $.ajax({
-        url: '/LoadApprovalCheckinHistory',
+        url: "{{url('/LoadApprovalCheckinHistory')}}",
         type: 'GET',
         dataType: 'json',
         error: function(e) {
           console.log(e);
+          $('#loader').hide();
+          ShowNotif('LoadApprovalCheckinHistory Gagal', 'red');
         },
         success: function(data) {
           console.log(data.data);
@@ -657,7 +623,7 @@ else{
       var id_checkin = $('#id_data_checkin').val();
       console.log(id_checkin);
       $.ajax({  
-        url:'/CheckoutPetugas',  
+        url:"{{url('/CheckoutPetugas')}}",  
         method:"POST",
         headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -667,6 +633,8 @@ else{
         error: function(e) {
           console.log(e);
           console.log('CheckoutPetugas Error');
+          $('#loader').hide();
+          ShowNotif('CheckoutPetugas Gagal!', 'red');
         },
         success:function(data)  
         {
@@ -694,7 +662,7 @@ else{
       $('#loader').show();
       console.log('RejectCheckin');
       $.ajax({  
-        url:'/reject-check-in',  
+        url:"{{url('/reject-check-in')}}",  
         method:"POST",
         headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -704,6 +672,8 @@ else{
         error: function(e) {
 
           console.log('RejectCheckin Error');
+          $('#loader').hide();
+          ShowNotif('RejectCheckin Gagal!', 'red');
         },
         success:function(data)  
         {
@@ -721,7 +691,7 @@ else{
     function DownloadFoto(filename) {
       $('#loader').show();
       $.ajax({
-        url: '/downloadfoto/'+filename,
+        url: "{{url('/downloadfoto/')}}"+'/'+filename, //'/downloadfoto/'+filename,
         type: 'GET',
         data: {},
         //dataType: 'json',
@@ -731,6 +701,8 @@ else{
         error: function(e) {
           console.log('Error');
           console.log(e);
+          $('#loader').hide();
+          ShowNotif('DownloadFoto Gagal!', 'red');
         },
         success: function(data) {
           console.log(data);
