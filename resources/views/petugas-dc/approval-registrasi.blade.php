@@ -303,6 +303,7 @@ else{
     }
 
     function loadModalFileNda(nama,nik, statusNda,email) {
+      $('#loader').show();
       $.ajax({
         url: "{{url('/get-nda')}}",
         type: 'POST',
@@ -312,10 +313,13 @@ else{
         },
         error: function() {
           console.log('Error');
+          $('#loader').hide();
+          ShowNotif('Load NDA Gagal!', 'red');
         },
         dataType: 'json',
         success: function(data) {
           console.log(data);
+          $('#loader').hide();
           $('#fileNdaTable').dataTable( {
               "destroy": true,
               "aaData": data,
@@ -377,6 +381,8 @@ else{
         error: function(e) {
           console.log('Error');
           console.log(e);
+          $('#loader').hide();
+          ShowNotif('DownloadKtp Gagal!', 'red');  
         },
         success: function(data) {
           console.log(data);
@@ -411,6 +417,8 @@ else{
         error: function(e) {
           console.log('Error');
           console.log(e);
+          $('#loader').hide();
+          ShowNotif('DownloadNda Gagal!', 'red');
         },
         success: function(data) {
           console.log(data);
@@ -445,7 +453,8 @@ else{
         data:$('#approval-register').serialize(),
         type:'json',
         error: function(e) {
-
+          $('#loader').hide();
+          ShowNotif('ApproveRegistrasi Gagal!', 'red');
           console.log('ApproveRegistrasi Error');
         },
         success:function(data)  
@@ -477,7 +486,8 @@ else{
         data:$('#reject-register').serialize(),
         type:'json',
         error: function(e) {
-
+          $('#loader').hide();
+          ShowNotif('RejectRegistrasi Gagal!', 'red');
           console.log('RejectRegistrasi Error');
         },
         success:function(data)  
@@ -501,6 +511,8 @@ else{
         dataType: 'json',
         error: function(e) {
           console.log(e);
+          $('#loader').hide();
+          ShowNotif('LoadNewRegistrasiVisitor Gagal!', 'red');
         },
         success: function(data) {
           console.log(data.data);
@@ -562,6 +574,8 @@ else{
         dataType: 'json',
         error: function(e) {
           console.log(e);
+          $('#loader').hide();
+          ShowNotif('LoadRegistrasiVisitor Gagal!', 'red');
         },
         success: function(data) {
           console.log(data.data);
