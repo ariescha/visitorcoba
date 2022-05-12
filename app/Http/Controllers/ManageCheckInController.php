@@ -72,6 +72,7 @@ class ManageCheckInController extends Controller
         $email = $request->email_visitor;
         //dd($email);
         $FileFoto = $request->file('foto_user');
+        //dd($FileFoto);
 
         //define('UPLOAD_DIR','dokumen/');
         // list($type,$data) = explode(';',$data);
@@ -89,7 +90,7 @@ class ManageCheckInController extends Controller
         $extension = $FileFoto->getClientOriginalExtension();
         $img_name = $Current.'-Foto-'.$email.'.'.$extension;
         Storage::disk('sftpFoto')->put($img_name, fopen($FileFoto, 'r+'));
-        //Storage::disk('sftpFoto')->put($img_name, $data);
+        //Storage::disk('sftpFoto')->put($img_name, $FileFoto);
 
         // $FotoKtpVisitor = $request->file('file');
         // $FotoKtpVisitors = $Current.'-'.$FotoKtpVisitor->getClientOriginalName();

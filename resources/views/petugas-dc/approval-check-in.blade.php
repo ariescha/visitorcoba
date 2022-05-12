@@ -154,7 +154,7 @@ else{
                                     <div class="row mb-3">
                                         <label class="col-sm-4 col-form-label" for="basic-default-email">Ambil Gambar</label>
                                         <div class="col-sm-8">
-                                            <input type="file" id="foto_user" accept="image/*" />
+                                            <input type="file" id="foto_user" accept="image/*" name="foto_user" />
                                         </div>
                                     </div>
                                     
@@ -526,7 +526,8 @@ else{
             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
             var nomor_visitor_tag = '';
             nomor_visitor_tag = $('#nomor_visitor_tag').val();
-
+            
+            
             //var file64 = '';
             //file64 = document.getElementById('gambar_visitor').value;
             var file_foto = '';
@@ -552,14 +553,15 @@ else{
             var email_visitor = $('#email_visitor_approve').val();
             
             //console.log(files[0]);
-            var formData = new FormData();
-            formData.append('_token', CSRF_TOKEN);
-            formData.append('foto_user',file_foto);
-            formData.append('id_approval_checkin', id_checkin);
-            formData.append('nama_visitor', nama_visitor);
-            //formData.append('gambar_visitor', file64);
-            formData.append('nomor_visitor_tag', nomor_visitor_tag);
-            formData.append('email_visitor', email_visitor);
+            var formData = new FormData($("#approval-checkin")[0]);
+            // var formData = new FormData();
+            // formData.append('_token', CSRF_TOKEN);
+            // formData.append('foto_user',file_foto);
+            // formData.append('id_approval_checkin', id_checkin);
+            // formData.append('nama_visitor', nama_visitor);
+            // //formData.append('gambar_visitor', file64);
+            // formData.append('nomor_visitor_tag', nomor_visitor_tag);
+            // formData.append('email_visitor', email_visitor);
             
             $.ajax({
                 url: "{{url('/approve-check-in')}}",
@@ -571,9 +573,8 @@ else{
                 data: formData,
                 contentType: false,
                 processData: false,
-                datatype: 'json',
                 error: function (e) {
-
+                    console.log(e);
                     console.log('ApproveCheckin Error');
                     $('#loader').hide();
                     ShowNotif('Approve Checkin Gagal!', 'red');
