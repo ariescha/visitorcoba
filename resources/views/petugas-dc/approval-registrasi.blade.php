@@ -60,7 +60,7 @@ else{
                             </div>
                           </div>
                           <div class="flex-grow-1">
-                            <span class="fw-semibold d-block">John Doe</span>
+                            <span class="fw-semibold d-block">{{ $user }}</span>
                             <small class="text-muted">Petugas DC</small>
                           </div>
                         </div>
@@ -95,13 +95,16 @@ else{
                 <div class="col-lg-12 mb-4 order-0">
                   
                   <!-- Hoverable Table rows -->
-            <div class="card" style="background-color:#bdd1f7">
-              <div class="card-body">
+            <div class="card">
+            <div class="card-header"  style="background-color:#bdd1f7">
                 <h5 class="card-title"><b style="color:rgb(62, 61, 61)">Approval Registrasi Visitor</b></h5>
                 <h6 class="card-subtitle" style="color:rgb(52, 51, 51)">Lakukan validasi data visitor sebelum menerima atau menolak registrasi.</h6>
+            </div>
+              <div class="card-body">
+                
                   <div class="table-responsive text-nowrap">
                     <br>
-                    <table class="table table-hover" id="NewVisitor" style="background-color:white" >
+                    <table class="table table-hover" id="NewVisitor" style="background-color:white;width:100%" >
                       <thead>
                         <tr style="text-align:center">
                           <th>No</th>
@@ -235,13 +238,16 @@ else{
             </div>
             
             <br>
-            <div class="card" style="background-color:#f7f2bd">
-              <div class="card-body">
+            <div class="card">
+              <div class="card-header" style="background-color:#f7f2bd">
                 <h5 class="card-title"><b style="color:rgb(62, 61, 61)">Data Visitor Terdaftar</b></h5>
                 <h6 class="card-subtitle" style="color:rgb(52, 51, 51)">Tabel di bawah memuat data visitor yang telah tersimpan.</h6>
+              </div>
+              <div class="card-body">
+                
                   <div class="table-responsive text-nowrap">
                     <br>
-                    <table id="Visitor" class="table table-hover" style="background-color:white" >
+                    <table id="Visitor" class="table table-hover" style="background-color:white; width:100%" >
                       <thead>
                         <tr>
                           <th>No</th>
@@ -323,6 +329,7 @@ else{
           $('#fileNdaTable').dataTable( {
               "destroy": true,
               "aaData": data,
+              "scrollX": true,
               "columns": [
                   { "data": "tanggal_mulai_nda" },
                   { "data": "tanggal_akhir_nda" },
@@ -519,6 +526,7 @@ else{
           $('#NewVisitor').dataTable( {
               "destroy": true,
               "aaData": data.data,
+              "scrollX": true,
               "columns": [
                   { "data": null,"orderable": false, 
                     render: function (data, type, row, meta) {
@@ -581,6 +589,7 @@ else{
           console.log(data.data);
           $('#Visitor').dataTable( {
               "destroy": true,
+              "scrollX": true,
               "aaData": data.data,
               "columns": [
                   { "data": null,"orderable": false, 

@@ -35,6 +35,7 @@ class DashboardVisitorController extends Controller{
         
     }
     public function index(){
+        date_default_timezone_set("Asia/Bangkok");
         //session
         $nikVisitor = Session::get('nik_visitor');
 
@@ -64,8 +65,10 @@ class DashboardVisitorController extends Controller{
                         ->whereRaw('list_checkin.nik_visitor = '.$nikVisitor.' and (list_checkin.status_checkin = 3 or list_checkin.status_checkin = 2)')
                         ->leftjoin('petugas_dc','list_checkin.id_petugas','=','petugas_dc.id_petugas')
                         ->select('list_checkin.created_at','petugas_dc.nama_lengkap_petugas',
-                        'list_checkin.keperluan_visit','list_checkin.barang_bawaan',
-                        'list_checkin.checkin_time','list_checkin.checkout_time', 'list_checkin.status_checkin')
+                        'list_checkin.keperluan_visit','list_checkin.barang_bawaan', 'list_checkin.status_checkin')
+                        ->selectraw("DATE_FORMAT(list_checkin.approval_timestamp,'%d-%m-%Y %H:%i') as approval_timestamp")
+                        ->selectraw("DATE_FORMAT(list_checkin.checkin_time,'%d-%m-%Y') as checkin_time")
+                        ->selectraw("DATE_FORMAT(list_checkin.checkout_time,'%d-%m-%Y %H:%i') as checkout_time")
                         ->orderBy('created_at', 'DESC')
                         ->get();
         
@@ -96,6 +99,7 @@ class DashboardVisitorController extends Controller{
     //checkin
     public function store(Request $request){
         //session
+        date_default_timezone_set("Asia/Bangkok");
         $nikVisitor = Session::get('nik_visitor');
 
         //get data visitor
@@ -138,6 +142,7 @@ class DashboardVisitorController extends Controller{
     }
 
     public function revisiRegister(Request $request){
+        date_default_timezone_set("Asia/Bangkok");
         //session
         $nikVisitorSession = Session::get('nik_visitor');
 
@@ -202,6 +207,7 @@ class DashboardVisitorController extends Controller{
 
     public function checkoutVisitor(){
         //session
+        date_default_timezone_set("Asia/Bangkok");
         $nikVisitorSession = Session::get('nik_visitor');
 
         //get last id checkin

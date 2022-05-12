@@ -34,6 +34,7 @@ class ProfilVisitorController extends Controller
         
     }
     public function index(){
+        date_default_timezone_set("Asia/Bangkok");
         //session and get data visitor
         $nikVisitor = Session::get('nik_visitor');
         // dd($nikVisitor);
@@ -43,6 +44,7 @@ class ProfilVisitorController extends Controller
     }
 
     public function updateProfil(Request $request){
+        date_default_timezone_set("Asia/Bangkok");
         //session
         $nikVisitorSession = Session::get('nik_visitor');
 
