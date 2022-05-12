@@ -35,6 +35,7 @@ class ManageRegisterController extends Controller
         
     }
     public function index(){
+        date_default_timezone_set("Asia/Bangkok");
         $visitor = DB::table('visitor')
                     ->leftJoin('petugas_dc', function($join){
                         $join->on('visitor.approval_by', '=', 'petugas_dc.id_petugas')
@@ -59,6 +60,7 @@ class ManageRegisterController extends Controller
     }
 
     public function ApproveRegister(Request $request){
+        date_default_timezone_set("Asia/Bangkok");
         //nik_visitor
         $id_petugas = Session::get('id_petugas');
         $timestamp = date('Y-m-d H:i:s');
@@ -81,6 +83,7 @@ class ManageRegisterController extends Controller
 
     public function RejectRegister(Request $request){
         //nik_visitor
+        date_default_timezone_set("Asia/Bangkok");
         $id_petugas = Session::get('id_petugas');
         $timestamp = date('Y-m-d H:i:s');
         DB::table('visitor')->where('nik_visitor',$request->NikVisitor)
@@ -104,7 +107,7 @@ class ManageRegisterController extends Controller
     public function downloadktp($file_name) {
         //$file_path = public_path('dokumen/'.$file_name);
         //$file_path = '/dokumen/'.$file_name;
-
+        date_default_timezone_set("Asia/Bangkok");
         if (Storage::disk('sftpKTP')->exists($file_name)) {
             $contents = Storage::disk('sftpKTP')->get($file_name);
             //dd($contents);
@@ -129,6 +132,7 @@ class ManageRegisterController extends Controller
     }
 
     public function UploadNDA(Request $request){
+        date_default_timezone_set("Asia/Bangkok");
         $id_petugas = Session::get('id_petugas');
         //$Current = date('His-dmY');
         $FileNda = $request->file('file_nda');
@@ -174,6 +178,7 @@ class ManageRegisterController extends Controller
     // }
     public function GetNDA(Request $request)
     {
+        date_default_timezone_set("Asia/Bangkok");
         $nik = $request->input('nik_visitor');
         //$data = nda::find($nik);
         //DB::statement(DB::raw('set @rownum=0'));
@@ -185,7 +190,7 @@ class ManageRegisterController extends Controller
         return response()->json($data);
     }
     public function DownloadNda($file_name) {
-        
+        date_default_timezone_set("Asia/Bangkok");
         if (Storage::disk('sftpNDA')->exists($file_name)) {
             //$contents = Storage::disk('sftpNDA')->get($file_name);
             return Storage::disk('sftpNDA')->download($file_name);
@@ -195,6 +200,7 @@ class ManageRegisterController extends Controller
         }
     }
     public function LoadNewRegistrasiVisitor() {
+        date_default_timezone_set("Asia/Bangkok");
         $VisitorNew = DB::table('visitor')
                     ->where ('status_visitor', '=', 0)
                     ->orderBy('created_at', 'ASC')
@@ -204,6 +210,7 @@ class ManageRegisterController extends Controller
         //return response()->json($data);
     }
     public function LoadRegistrasiVisitor() {
+        date_default_timezone_set("Asia/Bangkok");
         $visitor = DB::table('visitor')
                     ->leftJoin('petugas_dc', function($join){
                         $join->on('visitor.approval_by', '=', 'petugas_dc.id_petugas')

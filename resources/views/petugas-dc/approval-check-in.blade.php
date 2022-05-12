@@ -91,14 +91,17 @@ else{
                 <div class="col-lg-12 mb-4 order-0">
 
                     <!-- Hoverable Table rows -->
-                    <div class="card" style="background-color:#bdd1f7">
-                        <div class="card-body">
+                    <div class="card">
+                        <div class="card-header" style="background-color:#bdd1f7">
                             <h5 class="card-title"><b style="color:rgb(62, 61, 61)">Approval Check In Visitor</b></h5>
                             <h6 class="card-subtitle" style="color:rgb(52, 51, 51)">Lakukan validasi data visitor
                                 sebelum menerima atau menolak check in visitor.</h6>
+                        </div>
+                        <div class="card-body">
+                            
                             <div class="table-responsive text-nowrap">
                                 <br>
-                                <table id="NewApprovalCheckin" class="table table-hover" style="background-color:white">
+                                <table id="NewApprovalCheckin" class="table table-hover" style="background-color:white; width:100%">
                                     <thead>
                                         <tr style="text-align:center">
                                             <th>No</th>
@@ -209,15 +212,18 @@ else{
             <br>
             <div class="row">
                 <div class="col-lg-12 mb-4 order-0">
-                    <div class="card" style="background-color:#bdf7c3">
-                        <div class="card-body">
+                    <div class="card">
+                        <div class="card-header" style="background-color:#bdf7c3">
                             <h5 class="card-title"><b style="color:rgb(62, 61, 61)">Data Check In Visitor</b></h5>
                             <h6 class="card-subtitle" style="color:rgb(52, 51, 51)">Tabel di bawah memuat data visitor
                                 yang
                                 sedang berada di data center.</h6>
+                        </div>
+                        <div class="card-body">
+                            
                             <div class="table-responsive text-nowrap">
                                 <br>
-                                <table id="ApprovalCheckin" class="table table-hover" style="background-color:white">
+                                <table id="ApprovalCheckin" class="table table-hover" style="background-color:white;width:100%">
                                     <thead>
                                         <tr style="text-align:center">
                                             <th>No</th>
@@ -276,15 +282,17 @@ else{
             <br>
             <div class="row">
                 <div class="col-lg-12 mb-4 order-0">
-                    <div class="card" style="background-color:#f7f2bd">
-                        <div class="card-body">
+                    <div class="card" >
+                        <div class="card-header"  style="background-color:#f7f2bd">
                             <h5 class="card-title"><b style="color:rgb(62, 61, 61)">Check In History</b></h5>
                             <h6 class="card-subtitle" style="color:rgb(52, 51, 51)">Tabel di bawah memuat data kunjungan
                                 visitor yang telah tersimpan.</h6>
+                        </div>
+                        <div class="card-body">
+                            
                             <div class="table-responsive text-nowrap">
                                 <br>
-                                <table id="ApprovalCheckinHistory" class="table table-hover"
-                                    style="background-color:white">
+                                <table id="ApprovalCheckinHistory" class="table table-hover" style="background-color:white;width:100%">
                                     <thead>
                                         <tr style="text-align:center">
                                             <th>No</th>
@@ -365,6 +373,7 @@ else{
                     console.log(data.data);
                     $('#NewApprovalCheckin').dataTable({
                         "destroy": true,
+                        "scrollX": true,
                         "aaData": data.data,
                         "columns": [{
                                 "data": null,
@@ -386,7 +395,7 @@ else{
                                 "data": "nomor_hp_visitor"
                             },
                             {
-                                "data": "created_at"
+                                "data": "checkin_time"
                             },
                             {
                                 "data": "id_checkin"
@@ -434,6 +443,7 @@ else{
                     console.log(data.data);
                     $('#ApprovalCheckin').dataTable({
                         "destroy": true,
+                        "scrollX": true,
                         "aaData": data.data,
                         "columns": [{
                                 "data": null,
@@ -446,7 +456,7 @@ else{
                                 "data": "nama_lengkap_visitor"
                             },
                             {
-                                "data": "tanggal_checkin"
+                                "data": "checkin_time"
                             },
                             {
                                 "data": "nomor_tag_visitor"
@@ -597,15 +607,17 @@ else{
           $('#ApprovalCheckinHistory').dataTable( {
               "destroy": true,
               "aaData": data.data,
+              "scrollX":true,
+
               "columns": [
                   { "data": null,"orderable": false, 
                     render: function (data, type, row, meta) {
                         return meta.row + meta.settings._iDisplayStart + 1;}},
                   { "data": "nama_lengkap_visitor" },
-                  { "data": "tanggal_checkin" },
+                  { "data": "checkin_time" },
                   { "data": "keperluan_visit" },
                   { "data": "barang_bawaan" },
-                  { "data": "checkin_time" },
+                  { "data": "approval_timestamp" },
                   { "data": "checkout_time" },
                   { "data": "keterangan" }
               ]

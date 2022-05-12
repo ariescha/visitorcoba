@@ -14,10 +14,12 @@ use DB;
 class LupaPasswordController extends Controller
 {
     public function index(){
+        date_default_timezone_set("Asia/Bangkok");
         return view('lupa-password');
     }
 
     public function send(Request $request){
+        date_default_timezone_set("Asia/Bangkok");
         $email = $request->email;
         
         $token = Str::random(64);
@@ -38,6 +40,7 @@ class LupaPasswordController extends Controller
     }
 
     public function resetform($token){ 
+        date_default_timezone_set("Asia/Bangkok");
         $email = DB::table('reset_password')->where(['token'=> $token])->select('email')->first();
         if($email !== null){
             return view('reset-password-form', ['token' => $token,'email'=>$email]);
@@ -47,6 +50,7 @@ class LupaPasswordController extends Controller
      }
 
     public function reset(Request $request){
+        date_default_timezone_set("Asia/Bangkok");
         // $request->validate([
         //     'email' => 'required|email|exists:users',
         //     'password' => 'required|string|min:6|confirmed',

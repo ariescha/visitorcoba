@@ -31,6 +31,7 @@ class ProfilPetugasDCController extends Controller
         
     }
     public function index(){
+        date_default_timezone_set("Asia/Bangkok");
         $IdPetugasDC = Session::get('id_petugas');
         //dd($IdPetugasDC);
         $PetugasDC = Petugas_DC::find($IdPetugasDC);
@@ -38,6 +39,7 @@ class ProfilPetugasDCController extends Controller
         return view('petugas-dc.profil')->with('PetugasDC',$PetugasDC);
     }
     public function update(Request $request){
+        date_default_timezone_set("Asia/Bangkok");
         //dd($request);
         $id_petugas = Session::get('id_petugas');
 

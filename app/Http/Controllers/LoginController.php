@@ -14,10 +14,12 @@ use DB;
 class LoginController extends Controller
 {
     public function index(){
+        date_default_timezone_set("Asia/Bangkok");
         return view('login');
     }
 
     public function store(Request $request){
+        date_default_timezone_set("Asia/Bangkok");
         $Email = $request->email;
         $Password = $request->password;
         $CekVisitor = Visitor::whereRaw('email_visitor = ?', [$Email])->first();
@@ -69,6 +71,7 @@ class LoginController extends Controller
     }
 
     public function logout(){
+        date_default_timezone_set("Asia/Bangkok");
         Session::flush();
         return redirect('login')->with('alert','Anda berhasil logout');
     }
