@@ -333,7 +333,7 @@ else{
               "columns": [
                   { "data": "tanggal_mulai_nda" },
                   { "data": "tanggal_akhir_nda" },
-                  { "data": `file_nda` }
+                  { "data": "file_nda" }
                   //
                   //{ "data": "file_nda" }
               ],

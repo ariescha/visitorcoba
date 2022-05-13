@@ -66,9 +66,9 @@ class DashboardVisitorController extends Controller{
                         ->leftjoin('petugas_dc','list_checkin.id_petugas','=','petugas_dc.id_petugas')
                         ->select('list_checkin.created_at','petugas_dc.nama_lengkap_petugas',
                         'list_checkin.keperluan_visit','list_checkin.barang_bawaan', 'list_checkin.status_checkin')
-                        ->selectraw("DATE_FORMAT(list_checkin.approval_timestamp,'%d-%m-%Y %H:%i') as approval_timestamp")
-                        ->selectraw("DATE_FORMAT(list_checkin.checkin_time,'%d-%m-%Y') as checkin_time")
-                        ->selectraw("DATE_FORMAT(list_checkin.checkout_time,'%d-%m-%Y %H:%i') as checkout_time")
+                        ->selectraw("DATE_FORMAT(list_checkin.approval_timestamp,'%d-%b-%Y %H:%i') as approval_timestamp")
+                        ->selectraw("DATE_FORMAT(list_checkin.checkin_time,'%d-%b-%Y') as checkin_time")
+                        ->selectraw("DATE_FORMAT(list_checkin.checkout_time,'%d-%b-%Y %H:%i') as checkout_time")
                         ->orderBy('created_at', 'DESC')
                         ->get();
         
