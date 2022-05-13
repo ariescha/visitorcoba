@@ -184,6 +184,9 @@ class ManageRegisterController extends Controller
         //DB::statement(DB::raw('set @rownum=0'));
         $data = DB::table('nda')
                     //->select(DB::raw('@rownum  := @rownum  + 1 AS rownum'))
+                    ->select('nda.*')
+                    ->selectraw("DATE_FORMAT(nda.tanggal_mulai_nda,'%d-%b-%Y') as tanggal_mulai_nda")
+                    ->selectraw("DATE_FORMAT(nda.tanggal_akhir_nda,'%d-%b-%Y') as tanggal_akhir_nda")
                     ->where ('nik_visitor', '=', $nik)
                     ->orderBy('tanggal_akhir_nda', 'desc')
                     ->get();

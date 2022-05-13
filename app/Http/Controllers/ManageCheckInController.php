@@ -72,6 +72,7 @@ class ManageCheckInController extends Controller
         $email = $request->email_visitor;
         //dd($email);
         $FileFoto = $request->file('foto_user');
+        //dd($FileFoto);
 
         //define('UPLOAD_DIR','dokumen/');
         // list($type,$data) = explode(';',$data);
@@ -89,7 +90,7 @@ class ManageCheckInController extends Controller
         $extension = $FileFoto->getClientOriginalExtension();
         $img_name = $Current.'-Foto-'.$email.'.'.$extension;
         Storage::disk('sftpFoto')->put($img_name, fopen($FileFoto, 'r+'));
-        //Storage::disk('sftpFoto')->put($img_name, $data);
+        //Storage::disk('sftpFoto')->put($img_name, $FileFoto);
 
         // $FotoKtpVisitor = $request->file('file');
         // $FotoKtpVisitors = $Current.'-'.$FotoKtpVisitor->getClientOriginalName();
@@ -198,9 +199,9 @@ class ManageCheckInController extends Controller
                         ->where('status_checkin','=',0)
                         ->leftjoin('visitor','list_checkin.nik_visitor','=','visitor.nik_visitor')
                         ->select('list_checkin.id_checkin','list_checkin.created_at','list_checkin.keperluan_visit','list_checkin.barang_bawaan','visitor.nama_lengkap_visitor','visitor.nomor_hp_visitor','visitor.email_visitor')
-                        ->selectraw("DATE_FORMAT(list_checkin.approval_timestamp,'%d-%m-%Y %H:%i') as approval_timestamp")
-                        ->selectraw("DATE_FORMAT(list_checkin.checkin_time,'%d-%m-%Y') as checkin_time")
-                        ->selectraw("DATE_FORMAT(list_checkin.checkout_time,'%d-%m-%Y %H:%i') as checkout_time")
+                        ->selectraw("DATE_FORMAT(list_checkin.approval_timestamp,'%d-%b-%Y %H:%i') as approval_timestamp")
+                        ->selectraw("DATE_FORMAT(list_checkin.checkin_time,'%d-%b-%Y') as checkin_time")
+                        ->selectraw("DATE_FORMAT(list_checkin.checkout_time,'%d-%b-%Y %H:%i') as checkout_time")
                         ->orderBy('created_at', 'ASC')
                         ->get();
 
@@ -216,9 +217,9 @@ class ManageCheckInController extends Controller
                         ->leftjoin('petugas_dc','list_checkin.id_petugas','=','petugas_dc.id_petugas')
                         ->select('list_checkin.id_checkin','visitor.nama_lengkap_visitor','list_checkin.tanggal_checkin','list_checkin.keperluan_visit','list_checkin.barang_bawaan','petugas_dc.nama_lengkap_petugas')
                         ->selectRaw("(case when status_checkin = 3 then concat('Diapprove Oleh ',nama_lengkap_petugas) when status_checkin = 2 then concat('Direject Oleh ',nama_lengkap_petugas) end) as keterangan")
-                        ->selectraw("DATE_FORMAT(list_checkin.approval_timestamp,'%d-%m-%Y %H:%i') as approval_timestamp")
-                        ->selectraw("DATE_FORMAT(list_checkin.checkin_time,'%d-%m-%Y') as checkin_time")
-                        ->selectraw("DATE_FORMAT(list_checkin.checkout_time,'%d-%m-%Y %H:%i') as checkout_time")
+                        ->selectraw("DATE_FORMAT(list_checkin.approval_timestamp,'%d-%b-%Y %H:%i') as approval_timestamp")
+                        ->selectraw("DATE_FORMAT(list_checkin.checkin_time,'%d-%b-%Y') as checkin_time")
+                        ->selectraw("DATE_FORMAT(list_checkin.checkout_time,'%d-%b-%Y %H:%i') as checkout_time")
                         ->orderBy('checkout_time', 'DESC')
                         ->get();   
         
@@ -234,9 +235,9 @@ class ManageCheckInController extends Controller
                         ->leftjoin('visitor','list_checkin.nik_visitor','=','visitor.nik_visitor')
                         ->leftjoin('petugas_dc','list_checkin.id_petugas','=','petugas_dc.id_petugas')
                         ->select('list_checkin.id_checkin','visitor.nama_lengkap_visitor','list_checkin.tanggal_checkin','list_checkin.keperluan_visit','list_checkin.barang_bawaan','list_checkin.approval_timestamp','petugas_dc.nama_lengkap_petugas','visitor.status_nda_visitor','list_checkin.nomor_tag_visitor', 'list_checkin.foto_visitor')
-                        ->selectraw("DATE_FORMAT(list_checkin.approval_timestamp,'%d-%m-%Y %H:%i') as approval_timestamp")
-                        ->selectraw("DATE_FORMAT(list_checkin.checkin_time,'%d-%m-%Y') as checkin_time")
-                        ->selectraw("DATE_FORMAT(list_checkin.checkout_time,'%d-%m-%Y %H:%i') as checkout_time")
+                        ->selectraw("DATE_FORMAT(list_checkin.approval_timestamp,'%d-%b-%Y %H:%i') as approval_timestamp")
+                        ->selectraw("DATE_FORMAT(list_checkin.checkin_time,'%d-%b-%Y') as checkin_time")
+                        ->selectraw("DATE_FORMAT(list_checkin.checkout_time,'%d-%b-%Y %H:%i') as checkout_time")
                         ->orderBy('checkin_time', 'DESC')
                         ->get();
 
