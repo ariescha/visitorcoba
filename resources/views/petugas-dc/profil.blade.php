@@ -142,6 +142,32 @@ if(session::has('status_petugas')){
                             </div>
                           </div>
                           
+                          <div class="mb-3 col-md-6">
+                            <label class="form-label" for="nomor_hp_petugas">Role</label>
+                            <div class="input-group input-group-merge">
+                              <!-- <span class="input-group-text">ID (+62)</span> -->
+                              @if($PetugasDC['nomor_hp_petugas'] == 0)
+                              <input
+                                type="text"
+                                id="edit_role_petugas"
+                                name="edit_role_petugas"
+                                class="form-control"
+                                value="Admin"
+                                maxlength="13" readonly
+                              />
+                              @else
+                              <input
+                                type="text"
+                                id="edit_role_petugas"
+                                name="edit_role_petugas"
+                                class="form-control"
+                                value="Super Admin"
+                                maxlength="13" readonly
+                              />
+                              @endif
+                            </div>
+                          </div>
+                          
                           
                         </div>
                         <div class="mt-2">

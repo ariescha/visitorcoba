@@ -272,7 +272,7 @@ else{
                                     Cancel
                                 </button> -->
                                 <button class="btn btn-success"  type="submit">
-                                    EDIT
+                                    SIMPAN
                                 </button>
                             </div>
                         </form>

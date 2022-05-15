@@ -355,7 +355,7 @@ $niksession = Session::get('nik_visitor');
                                   class="form-control"
                                   id="barangBawaan"
                                   name="barangBawaan"
-                                  placeholder="Contoh : Tas, Tumblr"
+                                  placeholder="Contoh : Laptop, Charger"
                                   required
                                 ></textarea>
                               </div>
