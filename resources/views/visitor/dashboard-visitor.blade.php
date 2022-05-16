@@ -355,7 +355,7 @@ $niksession = Session::get('nik_visitor');
                                   class="form-control"
                                   id="barangBawaan"
                                   name="barangBawaan"
-                                  placeholder="Contoh : Tas, Tumblr"
+                                  placeholder="Contoh : Laptop, Charger"
                                   required
                                 ></textarea>
                               </div>
@@ -419,7 +419,7 @@ $niksession = Session::get('nik_visitor');
               <h5 class="card-header">Check In History</h5>
               <div class="card-body">
               <div class="table-responsive text-nowrap">
-                <table id="CheckinHistory" class="table table-hover">
+                <table id="CheckinHistory" class="table table-hover" style="width:100%;">
                   <thead>
                     <tr style="text-align:center">
                       <th>No</th>
@@ -460,7 +460,9 @@ $niksession = Session::get('nik_visitor');
             <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
             <script type="text/javascript">
                 $(document).ready(function() {
-                  $('#CheckinHistory').DataTable();
+                  $('#CheckinHistory').DataTable({
+                    "scrollX":true,
+                  });
                   var status_visitor = "<?php echo $DataVisitor->status_visitor; ?>";
                   var status_checkin = "<?php echo $DataCheckIn->status_checkin; ?>";
                   var date_checkin = "<?php echo $DataCheckIn->approval_timestamp; ?>"
@@ -543,7 +545,10 @@ $niksession = Session::get('nik_visitor');
                 y = n.getFullYear();
                 m = n.getMonth() + 1;
                 d = n.getDate();
-                document.getElementById("dateCheckin").value = d + "-" + m + "-" + y;
+                const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                  "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+                ];
+                document.getElementById("dateCheckin").value = d + " " + monthNames[m] + " " + y;
                 function checkin(){
                     $("#waiting-approval").show();
                     $("#form-check-in").hide();
