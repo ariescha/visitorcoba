@@ -113,7 +113,7 @@ else{
                     <tr style="text-align:center">
                       <th>No</th>
                       <th>Nama Lengkap</th>
-                      <th>NPP</th>
+                      <th>NIK</th>
                       <th>Email</th>
                       <th>No HP</th>
                       <th>Status</th>
@@ -125,7 +125,7 @@ else{
                     <tr style="text-align:center"> 
                       <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{$p+1}}</strong></td>
                       <td>{{$v->nama_lengkap_petugas}}</td>
-                      <td>{{$v->npp_petugas}}</td>
+                      <td>{{$v->nik_petugas}}</td>
                       <td>{{$v->email_petugas}}</td>
                       <td>{{$v->nomor_hp_petugas}}</td>
                       <td>
@@ -165,8 +165,12 @@ else{
                                     <input type="text" class="form-control" id="nama_lengkap_petugas" name="nama_lengkap_petugas" placeholder="Masukkan nama lengkap petugas" required/>
                                 </div>
                                 <div class="mb-4">
-                                    <label for="npp_petugas" class="form-label">NPP</label>
-                                    <input type="text" class="form-control" id="npp_petugas" name="npp_petugas" placeholder="Masukkan NPP Petugas" required />
+                                    <label for="instansi_petugas" class="form-label">Instansi</label>
+                                    <input type="text" class="form-control" id="instansi_petugas" name="instansi_petugas" placeholder="Masukkan Instansi Petugas" required />
+                                </div>
+                                <div class="mb-4">
+                                    <label for="nik_petugas" class="form-label">NIK</label>
+                                    <input type="text" class="form-control" id="nik_petugas" name="nik_petugas" placeholder="Masukkan NIK Petugas" required />
                                 </div>
                                 <div class="mb-4">
                                     <label for="email_petugas" class="form-label">Email</label>
@@ -231,8 +235,12 @@ else{
                                     <input type="text" class="form-control" id="edit_nama_lengkap_petugas" name="edit_nama_lengkap_petugas" required />
                                 </div>
                                 <div class="mb-4">
-                                    <label for="edit_npp_petugas" class="form-label">NPP</label>
-                                    <input type="text" class="form-control" id="edit_npp_petugas" name="edit_npp_petugas" required />
+                                    <label for="edit_instansi_petugas" class="form-label">Instansi</label>
+                                    <input type="text" class="form-control" id="edit_instansi_petugas" name="edit_instansi_petugas" required />
+                                </div>
+                                <div class="mb-4">
+                                    <label for="edit_nik_petugas" class="form-label">NIK</label>
+                                    <input type="text" class="form-control" id="edit_nik_petugas" name="edit_nik_petugas" required />
                                 </div>
                                 <div class="mb-4">
                                     <label for="edit_email_petugas" class="form-label">Email</label>
@@ -280,10 +288,31 @@ else{
                 </div>
             </div>
             <script type="text/javascript">
+              function ShowNotifNew(text, warna) {
+                var x = document.getElementById("TempatNotif");
+                x.innerHTML = text;
+                if (warna == null) {
+                  x.style.backgroundColor = "red";
+                }
+                else {
+                  x.style.backgroundColor = warna;
+                }
+                
+                x.className = "show";
+                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 1000);
+              }
+              var msg = '{{Session::get('alert')}}';
+              var exist = '{{Session::has('alert')}}';
+              if(exist){
+                ShowNotifNew(msg, 'green');
+                //alert(msg);
+              }
+              
                function edit(data){
                 $('#edit_id_petugas').val(data.id_petugas);
                 $('#edit_nama_lengkap_petugas').val(data.nama_lengkap_petugas);
-                $('#edit_npp_petugas').val(data.npp_petugas);
+                $('#edit_instansi_petugas').val(data.instansi_petugas);
+                $('#edit_nik_petugas').val(data.nik_petugas);
                 $('#edit_no_hp_petugas').val(data.nomor_hp_petugas);
                 $('#edit_email_petugas').val(data.email_petugas);
                 $('#edit_password_petugas').val(data.password_petugas);

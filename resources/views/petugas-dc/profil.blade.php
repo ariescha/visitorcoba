@@ -113,8 +113,12 @@ if(session::has('status_petugas')){
                             />
                           </div>
                           <div class="mb-3 col-md-6">
-                            <label for="edit_npp_petugas" class="form-label">NPP</label>
-                            <input class="form-control" type="text" name="edit_npp_petugas" id="edit_npp_petugas" value="{{$PetugasDC['npp_petugas']}}"/>
+                            <label for="edit_instansi_petugas" class="form-label">Instansi</label>
+                            <input class="form-control" type="text" name="edit_instansi_petugas" id="edit_instansi_petugas" value="{{$PetugasDC['instansi_petugas']}}" required/>
+                          </div>
+                          <div class="mb-3 col-md-6">
+                            <label for="edit_nik_petugas" class="form-label">NIK</label>
+                            <input class="form-control" type="text" name="edit_nik_petugas" id="edit_nik_petugas" value="{{$PetugasDC['nik_petugas']}}" required/>
                           </div>
                           <div class="mb-3 col-md-6">
                             <label for="email_petugas" class="form-label">E-mail</label>
@@ -143,7 +147,7 @@ if(session::has('status_petugas')){
                           </div>
                           
                           <div class="mb-3 col-md-6">
-                            <label class="form-label" for="nomor_hp_petugas">Role</label>
+                            <label class="form-label" for="edit_role_petugas">Role</label>
                             <div class="input-group input-group-merge">
                               <!-- <span class="input-group-text">ID (+62)</span> -->
                               @if($PetugasDC['nomor_hp_petugas'] == 0)
@@ -152,8 +156,7 @@ if(session::has('status_petugas')){
                                 id="edit_role_petugas"
                                 name="edit_role_petugas"
                                 class="form-control"
-                                value="Admin"
-                                maxlength="13" readonly
+                                value="Admin" readonly
                               />
                               @else
                               <input
@@ -161,8 +164,7 @@ if(session::has('status_petugas')){
                                 id="edit_role_petugas"
                                 name="edit_role_petugas"
                                 class="form-control"
-                                value="Super Admin"
-                                maxlength="13" readonly
+                                value="Super Admin" readonly
                               />
                               @endif
                             </div>
@@ -182,4 +184,26 @@ if(session::has('status_petugas')){
               </div>
             </div>
             <!-- / Content -->
+<script>
+  function ShowNotifNew(text, warna) {
+        var x = document.getElementById("TempatNotif");
+        x.innerHTML = text;
+        if (warna == null) {
+          x.style.backgroundColor = "red";
+        }
+        else {
+          x.style.backgroundColor = warna;
+        }
+        
+        x.className = "show";
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 1000);
+      }
+
+  var msg = '{{Session::get('alert')}}';
+  var exist = '{{Session::has('alert')}}';
+  if(exist){
+    ShowNotifNew(msg, 'green');
+    //alert(msg);
+  }
+</script>
 @endsection

@@ -45,7 +45,8 @@ class ManagePetugasController extends Controller
         // dd($request);
         $PetugasDC = new Petugas_DC;
         $PetugasDC -> nama_lengkap_petugas = $request->nama_lengkap_petugas;
-        $PetugasDC -> npp_petugas = $request->npp_petugas;     
+        $PetugasDC -> instansi_petugas = $request->instansi_petugas;
+        $PetugasDC -> nik_petugas = $request->nik_petugas;     
         $PetugasDC -> email_petugas = $request->email_petugas;   
         $PetugasDC -> nomor_hp_petugas = $request->no_hp_petugas;
         $PetugasDC -> status_petugas = $request->status_petugas;
@@ -65,7 +66,7 @@ class ManagePetugasController extends Controller
             'id_actor' => $id_petugas_superadmin,
             'id_object' => $request->saved_petugas_id,
         ]);
-        return back();
+        return back() ->with('alert', 'Data Berhasil Ditambahkan');;
     }
     public function update(Request $request){
         //dd($request);
@@ -74,7 +75,8 @@ class ManagePetugasController extends Controller
 
         $PetugasDC = Petugas_DC::find($request->edit_id_petugas);
         $PetugasDC -> nama_lengkap_petugas = $request->edit_nama_lengkap_petugas;
-        $PetugasDC -> npp_petugas = $request->edit_npp_petugas;        
+        $PetugasDC -> instansi_petugas = $request->edit_instansi_petugas;
+        $PetugasDC -> nik_petugas = $request->edit_nik_petugas;        
         $PetugasDC -> nomor_hp_petugas = $request->edit_no_hp_petugas;
         $PetugasDC -> status_petugas = $request->edit_status_petugas;
         $PetugasDC -> save();
@@ -84,6 +86,6 @@ class ManagePetugasController extends Controller
             'id_actor' => $id_petugas_superadmin,
             'id_object' => $request->saved_petugas_id,
         ]);
-        return redirect('manajemen-petugas');
+        return redirect('manajemen-petugas')->with('alert', 'Data Berhasil Diperbaharui');;
     }
 }

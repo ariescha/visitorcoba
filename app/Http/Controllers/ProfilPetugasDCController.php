@@ -45,8 +45,10 @@ class ProfilPetugasDCController extends Controller
 
         $PetugasDC = Petugas_DC::find($request->edit_id_petugas);
         $PetugasDC -> nama_lengkap_petugas = $request->edit_nama_lengkap_petugas;
-        $PetugasDC -> npp_petugas = $request->edit_npp_petugas;        
+        $PetugasDC -> nik_petugas = $request->edit_nik_petugas;        
         $PetugasDC -> nomor_hp_petugas = $request->edit_nomor_hp_petugas;
+        $PetugasDC -> instansi_petugas = $request->edit_instansi_petugas;
+        
         $PetugasDC -> save();
 
         log_activity::create([
@@ -54,7 +56,8 @@ class ProfilPetugasDCController extends Controller
             'id_actor' => $id_petugas,
             'id_object' => null,
         ]);
-        return redirect('profil-petugas-dc');
+        return redirect('profil-petugas-dc') ->with('alert', 'Data Berhasil Diperbaharui');
+        //return redirect('profil-petugas-dc');
 
     }
 }
