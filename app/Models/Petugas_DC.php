@@ -9,5 +9,5 @@ class Petugas_DC extends Model
 {
     protected $table = 'petugas_dc';
     protected $primaryKey = 'id_petugas';
-    protected $fillable = ['nama_lengkap_petugas', 'npp_petugas','email_petugas','password_petugas','nomor_hp_petugas','status_petugas','is_superadmin'];
+    protected $fillable = ['nama_lengkap_petugas', 'nik_petugas','email_petugas','password_petugas','nomor_hp_petugas','status_petugas','is_superadmin','instansi_petugas'];
 }
