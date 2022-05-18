@@ -543,7 +543,7 @@ $niksession = Session::get('nik_visitor');
                 });
                 n =  new Date();
                 y = n.getFullYear();
-                m = n.getMonth() + 1;
+                m = n.getMonth();
                 d = n.getDate();
                 const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni",
                   "Juli", "Agustus", "September", "Oktober", "November", "Desember"

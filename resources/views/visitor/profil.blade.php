@@ -202,4 +202,12 @@ $user = Session::get('user');
               </div>
             </div>
             <!-- / Content -->
+  <script>
+    var msg = '{{Session::get('alert')}}';
+    var exist = '{{Session::has('alert')}}';
+    if(exist){
+      ShowNotifNew(msg, 'green');
+      //alert(msg);
+    }
+  </script>
 @endsection

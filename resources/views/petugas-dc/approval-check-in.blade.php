@@ -538,7 +538,7 @@ else{
                 return;
             }
 
-            if (file_foto == '') {
+            if (file_foto == undefined || file_foto == '') {
                 ShowNotif('Ambil foto terlebih dahulu!', 'red');
                 return;
             }

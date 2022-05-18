@@ -22,6 +22,18 @@ class LupaPasswordController extends Controller
         date_default_timezone_set("Asia/Bangkok");
         $email = $request->email;
         
+        $VisitorExist = Visitor::where('email_visitor', $email)->exists();
+
+        if (!$VisitorExist) {
+            $PetugasExist = Petugas_DC::where('email_Petugas', $email)->exists();
+            if (!$PetugasExist) {
+                return back()->with('alert', 'Email Tidak ditemukan. Masukkan email terdaftar!');    
+            }
+            //return back()->with('alert', 'Email Tidak ditemukan. Masukkan email terdaftar!');    
+        }
+
+        
+
         $token = Str::random(64);
 
         DB::table('reset_password')->insert([
