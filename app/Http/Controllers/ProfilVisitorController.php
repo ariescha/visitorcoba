@@ -101,6 +101,7 @@ class ProfilVisitorController extends Controller
             // 'id_object' => $VisitorCheckIn->id_checkin, //id checkin
         ]);
 
-        return redirect('profil-visitor');
+        return redirect('profil-visitor') ->with('alert', 'Data Berhasil Diperbaharui');
+        //return redirect('profil-visitor');
     }
 }
