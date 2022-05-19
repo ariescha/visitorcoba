@@ -203,6 +203,20 @@ $user = Session::get('user');
             </div>
             <!-- / Content -->
   <script>
+    function ShowNotifNew(text, warna) {
+        var x = document.getElementById("TempatNotif");
+        x.innerHTML = text;
+        if (warna == null) {
+          x.style.backgroundColor = "red";
+        }
+        else {
+          x.style.backgroundColor = warna;
+        }
+        
+        x.className = "show";
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 1000);
+      }
+
     var msg = '{{Session::get('alert')}}';
     var exist = '{{Session::has('alert')}}';
     if(exist){
